@@ -1,5 +1,5 @@
-import Link from "next/link";
-import { FaGoogle } from "react-icons/fa";
+import Link from 'next/link'
+import { FaGoogle } from 'react-icons/fa'
 
 export default function Page() {
   return (
@@ -12,6 +12,7 @@ export default function Page() {
             className="md:w-4/6 w-5/6 h-10 px-5 my-2  border placeholder:text-sm focus:outline-[#00B2B2]"
             placeholder="Email"
           />
+
           <input
             type="password"
             className="md:w-4/6 w-5/6 h-10 px-5 my-2 border placeholder:text-sm focus:outline-[#00B2B2]"
@@ -35,5 +36,5 @@ export default function Page() {
         </form>
       </div>
     </div>
-  );
+  )
 }

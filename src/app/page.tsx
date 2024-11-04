@@ -1,5 +1,5 @@
-import { BackgroundBeams } from "@/components/ui/background-beams";
-import { Plus, Search } from "lucide-react";
+import { BackgroundBeams } from '@/components/ui/background-beams'
+import { Plus, Search } from 'lucide-react'
 
 export default function Home() {
   return (
@@ -18,5 +18,5 @@ export default function Home() {
       </div>
       <BackgroundBeams />
     </div>
-  );
+  )
 }

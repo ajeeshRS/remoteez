@@ -1,10 +1,10 @@
 interface LocationSearchInputProps {
-  placeholder: string;
-  query: string;
-  handleInputChange: (e: any) => void;
-  isLoading: boolean;
-  suggestions: any[];
-  handleSuggestionClick: (suggestion: string) => void;
+  placeholder: string
+  query: string
+  handleInputChange: (e: any) => void
+  isLoading: boolean
+  suggestions: any[]
+  handleSuggestionClick: (suggestion: string) => void
 }
 
 export default function LocationSearchInput({
@@ -39,5 +39,5 @@ export default function LocationSearchInput({
         </div>
       )}
     </div>
-  );
+  )
 }

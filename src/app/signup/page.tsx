@@ -1,78 +1,73 @@
-"use client";
-import Link from "next/link";
+'use client'
+import Link from 'next/link'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { debounce } from "lodash";
-import { useCallback, useState } from "react";
-import axios from "axios";
-import LocationSearchInput from "@/components/ui/locationSearchInput";
+} from '@/components/ui/select'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { debounce } from 'lodash'
+import { useCallback, useState } from 'react'
+import axios from 'axios'
+import LocationSearchInput from '@/components/ui/locationSearchInput'
 
 export default function Page() {
-  const [query, setQuery] = useState<string>("");
-  const [employerQuery, setEmployerQuery] = useState<string>("");
-  const [suggestions, setSuggestions] = useState([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [query, setQuery] = useState<string>('')
+  const [employerQuery, setEmployerQuery] = useState<string>('')
+  const [suggestions, setSuggestions] = useState([])
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const fetchSuggestions = useCallback(
     debounce(async (inputValue) => {
       if (inputValue.length > 2) {
-        setIsLoading(true);
+        setIsLoading(true)
         try {
-          const response = await axios.get(
-            process.env.NEXT_PUBLIC_GEOAPIFY_API_URL as string,
-            {
-              params: {
-                text: inputValue,
-                apiKey: process.env.NEXT_PUBLIC_GEOAPIFY_API_KEY,
-              },
-            }
-          );
-          setSuggestions(response.data.features);
+          const response = await axios.get(process.env.NEXT_PUBLIC_GEOAPIFY_API_URL as string, {
+            params: {
+              text: inputValue,
+              apiKey: process.env.NEXT_PUBLIC_GEOAPIFY_API_KEY,
+            },
+          })
+          setSuggestions(response.data.features)
         } catch (error) {
-          console.error("Error fetching suggestions:", error);
+          console.error('Error fetching suggestions:', error)
         } finally {
-          setIsLoading(false);
+          setIsLoading(false)
         }
       } else {
-        setSuggestions([]);
+        setSuggestions([])
       }
     }, 300),
     []
-  );
+  )
 
   const handleInputChange = (e: any) => {
-    const inputValue = e.target.value;
-    setQuery(inputValue);
-    fetchSuggestions(inputValue);
-  };
+    const inputValue = e.target.value
+    setQuery(inputValue)
+    fetchSuggestions(inputValue)
+  }
 
   const handleSuggestionClick = (suggestion: any) => {
-    setQuery(suggestion.properties.formatted);
-    setSuggestions([]);
-  };
+    setQuery(suggestion.properties.formatted)
+    setSuggestions([])
+  }
 
   const handleEmployerInputChange = (e: any) => {
-    const inputValue = e.target.value;
-    setEmployerQuery(inputValue);
-    fetchSuggestions(inputValue);
-  };
+    const inputValue = e.target.value
+    setEmployerQuery(inputValue)
+    fetchSuggestions(inputValue)
+  }
 
   const handleEmployerSuggestionClick = (suggestion: any) => {
-    setEmployerQuery(suggestion.properties.formatted);
-    setSuggestions([]);
-  };
+    setEmployerQuery(suggestion.properties.formatted)
+    setSuggestions([])
+  }
   return (
     <div className="w-full min-h-[90vh] flex items-center justify-center">
       <div className="login-form-container shadow-md md:w-2/6 w-5/6 h-fit bg-white dark:bg-neutral-900 flex flex-col items-center justify-center p-5">
-        <h3 className="font-bold md:text-2xl text-xl w-full text-center">
-          Create your account
-        </h3>
+        <h3 className="font-bold md:text-2xl text-xl w-full text-center">Create your account</h3>
 
         <Tabs defaultValue="jobseeker" className="w-full py-5">
           <TabsList className="grid w-full grid-cols-2">
@@ -117,7 +112,7 @@ export default function Page() {
                 placeholder="Desired Job Title"
               />
               <LocationSearchInput
-                placeholder={"Current location"}
+                placeholder={'Current location'}
                 query={query}
                 suggestions={suggestions}
                 handleInputChange={handleInputChange}
@@ -147,7 +142,7 @@ export default function Page() {
                 placeholder="Password"
               />
               <LocationSearchInput
-                placeholder={"Company Location"}
+                placeholder={'Company Location'}
                 query={employerQuery}
                 suggestions={suggestions}
                 handleInputChange={handleEmployerInputChange}
@@ -168,5 +163,5 @@ export default function Page() {
         </p>
       </div>
     </div>
-  );
+  )
 }

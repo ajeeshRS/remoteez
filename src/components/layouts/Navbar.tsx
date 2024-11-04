@@ -1,30 +1,30 @@
-"use client";
-import { mulish } from "@/app/fonts/fonts";
-import { useTheme } from "next-themes";
-import { Moon, Sun } from "lucide-react";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+'use client'
+import { mulish } from '@/app/fonts/fonts'
+import { useTheme } from 'next-themes'
+import { Moon, Sun } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 export default function Navbar() {
-  const [mounted, setMounted] = useState(false);
-  const { setTheme, resolvedTheme } = useTheme();
-  const router = useRouter();
+  const [mounted, setMounted] = useState(false)
+  const { setTheme, resolvedTheme } = useTheme()
+  const router = useRouter()
 
   const toggleTheme = () => {
-    setTheme(resolvedTheme === "light" ? "dark" : "light");
-  };
+    setTheme(resolvedTheme === 'light' ? 'dark' : 'light')
+  }
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    setMounted(true)
+  }, [])
 
-  if (!mounted) return null;
+  if (!mounted) return null
 
   return (
     <nav className="relative z-10 w-full px-10 py-4 flex items-center  justify-between text-black bg-white dark:bg-neutral-900">
       <div className="Logo">
         <h2
-          onClick={() => router.push("/")}
+          onClick={() => router.push('/')}
           className={`font-bold text-2xl flex items-start ${mulish.className} dark:text-neutral-50 cursor-pointer`}
         >
           Remoteez
@@ -40,7 +40,7 @@ export default function Navbar() {
         <li>
           {resolvedTheme && (
             <button onClick={toggleTheme} className="flex items-center">
-              {resolvedTheme === "light" ? (
+              {resolvedTheme === 'light' ? (
                 <Moon className="w-5 h-5 text-neutral-800 dark:text-neutral-50" />
               ) : (
                 <Sun className="w-5 h-5 text-neutral-800 dark:text-neutral-50" />
@@ -50,7 +50,7 @@ export default function Navbar() {
         </li>
         <li>
           <button
-            onClick={() => router.push("/login")}
+            onClick={() => router.push('/login')}
             className="hover:bg-[#008080] bg-[#00B2B2] text-white py-1 px-3"
           >
             Login
@@ -58,5 +58,5 @@ export default function Navbar() {
         </li>
       </ul>
     </nav>
-  );
+  )
 }
