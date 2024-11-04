@@ -1,49 +1,49 @@
-'use client'
-import { mulish } from '@/app/fonts/fonts'
-import { useTheme } from 'next-themes'
-import { Moon, Sun } from 'lucide-react'
-import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
+'use client';
+import { mulish } from '@/app/fonts/fonts';
+import { useTheme } from 'next-themes';
+import { Moon, Sun } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function Navbar() {
-  const [mounted, setMounted] = useState(false)
-  const { setTheme, resolvedTheme } = useTheme()
-  const router = useRouter()
+  const [mounted, setMounted] = useState(false);
+  const { setTheme, resolvedTheme } = useTheme();
+  const router = useRouter();
 
   const toggleTheme = () => {
-    setTheme(resolvedTheme === 'light' ? 'dark' : 'light')
-  }
+    setTheme(resolvedTheme === 'light' ? 'dark' : 'light');
+  };
 
   useEffect(() => {
-    setMounted(true)
-  }, [])
+    setMounted(true);
+  }, []);
 
-  if (!mounted) return null
+  if (!mounted) return null;
 
   return (
-    <nav className="relative z-10 w-full px-10 py-4 flex items-center  justify-between text-black bg-white dark:bg-neutral-900">
+    <nav className="relative z-10 flex w-full items-center justify-between bg-white px-10 py-4 text-black dark:bg-neutral-900">
       <div className="Logo">
         <h2
           onClick={() => router.push('/')}
-          className={`font-bold text-2xl flex items-start ${mulish.className} dark:text-neutral-50 cursor-pointer`}
+          className={`flex items-start text-2xl font-bold ${mulish.className} cursor-pointer dark:text-neutral-50`}
         >
           Remoteez
         </h2>
       </div>
-      <ul className="nav-item-container w-2/5 flex items-center justify-between">
-        <li className="md:block hidden hover:text-neutral-800 text-neutral-600 dark:text-neutral-400 dark:hover:text-neutral-50 cursor-pointer">
+      <ul className="nav-item-container flex w-2/5 items-center justify-between">
+        <li className="hidden cursor-pointer text-neutral-600 hover:text-neutral-800 dark:text-neutral-400 dark:hover:text-neutral-50 md:block">
           For job seekers
         </li>
-        <li className="md:block hidden hover:text-neutral-800 text-neutral-600 dark:text-neutral-400 dark:hover:text-neutral-50 cursor-pointer">
+        <li className="hidden cursor-pointer text-neutral-600 hover:text-neutral-800 dark:text-neutral-400 dark:hover:text-neutral-50 md:block">
           For employers
         </li>
         <li>
           {resolvedTheme && (
             <button onClick={toggleTheme} className="flex items-center">
               {resolvedTheme === 'light' ? (
-                <Moon className="w-5 h-5 text-neutral-800 dark:text-neutral-50" />
+                <Moon className="h-5 w-5 text-neutral-800 dark:text-neutral-50" />
               ) : (
-                <Sun className="w-5 h-5 text-neutral-800 dark:text-neutral-50" />
+                <Sun className="h-5 w-5 text-neutral-800 dark:text-neutral-50" />
               )}
             </button>
           )}
@@ -51,12 +51,12 @@ export default function Navbar() {
         <li>
           <button
             onClick={() => router.push('/login')}
-            className="hover:bg-[#008080] bg-[#00B2B2] text-white py-1 px-3"
+            className="bg-[#00B2B2] px-3 py-1 text-white hover:bg-[#008080]"
           >
             Login
           </button>
         </li>
       </ul>
     </nav>
-  )
+  );
 }

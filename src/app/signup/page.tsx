@@ -1,87 +1,92 @@
-'use client'
-import Link from 'next/link'
+'use client';
+import Link from 'next/link';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { debounce } from 'lodash'
-import { ChangeEvent, useEffect, useRef, useState } from 'react'
-import axios from 'axios'
-import LocationSearchInput from '@/components/ui/locationSearchInput'
+} from '@/components/ui/select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { debounce } from 'lodash';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import axios from 'axios';
+import LocationSearchInput from '@/components/ui/locationSearchInput';
 
 export interface Suggestion {
   properties: {
-    formatted: string
-    place_id: string
-  }
+    formatted: string;
+    place_id: string;
+  };
 }
 
 export default function Page() {
-  const [query, setQuery] = useState<string>('')
-  const [employerQuery, setEmployerQuery] = useState<string>('')
-  const [suggestions, setSuggestions] = useState<Suggestion[]>([])
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [query, setQuery] = useState<string>('');
+  const [employerQuery, setEmployerQuery] = useState<string>('');
+  const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const debouncedFetch = useRef(
     debounce(async (inputValue: string) => {
       if (inputValue.length > 2) {
-        setIsLoading(true)
+        setIsLoading(true);
         try {
-          const response = await axios.get(process.env.NEXT_PUBLIC_GEOAPIFY_API_URL as string, {
-            params: {
-              text: inputValue,
-              apiKey: process.env.NEXT_PUBLIC_GEOAPIFY_API_KEY,
+          const response = await axios.get(
+            process.env.NEXT_PUBLIC_GEOAPIFY_API_URL as string,
+            {
+              params: {
+                text: inputValue,
+                apiKey: process.env.NEXT_PUBLIC_GEOAPIFY_API_KEY,
+              },
             },
-          })
-          setSuggestions(response.data.features)
+          );
+          setSuggestions(response.data.features);
         } catch (error) {
-          console.error('Error fetching suggestions:', error)
+          console.error('Error fetching suggestions:', error);
         } finally {
-          setIsLoading(false)
+          setIsLoading(false);
         }
       } else {
-        setSuggestions([])
+        setSuggestions([]);
       }
-    }, 300)
-  ).current
+    }, 300),
+  ).current;
 
   // Cleanup debounce on unmount
   useEffect(() => {
     return () => {
-      debouncedFetch.cancel()
-    }
-  }, [debouncedFetch])
+      debouncedFetch.cancel();
+    };
+  }, [debouncedFetch]);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const inputValue = e.target.value
-    setQuery(inputValue)
-    debouncedFetch(inputValue)
-  }
+    const inputValue = e.target.value;
+    setQuery(inputValue);
+    debouncedFetch(inputValue);
+  };
 
   const handleSuggestionClick = (suggestion: Suggestion) => {
-    setQuery(suggestion.properties.formatted)
-    setSuggestions([])
-  }
+    setQuery(suggestion.properties.formatted);
+    setSuggestions([]);
+  };
 
   const handleEmployerInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const inputValue = e.target.value
-    setEmployerQuery(inputValue)
-    debouncedFetch(inputValue)
-  }
+    const inputValue = e.target.value;
+    setEmployerQuery(inputValue);
+    debouncedFetch(inputValue);
+  };
 
   const handleEmployerSuggestionClick = (suggestion: Suggestion) => {
-    setEmployerQuery(suggestion.properties.formatted)
-    setSuggestions([])
-  }
+    setEmployerQuery(suggestion.properties.formatted);
+    setSuggestions([]);
+  };
 
   return (
-    <div className="w-full min-h-[90vh] flex items-center justify-center">
-      <div className="login-form-container shadow-md md:w-2/6 w-5/6 h-fit bg-white dark:bg-neutral-900 flex flex-col items-center justify-center p-5">
-        <h3 className="font-bold md:text-2xl text-xl w-full text-center">Create your account</h3>
+    <div className="flex min-h-[90vh] w-full items-center justify-center">
+      <div className="login-form-container flex h-fit w-5/6 flex-col items-center justify-center bg-white p-5 shadow-md dark:bg-neutral-900 md:w-2/6">
+        <h3 className="w-full text-center text-xl font-bold md:text-2xl">
+          Create your account
+        </h3>
 
         <Tabs defaultValue="jobseeker" className="w-full py-5">
           <TabsList className="grid w-full grid-cols-2">
@@ -92,22 +97,22 @@ export default function Page() {
             <form>
               <input
                 type="text"
-                className="w-full h-10 px-5 my-2  border placeholder:text-sm text-sm focus:outline-[#00B2B2]"
+                className="my-2 h-10 w-full border px-5 text-sm placeholder:text-sm focus:outline-[#00B2B2]"
                 placeholder="Full Name"
               />
               <input
                 type="text"
-                className="w-full h-10 px-5 my-2  border placeholder:text-sm text-sm focus:outline-[#00B2B2]"
+                className="my-2 h-10 w-full border px-5 text-sm placeholder:text-sm focus:outline-[#00B2B2]"
                 placeholder="Email"
               />
               <input
                 type="password"
-                className="w-full h-10 px-5 my-2  border placeholder:text-sm text-sm focus:outline-[#00B2B2]"
+                className="my-2 h-10 w-full border px-5 text-sm placeholder:text-sm focus:outline-[#00B2B2]"
                 placeholder="Password"
               />
               <>
                 <Select>
-                  <SelectTrigger className="w-full h-10 my-2">
+                  <SelectTrigger className="my-2 h-10 w-full">
                     <SelectValue placeholder="Select Experience" />
                   </SelectTrigger>
                   <SelectContent>
@@ -121,7 +126,7 @@ export default function Page() {
               </>
               <input
                 type="text"
-                className="w-full h-10 px-5 my-2  border placeholder:text-sm text-sm focus:outline-[#00B2B2]"
+                className="my-2 h-10 w-full border px-5 text-sm placeholder:text-sm focus:outline-[#00B2B2]"
                 placeholder="Desired Job Title"
               />
               <LocationSearchInput
@@ -132,7 +137,7 @@ export default function Page() {
                 handleSuggestionClick={handleSuggestionClick}
                 isLoading={isLoading}
               />
-              <button className="hover:bg-[#008080] bg-[#00B2B2] text-white py-1 px-3 my-4 w-full">
+              <button className="my-4 w-full bg-[#00B2B2] px-3 py-1 text-white hover:bg-[#008080]">
                 Signup
               </button>
             </form>
@@ -141,17 +146,17 @@ export default function Page() {
             <form>
               <input
                 type="text"
-                className="w-full h-10 px-5 my-2  border placeholder:text-sm focus:outline-[#00B2B2]"
+                className="my-2 h-10 w-full border px-5 placeholder:text-sm focus:outline-[#00B2B2]"
                 placeholder="Company Name"
               />
               <input
                 type="text"
-                className="w-full h-10 px-5 my-2  border placeholder:text-sm focus:outline-[#00B2B2]"
+                className="my-2 h-10 w-full border px-5 placeholder:text-sm focus:outline-[#00B2B2]"
                 placeholder="Email"
               />
               <input
                 type="password"
-                className="w-full h-10 px-5 my-2  border placeholder:text-sm focus:outline-[#00B2B2]"
+                className="my-2 h-10 w-full border px-5 placeholder:text-sm focus:outline-[#00B2B2]"
                 placeholder="Password"
               />
               <LocationSearchInput
@@ -162,19 +167,19 @@ export default function Page() {
                 handleSuggestionClick={handleEmployerSuggestionClick}
                 isLoading={isLoading}
               />
-              <button className="hover:bg-[#008080] bg-[#00B2B2] text-white py-1 px-3 my-4 w-full">
+              <button className="my-4 w-full bg-[#00B2B2] px-3 py-1 text-white hover:bg-[#008080]">
                 Signup
               </button>
             </form>
           </TabsContent>
         </Tabs>
-        <p className="text-xs w-full flex items-center justify-center py-2">
+        <p className="flex w-full items-center justify-center py-2 text-xs">
           Already have an account?
-          <span className="pl-1 hover:underline cursor-pointer">
+          <span className="cursor-pointer pl-1 hover:underline">
             <Link href="/login">Login</Link>
           </span>
         </p>
       </div>
     </div>
-  )
+  );
 }

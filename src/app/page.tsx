@@ -1,22 +1,22 @@
-import { BackgroundBeams } from '@/components/ui/background-beams'
-import { Plus, Search } from 'lucide-react'
+import { BackgroundBeams } from '@/components/ui/background-beams';
+import { Plus, Search } from 'lucide-react';
 
 export default function Home() {
   return (
-    <div className="h-[90vh] w-full bg-white dark:bg-neutral-900 flex flex-col items-center justify-center">
+    <div className="flex h-[90vh] w-full flex-col items-center justify-center bg-white dark:bg-neutral-900">
       <h3 className="text-3xl font-semibold">Find Work That Works Anywhere.</h3>
-      <p className="text-sm my-3">Your Remote Job Hunt Starts Here.</p>
-      <div className="w-full flex items-center justify-center my-4">
-        <button className="relative z-10 flex items-center py-1 px-3 hover:bg-[#008080] bg-[#00B2B2] text-white mx-3">
-          <Search className="w-4 h-4 mr-1" />
+      <p className="my-3 text-sm">Your Remote Job Hunt Starts Here.</p>
+      <div className="my-4 flex w-full items-center justify-center">
+        <button className="relative z-10 mx-3 flex items-center bg-[#00B2B2] px-3 py-1 text-white hover:bg-[#008080]">
+          <Search className="mr-1 h-4 w-4" />
           Browse Jobs
         </button>
-        <button className="relative z-10 flex items-center py-1 px-3 hover:bg-[#008080] bg-[#00B2B2] text-white mx-3">
-          <Plus className="w-4 h-4 mr-1" />
+        <button className="relative z-10 mx-3 flex items-center bg-[#00B2B2] px-3 py-1 text-white hover:bg-[#008080]">
+          <Plus className="mr-1 h-4 w-4" />
           Post a job
         </button>
       </div>
       <BackgroundBeams />
     </div>
-  )
+  );
 }
