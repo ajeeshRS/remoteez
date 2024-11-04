@@ -1,10 +1,13 @@
+import { Suggestion } from '@/app/signup/page'
+import { ChangeEvent } from 'react'
+
 interface LocationSearchInputProps {
   placeholder: string
   query: string
-  handleInputChange: (e: any) => void
+  handleInputChange: (e: ChangeEvent<HTMLInputElement>) => void
   isLoading: boolean
-  suggestions: any[]
-  handleSuggestionClick: (suggestion: string) => void
+  suggestions: Suggestion[]
+  handleSuggestionClick: (suggestion: Suggestion) => void
 }
 
 export default function LocationSearchInput({
@@ -27,7 +30,7 @@ export default function LocationSearchInput({
       {isLoading && <div className="mt-2 text-sm">Loading...</div>}
       {suggestions.length !== 0 && (
         <div className="absolute z-10 w-full mt-2 dark:bg-black bg-white border rounded-md shadow-lg h-fit max-h-36 overflow-scroll">
-          {suggestions.map((suggestion: any) => (
+          {suggestions.map((suggestion) => (
             <div
               key={suggestion.properties.place_id}
               className="px-4 py-2 cursor-pointer bg-white hover:bg-neutral-100 dark:bg-black dark:hover:bg-neutral-800 text-sm"

@@ -9,18 +9,25 @@ import {
 } from '@/components/ui/select'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { debounce } from 'lodash'
-import { useCallback, useState } from 'react'
+import { ChangeEvent, useEffect, useRef, useState } from 'react'
 import axios from 'axios'
 import LocationSearchInput from '@/components/ui/locationSearchInput'
+
+export interface Suggestion {
+  properties: {
+    formatted: string
+    place_id: string
+  }
+}
 
 export default function Page() {
   const [query, setQuery] = useState<string>('')
   const [employerQuery, setEmployerQuery] = useState<string>('')
-  const [suggestions, setSuggestions] = useState([])
+  const [suggestions, setSuggestions] = useState<Suggestion[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
-  const fetchSuggestions = useCallback(
-    debounce(async (inputValue) => {
+  const debouncedFetch = useRef(
+    debounce(async (inputValue: string) => {
       if (inputValue.length > 2) {
         setIsLoading(true)
         try {
@@ -39,31 +46,38 @@ export default function Page() {
       } else {
         setSuggestions([])
       }
-    }, 300),
-    []
-  )
+    }, 300)
+  ).current
 
-  const handleInputChange = (e: any) => {
+  // Cleanup debounce on unmount
+  useEffect(() => {
+    return () => {
+      debouncedFetch.cancel()
+    }
+  }, [debouncedFetch])
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value
     setQuery(inputValue)
-    fetchSuggestions(inputValue)
+    debouncedFetch(inputValue)
   }
 
-  const handleSuggestionClick = (suggestion: any) => {
+  const handleSuggestionClick = (suggestion: Suggestion) => {
     setQuery(suggestion.properties.formatted)
     setSuggestions([])
   }
 
-  const handleEmployerInputChange = (e: any) => {
+  const handleEmployerInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value
     setEmployerQuery(inputValue)
-    fetchSuggestions(inputValue)
+    debouncedFetch(inputValue)
   }
 
-  const handleEmployerSuggestionClick = (suggestion: any) => {
+  const handleEmployerSuggestionClick = (suggestion: Suggestion) => {
     setEmployerQuery(suggestion.properties.formatted)
     setSuggestions([])
   }
+
   return (
     <div className="w-full min-h-[90vh] flex items-center justify-center">
       <div className="login-form-container shadow-md md:w-2/6 w-5/6 h-fit bg-white dark:bg-neutral-900 flex flex-col items-center justify-center p-5">
@@ -81,7 +95,6 @@ export default function Page() {
                 className="w-full h-10 px-5 my-2  border placeholder:text-sm text-sm focus:outline-[#00B2B2]"
                 placeholder="Full Name"
               />
-
               <input
                 type="text"
                 className="w-full h-10 px-5 my-2  border placeholder:text-sm text-sm focus:outline-[#00B2B2]"
