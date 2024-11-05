@@ -13,7 +13,51 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model SampleSchema {
-  id   Int    @id @default(autoincrement())
-  name String
+model JobSeeker {
+  id                String            @id @unique @default(uuid())
+  email             String            @unique
+  fullName          String
+  password          String
+  skills            String[]
+  projects          Project[]
+  resume            String?
+  desiredJobTitle   String
+  experienceRange   ExperienceRange[]
+  previousCompanies PreviousCompany[]
+  location          String
+  preferredJobType  PreferredJobType?
+}
+
+model Project {
+  id            String  @id @unique @default(uuid())
+  jobSeekerId   String
+  title         String
+  gitHubRepoUrl String?
+  deployedLink  String
+  description   String
+
+  jobSeeker JobSeeker @relation(fields: [jobSeekerId], references: [id])
+}
+
+model PreviousCompany {
+  id             String  @id @unique @default(uuid())
+  jobSeekerId    String
+  companyName    String
+  companyWebsite String?
+  duration       String
+
+  jobSeeker JobSeeker @relation(fields: [jobSeekerId], references: [id])
+}
+
+enum ExperienceRange {
+  ZERO_TO_ONE
+  ONE_TO_THREE
+  THREE_TO_SIX
+  SIX_PLUS
+}
+
+enum PreferredJobType {
+  PART_TIME
+  FULL_TIME
+  FREELANCE
 }

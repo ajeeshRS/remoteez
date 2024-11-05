@@ -119,8 +119,7 @@ export default function Page() {
                     <SelectItem value="apple">0-1 yrs</SelectItem>
                     <SelectItem value="banana">1-3 yrs</SelectItem>
                     <SelectItem value="blueberry">3-6 yrs</SelectItem>
-                    <SelectItem value="grapes">6-10 yrs</SelectItem>
-                    <SelectItem value="pineapple">10+ yrs</SelectItem>
+                    <SelectItem value="grapes">6+ yrs</SelectItem>
                   </SelectContent>
                 </Select>
               </>
