@@ -18,6 +18,12 @@ model JobSeeker {
   email             String            @unique
   fullName          String
   password          String
+  avatar            String
+  bio               String
+  githubLink        String
+  portfolioLink     String
+  linkedinLink      String
+  twitterLink       String
   skills            String[]
   projects          Project[]
   resume            String?
@@ -25,18 +31,19 @@ model JobSeeker {
   experienceRange   ExperienceRange[]
   previousCompanies PreviousCompany[]
   location          String
-  preferredJobType  PreferredJobType?
+  preferredJobType  JobType?
+  Bookmark          Bookmark[]
 }
 
 model Project {
-  id            String  @id @unique @default(uuid())
-  jobSeekerId   String
-  title         String
-  gitHubRepoUrl String?
-  deployedLink  String
-  description   String
-
-  jobSeeker JobSeeker @relation(fields: [jobSeekerId], references: [id])
+  id           String    @id @unique @default(uuid())
+  jobSeekerId  String
+  title        String
+  githubURL    String?
+  deployedLink String
+  description  String
+  skills       String[]
+  jobSeeker    JobSeeker @relation(fields: [jobSeekerId], references: [id])
 }
 
 model PreviousCompany {
@@ -56,10 +63,11 @@ enum ExperienceRange {
   SIX_PLUS
 }
 
-enum PreferredJobType {
+enum JobType {
   PART_TIME
   FULL_TIME
   FREELANCE
+  INTERNSHIP
 }
 
 model Employer {
@@ -75,6 +83,7 @@ model Employer {
   teamSize        Int?
   socialLinks     SocialLinks?
   description     String?
+  jobs            Job[]
 }
 
 enum Role {
@@ -93,4 +102,40 @@ model SocialLinks {
   instagram  String?
   website    String?
   employer   Employer @relation(fields: [employerId], references: [id])
+}
+
+model Job {
+  id                 String     @id @unique @default(uuid())
+  employerId         String
+  title              String
+  jobType            JobType
+  minExperience      Int
+  maxExperience      Int
+  description        String
+  companyName        String
+  companyLogo        String
+  companyDescription String
+  companyEmail       String
+  skillsRequired     String[]
+  minSalary          Int
+  maxSalary          Int
+  currency           Currency   @default(INR)
+  isVerified         Boolean    @default(false)
+  postedAt           DateTime   @default(now())
+  updatedAt          DateTime   @updatedAt
+  employer           Employer   @relation(fields: [employerId], references: [id])
+  bookmark           Bookmark[]
+}
+
+model Bookmark {
+  id          String    @id @default(uuid())
+  jobId       String
+  jobSeekerId String
+  jobSeeker   JobSeeker @relation(fields: [jobSeekerId], references: [id])
+  job         Job       @relation(fields: [jobId], references: [id])
+}
+
+enum Currency {
+  INR
+  USD
 }
