@@ -3,20 +3,20 @@ import { ChangeEvent } from 'react';
 
 interface LocationSearchInputProps {
   placeholder: string;
-  query: string;
+  value: string;
   handleInputChange: (e: ChangeEvent<HTMLInputElement>) => void;
   isLoading: boolean;
   suggestions: Suggestion[];
-  handleSuggestionClick: (suggestion: Suggestion) => void;
+  handleSelectLocation: (suggestion: Suggestion) => void;
 }
 
 export default function LocationSearchInput({
   placeholder,
-  query,
+  value,
   handleInputChange,
   isLoading,
   suggestions,
-  handleSuggestionClick,
+  handleSelectLocation,
 }: LocationSearchInputProps) {
   return (
     <div className="relative w-full">
@@ -24,7 +24,7 @@ export default function LocationSearchInput({
         type="text"
         className="my-2 h-10 w-full border px-5 text-sm placeholder:text-sm focus:outline-[#00B2B2]"
         placeholder={placeholder}
-        value={query}
+        value={value}
         onChange={handleInputChange}
       />
       {isLoading && <div className="mt-2 text-sm">Loading...</div>}
@@ -34,7 +34,7 @@ export default function LocationSearchInput({
             <div
               key={suggestion.properties.place_id}
               className="cursor-pointer bg-white px-4 py-2 text-sm hover:bg-neutral-100 dark:bg-black dark:hover:bg-neutral-800"
-              onClick={() => handleSuggestionClick(suggestion)}
+              onClick={() => handleSelectLocation(suggestion)}
             >
               {suggestion.properties.formatted}
             </div>

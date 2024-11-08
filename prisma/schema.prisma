@@ -75,7 +75,6 @@ model Employer {
   companyName     String
   companyLocation String
   role            Role
-  customRole      String?
   companyWebsite  String?
   email           String       @unique
   logo            String?
@@ -90,7 +89,6 @@ enum Role {
   HR
   CEO
   FOUNDER
-  OTHER
 }
 
 model SocialLinks {
@@ -122,6 +120,7 @@ model Job {
   currency           Currency   @default(INR)
   isVerified         Boolean    @default(false)
   postedAt           DateTime   @default(now())
+  link               String
   updatedAt          DateTime   @updatedAt
   employer           Employer   @relation(fields: [employerId], references: [id])
   bookmark           Bookmark[]
