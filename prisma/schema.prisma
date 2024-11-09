@@ -18,17 +18,17 @@ model JobSeeker {
   email             String            @unique
   fullName          String
   password          String
-  avatar            String
-  bio               String
-  githubLink        String
-  portfolioLink     String
-  linkedinLink      String
-  twitterLink       String
+  avatar            String?
+  bio               String?
+  githubLink        String?
+  portfolioLink     String?
+  linkedinLink      String?
+  twitterLink       String?
   skills            String[]
   projects          Project[]
   resume            String?
   desiredJobTitle   String
-  experienceRange   ExperienceRange[]
+  experienceRange   ExperienceRange
   previousCompanies PreviousCompany[]
   location          String
   preferredJobType  JobType?
@@ -75,6 +75,7 @@ model Employer {
   companyName     String
   companyLocation String
   role            Role
+  password        String
   companyWebsite  String?
   email           String       @unique
   logo            String?

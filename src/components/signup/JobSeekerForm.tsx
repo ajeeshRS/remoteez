@@ -18,6 +18,8 @@ import { Suggestion } from '@/app/signup/page';
 import { debounce } from 'lodash';
 import axios from 'axios';
 import ErrorMessage from '../ui/error-msg';
+import { handleJobSeekerSignup } from '@/lib/auth.axios';
+
 export default function JobSeekerForm() {
   const [location, setLocation] = useState<string>('');
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
@@ -34,7 +36,6 @@ export default function JobSeekerForm() {
       email: '',
       fullname: '',
       password: '',
-      experience: '',
       desiredJobTitle: '',
       currentLocation: '',
     },
@@ -85,7 +86,7 @@ export default function JobSeekerForm() {
   }, [debouncedFetch]);
 
   return (
-    <form onSubmit={handleSubmit((data) => console.log(data))}>
+    <form onSubmit={handleSubmit((data) => handleJobSeekerSignup(data))}>
       <input
         type="text"
         {...register('fullname')}
@@ -111,7 +112,7 @@ export default function JobSeekerForm() {
 
       <>
         <Select
-          onValueChange={(value) =>
+          onValueChange={(value: any) =>
             setValue('experience', value, { shouldValidate: true })
           }
         >

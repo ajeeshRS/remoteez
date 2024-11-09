@@ -18,6 +18,7 @@ import {
 } from '@/lib/validators/auth.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
 import ErrorMessage from '../ui/error-msg';
+import { handleEmployerSignup } from '@/lib/auth.axios';
 
 export default function EmployerForm() {
   const [companyLocation, setCompanyLocation] = useState<string>('');
@@ -85,7 +86,7 @@ export default function EmployerForm() {
   }, [debouncedFetch]);
 
   return (
-    <form onSubmit={handleSubmit((data) => console.log(data))}>
+    <form onSubmit={handleSubmit((data) => handleEmployerSignup(data))}>
       <input
         {...register('email')}
         type="text"

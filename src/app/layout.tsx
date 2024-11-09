@@ -3,7 +3,7 @@ import './globals.css';
 import Navbar from '@/components/layouts/Navbar';
 import { mulish, spaceMono } from './fonts/fonts';
 import { ThemeProvider } from '@/components/providers/theme-provider';
-
+import { Toaster } from 'sonner';
 export const metadata: Metadata = {
   title: 'Remoteez',
   description: 'Your Remote Job Finder.',
@@ -27,6 +27,7 @@ export default function RootLayout({
         >
           <Navbar />
           {children}
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
