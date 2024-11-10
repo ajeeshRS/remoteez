@@ -38,7 +38,6 @@ export async function POST(req: NextRequest) {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    console.log(hashedPassword);
 
     if (!hashedPassword) {
       return NextResponse.json(

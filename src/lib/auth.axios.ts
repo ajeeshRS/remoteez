@@ -7,7 +7,7 @@ export const handleJobSeekerSignup = async (formData: any) => {
     const response = await axios.post('/api/signup/jobseeker', formData);
     toast.success(response.data.message);
   } catch (error) {
-    const err = error as AxiosError<Msg>
+    const err = error as AxiosError<Msg>;
     toast.error(err.response?.data.message);
   }
 };
@@ -15,9 +15,9 @@ export const handleJobSeekerSignup = async (formData: any) => {
 export const handleEmployerSignup = async (formData: any) => {
   try {
     const response = await axios.post('/api/signup/employer', formData);
-    console.log(formData);
-    console.log(response);
+    toast.success(response.data.message);
   } catch (error) {
-    console.log(error);
+    const err = error as AxiosError<Msg>
+    toast.error(err.response?.data.message);
   }
 };

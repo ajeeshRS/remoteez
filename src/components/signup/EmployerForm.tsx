@@ -36,7 +36,6 @@ export default function EmployerForm() {
       email: '',
       companyName: '',
       password: '',
-      role: '',
       companyLocation: '',
     },
   });
@@ -112,7 +111,7 @@ export default function EmployerForm() {
 
       <>
         <Select
-          onValueChange={(value) =>
+          onValueChange={(value: any) =>
             setValue('role', value, { shouldValidate: true })
           }
         >

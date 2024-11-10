@@ -6,6 +6,7 @@ export const experienceRangeEnum = z.enum([
   'THREE_TO_SIX',
   'SIX_PLUS',
 ]);
+export const employerRoleEnum = z.enum(['HR', 'CEO', 'FOUNDER']);
 
 export const JobSeekerSignupSchema = z.object({
   email: z.string().email('Invalid Email').min(1, 'Email is required'),
@@ -22,7 +23,7 @@ export const EmployerSignupSchema = z.object({
   email: z.string().email('Invalid Email').min(1, 'Email is required'),
   companyName: z.string().min(1, 'Company name is required'),
   password: z.string().min(1, 'Password is required'),
-  role: z.string().min(1, 'Role is required'),
+  role: employerRoleEnum,
   companyLocation: z.string().min(1, 'Company location is required'),
 });
 
