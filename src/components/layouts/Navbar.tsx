@@ -4,11 +4,15 @@ import { useTheme } from 'next-themes';
 import { Moon, Sun } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { signOut, useSession } from 'next-auth/react';
+import { CustomSession } from '@/lib/auth';
 
 export default function Navbar() {
   const [mounted, setMounted] = useState(false);
   const { setTheme, resolvedTheme } = useTheme();
   const router = useRouter();
+  const { data: session, status } = useSession();
+  const customSession = session as CustomSession;
 
   const toggleTheme = () => {
     setTheme(resolvedTheme === 'light' ? 'dark' : 'light');
@@ -30,14 +34,14 @@ export default function Navbar() {
           Remoteez
         </h2>
       </div>
-      <ul className="nav-item-container flex w-2/5 items-center justify-between">
+      <ul className="nav-item-container flex w-fit items-center justify-between md:w-2/5">
         <li className="hidden cursor-pointer text-neutral-600 hover:text-neutral-800 dark:text-neutral-400 dark:hover:text-neutral-50 md:block">
           For job seekers
         </li>
         <li className="hidden cursor-pointer text-neutral-600 hover:text-neutral-800 dark:text-neutral-400 dark:hover:text-neutral-50 md:block">
           For employers
         </li>
-        <li>
+        <li className="mx-5 md:mx-0">
           {resolvedTheme && (
             <button onClick={toggleTheme} className="flex items-center">
               {resolvedTheme === 'light' ? (
@@ -48,13 +52,22 @@ export default function Navbar() {
             </button>
           )}
         </li>
-        <li>
-          <button
-            onClick={() => router.push('/login')}
-            className="bg-[#00B2B2] px-3 py-1 text-white hover:bg-[#008080]"
-          >
-            Login
-          </button>
+        <li className="mx-5 md:mx-0">
+          {status !== 'loading' && customSession?.user ? (
+            <button
+              onClick={() => signOut()}
+              className="bg-[#00B2B2] px-3 py-1 text-white hover:bg-[#008080]"
+            >
+              {customSession?.user.name}
+            </button>
+          ) : (
+            <button
+              onClick={() => router.push('/login')}
+              className="bg-[#00B2B2] px-3 py-1 text-white hover:bg-[#008080]"
+            >
+              Login
+            </button>
+          )}
         </li>
       </ul>
     </nav>

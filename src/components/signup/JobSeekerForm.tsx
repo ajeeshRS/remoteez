@@ -19,12 +19,13 @@ import { debounce } from 'lodash';
 import axios from 'axios';
 import ErrorMessage from '../ui/error-msg';
 import { handleJobSeekerSignup } from '@/lib/auth.axios';
+import Loader from '../ui/loader';
 
 export default function JobSeekerForm() {
   const [location, setLocation] = useState<string>('');
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
+  const [signing, setSigning] = useState<boolean>(false);
   const {
     register,
     formState: { errors },
@@ -86,7 +87,9 @@ export default function JobSeekerForm() {
   }, [debouncedFetch]);
 
   return (
-    <form onSubmit={handleSubmit((data) => handleJobSeekerSignup(data))}>
+    <form
+      onSubmit={handleSubmit((data) => handleJobSeekerSignup(data, setSigning))}
+    >
       <input
         type="text"
         {...register('fullname')}
@@ -148,9 +151,9 @@ export default function JobSeekerForm() {
 
       <button
         type="submit"
-        className="my-4 w-full bg-[#00B2B2] px-3 py-1 text-white hover:bg-[#008080]"
+        className="my-4 flex h-10 w-full items-center justify-center bg-[#00B2B2] px-3 text-white outline-none hover:bg-[#008080]"
       >
-        Signup
+        {signing ? <Loader /> : 'Signup'}
       </button>
     </form>
   );

@@ -2,22 +2,34 @@ import { Msg } from '@/types/common';
 import axios, { AxiosError } from 'axios';
 import { toast } from 'sonner';
 
-export const handleJobSeekerSignup = async (formData: any) => {
+export const handleJobSeekerSignup = async (
+  formData: any,
+  setSigning: (value: boolean) => void,
+) => {
   try {
-    const response = await axios.post('/api/signup/jobseeker', formData);
+    setSigning(true);
+    const response = await axios.post('/api/auth/signup/jobseeker', formData);
     toast.success(response.data.message);
   } catch (error) {
     const err = error as AxiosError<Msg>;
     toast.error(err.response?.data.message);
+  } finally {
+    setSigning(false);
   }
 };
 
-export const handleEmployerSignup = async (formData: any) => {
+export const handleEmployerSignup = async (
+  formData: any,
+  setSigning: (value: boolean) => void,
+) => {
   try {
-    const response = await axios.post('/api/signup/employer', formData);
+    setSigning(true);
+    const response = await axios.post('/api/auth/signup/employer', formData);
     toast.success(response.data.message);
   } catch (error) {
-    const err = error as AxiosError<Msg>
+    const err = error as AxiosError<Msg>;
     toast.error(err.response?.data.message);
+  } finally {
+    setSigning(false);
   }
 };

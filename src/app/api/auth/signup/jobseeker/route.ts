@@ -9,9 +9,9 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
-    const parsed = JobSeekerSignupSchema.parse(body);
+    const parsed = JobSeekerSignupSchema.safeParse(body);
 
-    if (!parsed) {
+    if (!parsed.success) {
       return NextResponse.json({ message: 'Parsing failed!' }, { status: 403 });
     }
 
@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
       experience,
       desiredJobTitle,
       currentLocation,
-    } = parsed;
+    } = parsed.data;
 
     const existingUser = await prisma.jobSeeker.findUnique({
       where: {

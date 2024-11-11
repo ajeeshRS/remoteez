@@ -4,6 +4,7 @@ import Navbar from '@/components/layouts/Navbar';
 import { mulish, spaceMono } from './fonts/fonts';
 import { ThemeProvider } from '@/components/providers/theme-provider';
 import { Toaster } from 'sonner';
+import SessionWrapper from '@/components/providers/session-provider';
 export const metadata: Metadata = {
   title: 'Remoteez',
   description: 'Your Remote Job Finder.',
@@ -19,16 +20,18 @@ export default function RootLayout({
       <body
         className={`${mulish.className} ${spaceMono.className} antialiased`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <Navbar />
-          {children}
-          <Toaster />
-        </ThemeProvider>
+        <SessionWrapper>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="light"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Navbar />
+            {children}
+            <Toaster />
+          </ThemeProvider>
+        </SessionWrapper>
       </body>
     </html>
   );

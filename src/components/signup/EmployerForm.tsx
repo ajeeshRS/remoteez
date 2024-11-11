@@ -19,11 +19,13 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import ErrorMessage from '../ui/error-msg';
 import { handleEmployerSignup } from '@/lib/auth.axios';
+import Loader from '../ui/loader';
 
 export default function EmployerForm() {
   const [companyLocation, setCompanyLocation] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
+  const [signing, setSigning] = useState<boolean>(false);
 
   const {
     register,
@@ -33,6 +35,7 @@ export default function EmployerForm() {
   } = useForm<EmployerSignupSchemaType>({
     resolver: zodResolver(EmployerSignupSchema),
     defaultValues: {
+      name: '',
       email: '',
       companyName: '',
       password: '',
@@ -85,7 +88,14 @@ export default function EmployerForm() {
   }, [debouncedFetch]);
 
   return (
-    <form onSubmit={handleSubmit((data) => handleEmployerSignup(data))}>
+    <form onSubmit={handleSubmit((data) => handleEmployerSignup(data,setSigning))}>
+      <input
+        {...register('name')}
+        type="text"
+        className="my-2 h-10 w-full border px-5 placeholder:text-sm focus:outline-[#00B2B2]"
+        placeholder="Name"
+      />
+      <ErrorMessage err={errors.name} />
       <input
         {...register('email')}
         type="text"
@@ -138,9 +148,9 @@ export default function EmployerForm() {
 
       <button
         type="submit"
-        className="my-4 w-full bg-[#00B2B2] px-3 py-1 text-white hover:bg-[#008080]"
+        className="my-4 flex h-10 w-full items-center justify-center bg-[#00B2B2] px-3 text-white outline-none hover:bg-[#008080]"
       >
-        Signup
+        {signing ? <Loader/> : "Signup"}
       </button>
     </form>
   );

@@ -9,13 +9,14 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
-    const parsed = EmployerSignupSchema.parse(body);
+    const parsed = EmployerSignupSchema.safeParse(body);
 
-    if (!parsed) {
+    if (!parsed.success) {
       return NextResponse.json({ message: 'Parsing failed!' }, { status: 403 });
     }
 
-    const { companyName, email, password, role, companyLocation } = parsed;
+    const { companyName, email, password, role, companyLocation, name } =
+      parsed.data;
 
     const existingEmployer = await prisma.employer.findUnique({
       where: {
@@ -41,6 +42,7 @@ export async function POST(req: NextRequest) {
 
     const employer = await prisma.employer.create({
       data: {
+        name,
         email,
         companyName,
         password: hashedPassword,
@@ -48,7 +50,7 @@ export async function POST(req: NextRequest) {
         companyLocation,
       },
     });
-    
+
     console.log(employer);
     return NextResponse.json({ message: 'Signup success' }, { status: 201 });
   } catch (error) {
