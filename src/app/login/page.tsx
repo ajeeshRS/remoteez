@@ -102,11 +102,11 @@ export default function Page() {
           </p>
           <button
             type="submit"
-            className="hover:bg-[#008080 my-4 w-5/6 bg-[#00B2B2] px-3 py-1 text-white outline-none md:w-5/6 flex items-center justify-center"
+            className="hover:bg-[#008080 my-4 w-full bg-[#00B2B2] px-3 py-1 text-white outline-none md:w-5/6 flex items-center justify-center"
           >
             {loading ? <Loader /> : 'Login'}
           </button>
-          <button className="flex w-5/6 items-center justify-center bg-[#00B2B2] px-3 py-1 text-white outline-none hover:bg-[#008080] md:w-5/6">
+          <button className="flex w-full items-center justify-center bg-[#00B2B2] px-3 py-1 text-white outline-none hover:bg-[#008080] md:w-5/6">
             <FaGoogle className="mr-2 h-4 w-4 text-white" /> Login with Google
           </button>
         </form>

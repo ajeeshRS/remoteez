@@ -25,7 +25,7 @@ export default function Navbar() {
   if (!mounted) return null;
 
   return (
-    <nav className="relative z-10 flex w-full items-center justify-between bg-white px-10 py-4 text-black dark:bg-neutral-900">
+    <nav className="relative z-10 flex w-full items-center justify-between bg-white md:px-10 px-4 py-4 text-black dark:bg-neutral-900">
       <div className="Logo">
         <h2
           onClick={() => router.push('/')}
@@ -52,7 +52,7 @@ export default function Navbar() {
             </button>
           )}
         </li>
-        <li className="mx-5 md:mx-0">
+        <li className="ml-5 md:mx-0">
           {status !== 'loading' && customSession?.user ? (
             <button
               onClick={() => signOut()}
