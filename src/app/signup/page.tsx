@@ -4,6 +4,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 import EmployerForm from '@/components/signup/EmployerForm';
 import JobSeekerForm from '@/components/signup/JobSeekerForm';
+import { useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export interface Suggestion {
   properties: {
@@ -13,14 +16,34 @@ export interface Suggestion {
 }
 
 export default function Page() {
+  const searchParams = useSearchParams();
+  const value = searchParams.get('type');
+  const router = useRouter();
+  const [type, setType] = useState<string>('');
+
+  useEffect(() => {
+    if (value) {
+      setType(value);
+    }
+  }, [value]);
+
+  const handleValueChange = (value: any) => {
+    setType(value);
+    router.push(`?type=${value}`);
+  };
+
   return (
     <div className="flex min-h-[90vh] w-full items-center justify-center">
-      <div className="login-form-container flex h-fit my-10 w-5/6 flex-col items-center justify-center bg-white p-5 shadow-md dark:bg-neutral-900 md:w-2/6">
+      <div className="login-form-container my-10 flex h-fit w-5/6 flex-col items-center justify-center bg-white p-5 shadow-md dark:bg-neutral-900 md:w-2/6">
         <h3 className="w-full text-center text-xl font-bold md:text-2xl">
           Create your account
         </h3>
 
-        <Tabs defaultValue="jobseeker" className="w-full py-5">
+        <Tabs
+          value={type}
+          onValueChange={handleValueChange}
+          className="w-full py-5"
+        >
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="jobseeker">Job seeker</TabsTrigger>
             <TabsTrigger value="employer">Employer</TabsTrigger>

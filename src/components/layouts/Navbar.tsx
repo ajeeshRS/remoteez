@@ -25,7 +25,7 @@ export default function Navbar() {
   if (!mounted) return null;
 
   return (
-    <nav className="relative z-10 flex w-full items-center justify-between bg-white md:px-10 px-4 py-4 text-black dark:bg-neutral-900">
+    <nav className="relative z-10 flex w-full items-center justify-between bg-white px-4 py-4 text-black dark:bg-neutral-900 md:px-10">
       <div className="Logo">
         <h2
           onClick={() => router.push('/')}
@@ -35,10 +35,16 @@ export default function Navbar() {
         </h2>
       </div>
       <ul className="nav-item-container flex w-fit items-center justify-between md:w-2/5">
-        <li className="hidden cursor-pointer text-neutral-600 hover:text-neutral-800 dark:text-neutral-400 dark:hover:text-neutral-50 md:block">
+        <li
+          onClick={() => router.push('/signup?type=jobseeker')}
+          className="hidden cursor-pointer text-neutral-600 hover:text-neutral-800 dark:text-neutral-400 dark:hover:text-neutral-50 md:block"
+        >
           For job seekers
         </li>
-        <li className="hidden cursor-pointer text-neutral-600 hover:text-neutral-800 dark:text-neutral-400 dark:hover:text-neutral-50 md:block">
+        <li
+          onClick={() => router.push('/signup?type=employer')}
+          className="hidden cursor-pointer text-neutral-600 hover:text-neutral-800 dark:text-neutral-400 dark:hover:text-neutral-50 md:block"
+        >
           For employers
         </li>
         <li className="mx-5 md:mx-0">
