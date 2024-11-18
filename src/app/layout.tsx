@@ -5,6 +5,7 @@ import { mulish, spaceMono } from './fonts/fonts';
 import { ThemeProvider } from '@/components/providers/theme-provider';
 import { Toaster } from 'sonner';
 import SessionWrapper from '@/components/providers/session-provider';
+import Footer from '@/components/layouts/Footer';
 export const metadata: Metadata = {
   title: 'Remoteez',
   description: 'Your Remote Job Finder.',
@@ -29,7 +30,8 @@ export default function RootLayout({
           >
             <Navbar />
             {children}
-            <Toaster />
+            <Footer />
+            <Toaster position='top-center' />
           </ThemeProvider>
         </SessionWrapper>
       </body>

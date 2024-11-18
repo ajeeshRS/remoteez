@@ -31,6 +31,7 @@ export default function EmployerForm() {
     register,
     setValue,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<EmployerSignupSchemaType>({
     resolver: zodResolver(EmployerSignupSchema),
@@ -88,7 +89,7 @@ export default function EmployerForm() {
   }, [debouncedFetch]);
 
   return (
-    <form onSubmit={handleSubmit((data) => handleEmployerSignup(data,setSigning))}>
+    <form onSubmit={handleSubmit((data) => handleEmployerSignup(data,setSigning,reset))}>
       <input
         {...register('name')}
         type="text"

@@ -91,18 +91,21 @@ export default function Page() {
             placeholder="Password"
           />
           <ErrorMessage err={errors.password} />
-          <p className="flex w-full cursor-pointer items-center justify-start text-xs hover:underline md:w-5/6">
+          <p
+            onClick={() => router.push('/forgot-password')}
+            className="flex w-full cursor-pointer items-center justify-start text-xs hover:underline md:w-5/6"
+          >
             Forgot Password ?
           </p>
           <p className="flex w-full items-center justify-center py-4 text-xs md:w-5/6">
             Don&apos;t have an account?
             <span className="cursor-pointer pl-1 hover:underline">
-              <Link href="/signup">Signup</Link>
+              <Link href="/signup?type=jobseeker">Signup</Link>
             </span>
           </p>
           <button
             type="submit"
-            className="hover:bg-[#008080 my-4 w-full bg-[#00B2B2] px-3 py-1 text-white outline-none md:w-5/6 flex items-center justify-center"
+            className="my-4 flex w-full items-center justify-center bg-[#00B2B2] px-3 py-1 text-white outline-none hover:bg-[#008080] md:w-5/6"
           >
             {loading ? <Loader /> : 'Login'}
           </button>

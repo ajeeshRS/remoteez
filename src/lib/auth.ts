@@ -1,24 +1,40 @@
-import { DefaultSession, NextAuthOptions } from 'next-auth';
+import { DefaultSession, NextAuthOptions, DefaultUser } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { SigninSchema } from './validators/auth.validator';
 import { PrismaClient } from '@prisma/client';
 import { compare } from 'bcrypt';
 const prisma = new PrismaClient();
 
-enum Role {
-  JOBSEEKER,
-  EMPLOYER,
-}
-
 export interface CustomSessionUser {
   id: string;
   name: string;
   email: string;
-  role: Role;
+  role: string;
 }
 
 export interface CustomSession extends DefaultSession {
   user: CustomSessionUser;
+}
+
+declare module 'next-auth' {
+  interface User extends DefaultUser {
+    id: string;
+    role: string;
+  }
+
+  interface Session {
+    user: {
+      id: string;
+      email: string;
+      name?: string | null;
+      role: string;
+    };
+  }
+
+  interface JWT {
+    id: string;
+    role: string;
+  }
 }
 
 export const authOptions = {
@@ -60,14 +76,7 @@ export const authOptions = {
 
         if (!isValidPassword) throw new Error('Invalid credentials');
 
-        if (jobSeeker) {
-          return {
-            id: jobSeeker.id,
-            email: user.email,
-            name: jobSeeker.fullName,
-            role: 'JOBSEEKER',
-          };
-        } else if (employer) {
+        if (employer?.role) {
           return {
             id: employer?.id,
             email: employer?.email,
@@ -75,6 +84,17 @@ export const authOptions = {
             role: 'EMPLOYER',
           };
         }
+
+        if (jobSeeker) {
+          return {
+            id: jobSeeker.id,
+            email: user.email,
+            name: jobSeeker.fullName,
+            role: 'JOBSEEKER',
+          };
+        }
+
+        return null;
       },
     }),
   ],
@@ -82,6 +102,7 @@ export const authOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
+        token.role = user.role;
       }
       return token;
     },
@@ -89,6 +110,7 @@ export const authOptions = {
       const newSession: CustomSession = session as CustomSession;
       if (newSession.user) {
         newSession.user.id = token.id as string;
+        newSession.user.role = token.role as string;
       }
       return session;
     },

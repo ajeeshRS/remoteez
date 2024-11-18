@@ -21,6 +21,7 @@ export const handleJobSeekerSignup = async (
 export const handleEmployerSignup = async (
   formData: any,
   setSigning: (value: boolean) => void,
+  reset: () => void,
 ) => {
   try {
     setSigning(true);
@@ -28,8 +29,10 @@ export const handleEmployerSignup = async (
     toast.success(response.data.message);
   } catch (error) {
     const err = error as AxiosError<Msg>;
-    toast.error(err.response?.data.message);
+    console.log(err);
+    toast.error(err.response?.statusText);
   } finally {
+    reset()
     setSigning(false);
   }
 };
