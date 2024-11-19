@@ -16,7 +16,7 @@ export default function Avatar() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className="border-none bg-[#00B2B2] px-3 py-1 text-white outline-none hover:bg-[#008080]">
+        <button className="border-none bg-neutral-600 px-3 py-1 text-white outline-none">
           {customSession?.user.name.charAt(0).toUpperCase()}
         </button>
       </DropdownMenuTrigger>
@@ -25,12 +25,12 @@ export default function Avatar() {
           Hi, {customSession?.user.name}
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="flex cursor-pointer items-center border-none py-2 pl-2 text-sm outline-none hover:text-pink-500">
+        <DropdownMenuItem className="flex cursor-pointer items-center text-white border-none py-2 pl-2 text-sm outline-none hover:text-pink-500">
           <User className="mr-2 h-4 w-4" /> Profile
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => signOut()}
-          className="flex cursor-pointer items-center border-none py-2 pl-2 text-sm outline-none hover:text-pink-500"
+          className="flex cursor-pointer items-center text-white border-none py-2 pl-2 text-sm outline-none hover:text-pink-500"
         >
           <LogOut className="mr-2 h-4 w-4" /> Logout
         </DropdownMenuItem>

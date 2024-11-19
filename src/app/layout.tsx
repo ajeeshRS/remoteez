@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import './globals.css';
 import Navbar from '@/components/layouts/Navbar';
 import { mulish, spaceMono } from './fonts/fonts';
-import { ThemeProvider } from '@/components/providers/theme-provider';
 import { Toaster } from 'sonner';
 import SessionWrapper from '@/components/providers/session-provider';
 import Footer from '@/components/layouts/Footer';
@@ -19,20 +18,13 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <body
-        className={`${mulish.className} ${spaceMono.className} antialiased`}
+        className={`${mulish.className} ${spaceMono.className} bg-dark-bg h-full w-full bg-cover antialiased backdrop-blur-3xl`}
       >
         <SessionWrapper>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="light"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <Navbar />
-            {children}
-            <Footer />
-            <Toaster position='top-center' />
-          </ThemeProvider>
+          <Navbar />
+          {children}
+          <Footer />
+          <Toaster position="top-center" />
         </SessionWrapper>
       </body>
     </html>

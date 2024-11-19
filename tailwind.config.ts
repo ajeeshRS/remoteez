@@ -12,7 +12,12 @@ const config: Config = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        'dark-bg': "url('/bgimg.jpeg')",
+        'light-bg': "url('/lightbg.jpeg')",
+      },
+    },
   },
   plugins: [require('tailwindcss-animate'), addVariablesForColors],
 };

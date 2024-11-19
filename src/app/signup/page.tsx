@@ -34,7 +34,7 @@ export default function Page() {
 
   return (
     <div className="flex min-h-[90vh] w-full items-center justify-center">
-      <div className="login-form-container my-10 flex h-fit w-5/6 flex-col items-center justify-center bg-white p-5 shadow-md dark:bg-neutral-900 md:w-2/6">
+      <div className="login-form-container my-10 flex h-fit w-5/6 flex-col items-center justify-center bg-neutral-700/10 p-5 shadow-md md:w-2/6 text-white">
         <h3 className="w-full text-center text-xl font-bold md:text-2xl">
           Create your account
         </h3>

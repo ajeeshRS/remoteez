@@ -93,14 +93,14 @@ export default function JobSeekerForm() {
       <input
         type="text"
         {...register('fullname')}
-        className="my-2 h-10 w-full border px-5 text-sm placeholder:text-sm focus:outline-[#00B2B2]"
+        className="my-2 h-10 w-full border-neutral-500/35 border focus:border-neutral-400 px-5 text-sm placeholder:text-sm outline-none bg-transparent"
         placeholder="Full Name"
       />
       <ErrorMessage err={errors.fullname} />
       <input
         type="text"
         {...register('email')}
-        className="my-2 h-10 w-full border px-5 text-sm placeholder:text-sm focus:outline-[#00B2B2]"
+        className="my-2 h-10 w-full border-neutral-500/35 border focus:border-neutral-400 px-5 text-sm placeholder:text-sm outline-none bg-transparent"
         placeholder="Email"
       />
       <ErrorMessage err={errors.email} />
@@ -108,7 +108,7 @@ export default function JobSeekerForm() {
       <input
         type="password"
         {...register('password')}
-        className="my-2 h-10 w-full border px-5 text-sm placeholder:text-sm focus:outline-[#00B2B2]"
+        className="my-2 h-10 w-full border-neutral-500/35 border focus:border-neutral-400 px-5 text-sm placeholder:text-sm outline-none bg-transparent"
         placeholder="Password"
       />
       <ErrorMessage err={errors.password} />
@@ -134,7 +134,7 @@ export default function JobSeekerForm() {
       <input
         type="text"
         {...register('desiredJobTitle')}
-        className="my-2 h-10 w-full border px-5 text-sm placeholder:text-sm focus:outline-[#00B2B2]"
+        className="my-2 h-10 w-full border-neutral-500/35 border focus:border-neutral-400 px-5 text-sm placeholder:text-sm outline-none bg-transparent"
         placeholder="Desired Job Title"
       />
       <ErrorMessage err={errors.desiredJobTitle} />
@@ -151,7 +151,7 @@ export default function JobSeekerForm() {
 
       <button
         type="submit"
-        className="my-4 flex h-10 w-full items-center justify-center bg-[#00B2B2] px-3 text-white outline-none hover:bg-[#008080]"
+        className="my-4 flex h-10 w-full items-center justify-center bg-pink-600 px-3 text-white outline-none hover:bg-pink-700"
       >
         {signing ? <Loader /> : 'Signup'}
       </button>

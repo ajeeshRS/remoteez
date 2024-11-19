@@ -93,21 +93,21 @@ export default function EmployerForm() {
       <input
         {...register('name')}
         type="text"
-        className="my-2 h-10 w-full border px-5 placeholder:text-sm focus:outline-[#00B2B2]"
+         className="my-2 h-10 w-full border-neutral-500/35 border focus:border-neutral-400 px-5 text-sm placeholder:text-sm outline-none bg-transparent"
         placeholder="Name"
       />
       <ErrorMessage err={errors.name} />
       <input
         {...register('email')}
         type="text"
-        className="my-2 h-10 w-full border px-5 placeholder:text-sm focus:outline-[#00B2B2]"
+         className="my-2 h-10 w-full border-neutral-500/35 border focus:border-neutral-400 px-5 text-sm placeholder:text-sm outline-none bg-transparent"
         placeholder="Email"
       />
       <ErrorMessage err={errors.email} />
       <input
         {...register('companyName')}
         type="text"
-        className="my-2 h-10 w-full border px-5 placeholder:text-sm focus:outline-[#00B2B2]"
+         className="my-2 h-10 w-full border-neutral-500/35 border focus:border-neutral-400 px-5 text-sm placeholder:text-sm outline-none bg-transparent"
         placeholder="Company Name"
       />
       <ErrorMessage err={errors.companyName} />
@@ -115,7 +115,7 @@ export default function EmployerForm() {
       <input
         {...register('password')}
         type="password"
-        className="my-2 h-10 w-full border px-5 placeholder:text-sm focus:outline-[#00B2B2]"
+         className="my-2 h-10 w-full border-neutral-500/35 border focus:border-neutral-400 px-5 text-sm placeholder:text-sm outline-none bg-transparent"
         placeholder="Password"
       />
       <ErrorMessage err={errors.password} />
@@ -149,7 +149,7 @@ export default function EmployerForm() {
 
       <button
         type="submit"
-        className="my-4 flex h-10 w-full items-center justify-center bg-[#00B2B2] px-3 text-white outline-none hover:bg-[#008080]"
+        className="my-4 flex h-10 w-full items-center justify-center bg-pink-600 px-3 text-white outline-none hover:bg-pink-700"
       >
         {signing ? <Loader/> : "Signup"}
       </button>
