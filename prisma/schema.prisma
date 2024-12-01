@@ -140,3 +140,11 @@ enum Currency {
   INR
   USD
 }
+
+model ResetToken {
+  id        String   @id @default(uuid())
+  userId    String
+  email     String
+  token     String
+  expiresAt DateTime
+}
