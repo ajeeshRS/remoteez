@@ -27,7 +27,7 @@ export default function Page() {
     }
   }, [value]);
 
-  const handleValueChange = (value: any) => {
+  const handleValueChange = (value: string) => {
     setType(value);
     router.push(`?type=${value}`);
   };

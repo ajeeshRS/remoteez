@@ -13,6 +13,7 @@ interface JwtPayloadWithEmail extends jwt.JwtPayload {
 
 export const sendResetPasswordMail = async (email: string) => {
   try {
+    console.log(email)
     const jobseeker = await prisma.jobSeeker.findUnique({
       where: {
         email,
@@ -109,6 +110,7 @@ export const sendResetPasswordMail = async (email: string) => {
       message: 'Reset password mail sent',
     };
   } catch (error) {
+    console.log(error)
     return {
       success: false,
       error: 'Failed to send mail',

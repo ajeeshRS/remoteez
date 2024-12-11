@@ -33,7 +33,7 @@ export default function Page() {
         toast.error(response?.error);
       }
       
-    } catch (err: any) {
+    } catch (err) {
       console.log(err);
     } finally {
       setLoading(false);

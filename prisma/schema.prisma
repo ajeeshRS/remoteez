@@ -6,6 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["omitApi"]
 }
 
 datasource db {
@@ -47,13 +48,14 @@ model Project {
 }
 
 model PreviousCompany {
-  id             String  @id @unique @default(uuid())
+  id             String    @id @unique @default(uuid())
   jobSeekerId    String
+  role           String
+  jobType        JobType
   companyName    String
   companyWebsite String?
   duration       String
-
-  jobSeeker JobSeeker @relation(fields: [jobSeekerId], references: [id])
+  jobSeeker      JobSeeker @relation(fields: [jobSeekerId], references: [id])
 }
 
 enum ExperienceRange {
@@ -77,7 +79,6 @@ model Employer {
   companyLocation String
   role            Role
   password        String
-  companyWebsite  String?
   email           String       @unique
   logo            String?
   foundedYear     Int?
@@ -96,10 +97,8 @@ enum Role {
 model SocialLinks {
   id         String   @id @unique @default(uuid())
   employerId String   @unique
-  facebook   String?
   twitter    String?
   linkedin   String?
-  instagram  String?
   website    String?
   employer   Employer @relation(fields: [employerId], references: [id])
 }

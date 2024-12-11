@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <body
-        className={`${mulish.className} ${spaceMono.className} bg-dark-bg h-full w-full bg-cover antialiased backdrop-blur-3xl`}
+        className={`${mulish.className} ${spaceMono.className} h-full w-full bg-dark-bg bg-cover antialiased backdrop-blur-3xl`}
       >
         <SessionWrapper>
           <Navbar />

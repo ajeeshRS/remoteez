@@ -41,7 +41,7 @@ export default function Page() {
       } else if (!response?.success) {
         toast.error(response?.error);
       }
-    } catch (err: any) {
+    } catch (err) {
       console.log(err);
     } finally {
       setLoading(false);

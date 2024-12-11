@@ -9,6 +9,7 @@ import {
 import { LogOut, User } from 'lucide-react';
 import { CustomSession } from '@/lib/auth';
 import { signOut, useSession } from 'next-auth/react';
+import Link from 'next/link';
 
 export default function Avatar() {
   const { data: session } = useSession();
@@ -25,12 +26,13 @@ export default function Avatar() {
           Hi, {customSession?.user.name}
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="flex cursor-pointer items-center text-white border-none py-2 pl-2 text-sm outline-none hover:text-pink-500">
-          <User className="mr-2 h-4 w-4" /> Profile
+        <DropdownMenuItem className="flex cursor-pointer items-center border-none py-2 pl-2 text-sm text-white outline-none hover:text-pink-500">
+          <User className="mr-2 h-4 w-4" />
+          <Link href={'/profile'}>Profile</Link>
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => signOut()}
-          className="flex cursor-pointer items-center text-white border-none py-2 pl-2 text-sm outline-none hover:text-pink-500"
+          className="flex cursor-pointer items-center border-none py-2 pl-2 text-sm text-white outline-none hover:text-pink-500"
         >
           <LogOut className="mr-2 h-4 w-4" /> Logout
         </DropdownMenuItem>

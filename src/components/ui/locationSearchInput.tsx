@@ -22,18 +22,18 @@ export default function LocationSearchInput({
     <div className="relative w-full">
       <input
         type="text"
-         className="my-2 h-10 w-full border-neutral-500/35 border focus:border-neutral-400 px-5 text-sm placeholder:text-sm outline-none bg-transparent"
+        className="my-2 h-10 w-full border border-neutral-500/35 bg-transparent px-5 text-sm text-white outline-none placeholder:text-sm focus:border-neutral-400"
         placeholder={placeholder}
         value={value}
         onChange={handleInputChange}
       />
-      {isLoading && <div className="mt-2 text-sm">Loading...</div>}
+      {isLoading && <div className="mt-2 text-sm text-white">Loading...</div>}
       {suggestions.length !== 0 && (
-        <div className="absolute z-10 mt-2 h-fit max-h-36 w-full overflow-scroll rounded-md border border-gray-600 shadow-lg bg-black">
+        <div className="absolute z-10 mt-2 h-fit max-h-36 w-full overflow-scroll rounded-md border border-gray-600 bg-black shadow-lg">
           {suggestions.map((suggestion) => (
             <div
               key={suggestion.properties.place_id}
-              className="cursor-pointer px-4 py-2 text-sm bg-neutral-900 hover:bg-black"
+              className="cursor-pointer bg-neutral-900 px-4 py-2 text-sm text-white hover:bg-black"
               onClick={() => handleSelectLocation(suggestion)}
             >
               {suggestion.properties.formatted}
