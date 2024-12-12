@@ -1,39 +1,77 @@
 'use client';
+import {
+  addJobseekerSkill,
+  deleteJobseekerSkill,
+} from '@/app/actions/profile.actions';
 import { X } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
 export default function Skills({ skills }: any) {
   const [input, setInput] = useState('');
   const [skillSet, setSkillSet] = useState<string[]>([]);
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      setSkillSet((prev) => [...prev, input]);
-      setInput('');
+  const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+    try {
+      if (e.key === 'Enter') {
+        const skill = input.toLowerCase()
+
+        if (skillSet.includes(skill)) {
+          return toast.error('Skill already exists');
+        }
+
+        setSkillSet((prev) => [...prev, skill]);
+
+        setInput('');
+
+        const response = await addJobseekerSkill(skill);
+
+        if (response.success) {
+          toast.success(response.message);
+        } else {
+          toast.error(response.error);
+        }
+      }
+    } catch (error) {
+      toast.error('Some error occured');
+      console.log(error);
     }
   };
 
-  const handleSkillRemoval = (skil: string) => {
-    setSkillSet((prev) => prev.filter((skill) => skill !== skil));
+  const handleSkillRemoval = async (skill: string) => {
+    try {
+      setSkillSet((prev) => prev.filter((sk) => sk !== skill));
+      
+      const response = await deleteJobseekerSkill(skill);
+
+      if (response.success) {
+        toast.success(response.message);
+      } else {
+        toast.error(response.error);
+      }
+    } catch (error) {
+      toast.error('Some error occured');
+      console.log(error);
+    }
   };
 
   useEffect(() => {
     setSkillSet(skills);
   }, []);
   return (
-    <div className="min-h-[90vh] overflow-y-scroll w-full md:px-20 px-5 p-5 text-white">
+    <div className="min-h-[90vh] w-full overflow-y-scroll p-5 px-5 text-white md:px-20">
       <div className="flex w-full flex-col items-start justify-between p-10">
         <p className="font-bold text-pink-500"> Skills</p>
         <div className="grid grid-cols-3 py-5">
           {skillSet?.length === 0 && <p>No skills added yet.</p>}
           {skillSet?.map((skill, _) => (
             <p
-              className="my-2 mr-2 flex items-center justify-between text-nowrap bg-pink-400/20 px-2 py-1"
+              className="my-2 mr-2 flex items-center justify-between text-nowrap bg-pink-400/30 px-2 py-1"
               key={skill}
             >
-              {skill}{' '}
+              {skill}
               <X
-                className="mx-1 h-4 w-4 cursor-pointer hover:text-pink-600"
+                className="mx-1 h-4 w-4 cursor-pointer hover:text-pink-700"
                 onClick={() => handleSkillRemoval(skill)}
               />
             </p>
