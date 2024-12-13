@@ -2,9 +2,15 @@
 
 import { authOptions, CustomSession } from '@/lib/auth';
 import {
-  personalInfoSchema,
-  personalInfoSchemaType,
+  PersonalInfoSchema,
+  PersonalInfoSchemaType,
 } from '@/lib/validators/profile.validator';
+import {
+  ProjectEditSchema,
+  ProjectEditSchemaType,
+  ProjectSchema,
+  ProjectSchemaType,
+} from '@/lib/validators/project.validator';
 import { PrismaClient } from '@prisma/client';
 import { getServerSession } from 'next-auth';
 
@@ -56,7 +62,7 @@ export const getJobseekerInfo = async () => {
   }
 };
 
-export const updateJobseekerInfo = async (data: personalInfoSchemaType) => {
+export const updateJobseekerInfo = async (data: PersonalInfoSchemaType) => {
   try {
     const session = await getServerSession(authOptions);
 
@@ -69,7 +75,7 @@ export const updateJobseekerInfo = async (data: personalInfoSchemaType) => {
 
     const customSession = session as CustomSession;
     const id = customSession.user.id;
-    const parsed = personalInfoSchema.safeParse(data);
+    const parsed = PersonalInfoSchema.safeParse(data);
 
     if (!parsed.success) {
       return {
@@ -266,4 +272,219 @@ export const deleteJobseekerSkill = async (skill: string) => {
       error: 'Internal server error',
     };
   }
+};
+
+export const addProject = async (data: ProjectSchemaType) => {
+  try {
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user) {
+      return {
+        success: false,
+        error: 'Unauthorized',
+      };
+    }
+
+    const parsed = ProjectSchema.safeParse(data);
+
+    if (!parsed.success) {
+      return {
+        success: false,
+        error: 'Bad request',
+      };
+    }
+
+    const { title, description, githubURL, deployedLink, skills } = parsed.data;
+
+    const customSession = session as CustomSession;
+    const id = customSession.user.id;
+
+    const user = await prisma.jobSeeker.findUnique({
+      where: {
+        id,
+      },
+      omit: {
+        password: true,
+      },
+    });
+
+    if (!user) {
+      return {
+        success: false,
+        error: 'user not found',
+      };
+    }
+
+    const isProjectExist = await prisma.project.findUnique({
+      where: {
+        title,
+        jobSeekerId: id,
+      },
+    });
+
+    if (isProjectExist) {
+      return {
+        success: false,
+        error: 'Project with this title already exists',
+      };
+    }
+
+    const project = await prisma.project.create({
+      data: {
+        jobSeekerId: id,
+        title,
+        deployedLink,
+        description,
+        githubURL,
+        skills,
+      },
+    });
+
+    console.log(project);
+    return {
+      success: true,
+      message: 'Project added',
+    };
+  } catch (err) {
+    console.error(err);
+    return {
+      success: false,
+      error: 'Internal server error',
+    };
+  }
+};
+
+export const deleteProject = async (projectId: string) => {
+  try {
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user) {
+      return {
+        success: false,
+        error: 'Unauthorized',
+      };
+    }
+
+    const customSession = session as CustomSession;
+    const id = customSession.user.id;
+
+    await prisma.project.delete({
+      where: {
+        id: projectId,
+        jobSeekerId: id,
+      },
+    });
+
+    return {
+      success: true,
+      message: 'Project deleted Successfully',
+    };
+  } catch (err) {
+    console.error(err);
+    return {
+      success: false,
+      error: 'Internal server error',
+    };
+  }
+};
+
+export const editProject = async (
+  data: ProjectEditSchemaType,
+  projectId: string,
+) => {
+  try {
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user) {
+      return {
+        success: false,
+        error: 'Unauthorized',
+      };
+    }
+
+    const parsed = ProjectEditSchema.safeParse(data);
+
+    if (!parsed.success) {
+      return {
+        success: false,
+        error: 'Bad request',
+      };
+    }
+
+    const { title, description, githubURL, deployedLink, skills } = parsed.data;
+
+    console.log('Parsed data:', parsed.data);
+    const project = await prisma.project.findUnique({
+      where: {
+        id: projectId,
+      },
+    });
+
+    if (!project) {
+      return {
+        success: false,
+        error: 'Project not found',
+      };
+    }
+
+    const hasChanged = isAnyFieldChanged(
+      project as ProjectEditSchemaType,
+      parsed.data,
+    );
+
+    if (!hasChanged) {
+      return {
+        success: false,
+        error: 'No changes applied',
+      };
+    }
+
+    await prisma.project.update({
+      where: {
+        id: projectId,
+      },
+      data: {
+        title,
+        description,
+        deployedLink,
+        githubURL,
+        skills,
+      },
+    });
+
+    return {
+      success: true,
+      message: 'Project details updated',
+    };
+  } catch (err) {
+    console.error(err);
+    return {
+      success: false,
+      error: 'Internal server error',
+    };
+  }
+};
+
+const isAnyFieldChanged = (
+  existingData: ProjectEditSchemaType,
+  newData: ProjectEditSchemaType,
+) => {
+  const isTitleChanged = existingData.title !== newData.title;
+  const isDescChanged = existingData.description !== newData.description;
+  const isDeployedLinkChanged =
+    existingData.deployedLink !== newData.deployedLink;
+  const isGithubUrlChanged = existingData.githubURL !== newData.githubURL;
+
+  const isSkillsChanged = !(
+    newData.skills.length === existingData.skills.length &&
+    newData.skills.every((skill, index) => skill === existingData.skills[index])
+  );
+
+  return (
+    isTitleChanged ||
+    isDescChanged ||
+    isGithubUrlChanged ||
+    isDeployedLinkChanged ||
+    isSkillsChanged
+  );
 };

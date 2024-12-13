@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
-export const personalInfoSchema = z.object({
-  email: z.string(),
+export const PersonalInfoSchema = z.object({
+  email: z.string().email(),
   fullName: z.string(),
   location: z.string(),
   desiredJobTitle: z.string(),
@@ -14,4 +14,6 @@ export const personalInfoSchema = z.object({
   ]),
 });
 
-export type personalInfoSchemaType = z.infer<typeof personalInfoSchema>;
+export type PersonalInfoSchemaType = z.infer<typeof PersonalInfoSchema>;
+
+

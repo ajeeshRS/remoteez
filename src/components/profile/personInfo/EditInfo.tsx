@@ -21,10 +21,11 @@ import {
 import LocationSearchInput from '../../ui/locationSearchInput';
 import { Suggestion } from '@/app/signup/page';
 import {
-  personalInfoSchema,
-  personalInfoSchemaType,
+  
+  PersonalInfoSchema,
+  PersonalInfoSchemaType,
 } from '@/lib/validators/profile.validator';
-import { updateJobseekerInfo } from '@/app/actions/profile.actions';
+import { updateJobseekerInfo } from '@/app/actions/jobseeker/actions';
 import Loader from '@/components/ui/loader';
 import { toast } from 'sonner';
 
@@ -34,8 +35,8 @@ export default function EditInfo({ personalDetails, refetch }: any) {
   const [updating, setUpdating] = useState<boolean>(false);
 
   const { register, handleSubmit, setValue, watch, reset } =
-    useForm<personalInfoSchemaType>({
-      resolver: zodResolver(personalInfoSchema),
+    useForm<PersonalInfoSchemaType>({
+      resolver: zodResolver(PersonalInfoSchema),
       defaultValues: {
         email: '',
         fullName: '',
@@ -60,7 +61,7 @@ export default function EditInfo({ personalDetails, refetch }: any) {
     setSuggestions([]);
   };
 
-  const handleProfileUpdation = async (data: personalInfoSchemaType) => {
+  const handleProfileUpdation = async (data: PersonalInfoSchemaType) => {
     try {
       setUpdating(true);
       const response = await updateJobseekerInfo(data);

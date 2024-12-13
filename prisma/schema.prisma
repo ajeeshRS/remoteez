@@ -5,7 +5,7 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["omitApi"]
 }
 
@@ -39,7 +39,7 @@ model JobSeeker {
 model Project {
   id           String    @id @unique @default(uuid())
   jobSeekerId  String
-  title        String
+  title        String    @unique
   githubURL    String?
   deployedLink String
   description  String

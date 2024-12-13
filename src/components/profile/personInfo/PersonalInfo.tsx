@@ -9,7 +9,7 @@ interface Props {
 }
 export default function PersonalInfo({ personalDetails, refetch }: Props) {
   return (
-    <div className="min-h-[90vh] overflow-y-scroll w-full md:px-20 px-5 p-5 text-white">
+    <div className="h-[90vh] overflow-y-scroll w-full md:px-20 px-5 p-5 text-white">
 
       <div className="flex w-full flex-col items-start justify-between p-10">
       <p className="font-bold text-pink-500 pb-10"> Personal info</p>

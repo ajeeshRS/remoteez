@@ -2,7 +2,7 @@
 import {
   addJobseekerSkill,
   deleteJobseekerSkill,
-} from '@/app/actions/profile.actions';
+} from '@/app/actions/jobseeker/actions';
 import { X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
@@ -14,10 +14,14 @@ export default function Skills({ skills }: any) {
   const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     try {
       if (e.key === 'Enter') {
-        const skill = input.toLowerCase()
+        const skill = input.toLowerCase();
 
         if (skillSet.includes(skill)) {
           return toast.error('Skill already exists');
+        }
+
+        if (skillSet.length === 15) {
+          return toast.error('Limit reached');
         }
 
         setSkillSet((prev) => [...prev, skill]);
@@ -41,7 +45,7 @@ export default function Skills({ skills }: any) {
   const handleSkillRemoval = async (skill: string) => {
     try {
       setSkillSet((prev) => prev.filter((sk) => sk !== skill));
-      
+
       const response = await deleteJobseekerSkill(skill);
 
       if (response.success) {
@@ -59,7 +63,7 @@ export default function Skills({ skills }: any) {
     setSkillSet(skills);
   }, []);
   return (
-    <div className="min-h-[90vh] w-full overflow-y-scroll p-5 px-5 text-white md:px-20">
+    <div className="h-[90vh] w-full overflow-y-scroll p-5 px-5 text-white md:px-20">
       <div className="flex w-full flex-col items-start justify-between p-10">
         <p className="font-bold text-pink-500"> Skills</p>
         <div className="grid grid-cols-3 py-5">

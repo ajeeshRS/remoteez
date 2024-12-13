@@ -2,7 +2,7 @@
 import Experience from '@/components/profile/Experience';
 import Links from '@/components/profile/Links';
 import PersonalInfo from '@/components/profile/personInfo/PersonalInfo';
-import Projects from '@/components/profile/Projects';
+import Projects from '@/components/profile/projects/Projects';
 import Sidebar from '@/components/profile/Sidebar';
 import Skills from '@/components/profile/Skills';
 import {
@@ -12,7 +12,7 @@ import {
   PROJECTS,
   SKILLS,
 } from '@/lib/constants/app.constants';
-import { getJobseekerInfo } from '../actions/profile.actions';
+import { getJobseekerInfo } from '../actions/jobseeker/actions';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import MobileNavProfile from '@/components/profile/MobileNavProfile';
