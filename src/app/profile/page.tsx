@@ -1,6 +1,6 @@
 'use client';
 import Experience from '@/components/profile/Experience';
-import Links from '@/components/profile/Links';
+import Links from '@/components/profile/links/Links';
 import PersonalInfo from '@/components/profile/personInfo/PersonalInfo';
 import Projects from '@/components/profile/projects/Projects';
 import Sidebar from '@/components/profile/Sidebar';
@@ -43,27 +43,21 @@ export default function Page() {
     const linkData = [
       {
         key: 'Github',
-        value: profileDetails?.githubLink
-          ? profileDetails.githubLink
-          : 'https://github.com/ajeeshRS',
+        value: profileDetails?.githubLink ? profileDetails.githubLink : '',
       },
       {
         key: 'Twitter',
-        value: profileDetails?.twitterLink
-          ? profileDetails.twitterLink
-          : 'not added yet',
+        value: profileDetails?.twitterLink ? profileDetails.twitterLink : '',
       },
       {
         key: 'Portfolio',
         value: profileDetails?.portfolioLink
           ? profileDetails.portfolioLink
-          : 'not added yet',
+          : '',
       },
       {
         key: 'Linkedin',
-        value: profileDetails?.linkedinLink
-          ? profileDetails.linkedinLink
-          : 'not added yet',
+        value: profileDetails?.linkedinLink ? profileDetails.linkedinLink : '',
       },
     ];
     setLinks(linkData);

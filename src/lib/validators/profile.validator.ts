@@ -16,4 +16,9 @@ export const PersonalInfoSchema = z.object({
 
 export type PersonalInfoSchemaType = z.infer<typeof PersonalInfoSchema>;
 
+export const LinkUpdateSchema = z.object({
+  title: z.string(),
+  link: z.string().url(),
+});
 
+export type LinkUpdateSchemaType = z.infer<typeof LinkUpdateSchema>;

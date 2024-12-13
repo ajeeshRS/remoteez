@@ -2,6 +2,8 @@
 
 import { authOptions, CustomSession } from '@/lib/auth';
 import {
+  LinkUpdateSchema,
+  LinkUpdateSchemaType,
   PersonalInfoSchema,
   PersonalInfoSchemaType,
 } from '@/lib/validators/profile.validator';
@@ -13,6 +15,7 @@ import {
 } from '@/lib/validators/project.validator';
 import { PrismaClient } from '@prisma/client';
 import { getServerSession } from 'next-auth';
+import { toast } from 'sonner';
 
 const prisma = new PrismaClient();
 
@@ -165,8 +168,8 @@ export const addJobseekerSkill = async (skill: string) => {
       where: {
         id,
       },
-      omit: {
-        password: true,
+      select: {
+        skills: true,
       },
     });
 
@@ -236,8 +239,8 @@ export const deleteJobseekerSkill = async (skill: string) => {
       where: {
         id,
       },
-      omit: {
-        password: true,
+      select: {
+        skills: true,
       },
     });
 
@@ -298,22 +301,6 @@ export const addProject = async (data: ProjectSchemaType) => {
 
     const customSession = session as CustomSession;
     const id = customSession.user.id;
-
-    const user = await prisma.jobSeeker.findUnique({
-      where: {
-        id,
-      },
-      omit: {
-        password: true,
-      },
-    });
-
-    if (!user) {
-      return {
-        success: false,
-        error: 'user not found',
-      };
-    }
 
     const isProjectExist = await prisma.project.findUnique({
       where: {
@@ -411,12 +398,16 @@ export const editProject = async (
       };
     }
 
+    const customSession = session as CustomSession;
+    const id = customSession.user.id;
+
     const { title, description, githubURL, deployedLink, skills } = parsed.data;
 
     console.log('Parsed data:', parsed.data);
     const project = await prisma.project.findUnique({
       where: {
         id: projectId,
+        jobSeekerId: id,
       },
     });
 
@@ -465,6 +456,70 @@ export const editProject = async (
   }
 };
 
+export const addOrEditLinks = async (data: LinkUpdateSchemaType) => {
+  try {
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user) {
+      return {
+        success: false,
+        error: 'Unauthorized',
+      };
+    }
+
+    const parsed = LinkUpdateSchema.safeParse(data);
+
+    if (!parsed.success) {
+      return {
+        success: false,
+        error: 'Bad request',
+      };
+    }
+
+    const customSession = session as CustomSession;
+    const id = customSession.user.id;
+
+    const { title, link } = parsed.data;
+
+    const fieldMap: Record<string, string> = {
+      Github: 'githubLink',
+      Twitter: 'twitterLink',
+      Linkedin: 'linkedinLink',
+      Portfolio: 'portfolioLink',
+    };
+
+    const fieldToUpdate = fieldMap[title];
+    if (!fieldToUpdate) {
+      return {
+        success: false,
+        error: 'Bad request',
+      };
+    }
+
+    if (fieldToUpdate) {
+      await prisma.jobSeeker.update({
+        where: {
+          id,
+        },
+        data: {
+          [fieldToUpdate]: link,
+        },
+      });
+    }
+
+    return {
+      success: true,
+      message: 'Link saved successfully',
+    };
+  } catch (err) {
+    console.error('err adding or updating link :', err);
+    return {
+      success: false,
+      error: 'Internal server error',
+    };
+  }
+};
+
 const isAnyFieldChanged = (
   existingData: ProjectEditSchemaType,
   newData: ProjectEditSchemaType,
@@ -488,3 +543,8 @@ const isAnyFieldChanged = (
     isSkillsChanged
   );
 };
+
+const GITHUB = 'Github';
+const TWITTER = 'Twitter';
+const LINKEDIN = 'Linkedin';
+const PORTFOLIO = 'Portfolio';
