@@ -64,9 +64,9 @@ export default function Skills({ skills }: any) {
   }, []);
   return (
     <div className="h-[90vh] w-full overflow-y-scroll p-5 px-5 text-white md:px-20">
-      <div className="flex w-full flex-col items-start justify-between p-10">
+      <div className="flex w-full flex-col items-start justify-between md:p-10 px-5">
         <p className="font-bold text-pink-500"> Skills</p>
-        <div className="grid grid-cols-3 py-5">
+        <div className="grid md:grid-cols-3 grid-cols-2 py-5">
           {skillSet?.length === 0 && <p>No skills added yet.</p>}
           {skillSet?.map((skill, _) => (
             <p

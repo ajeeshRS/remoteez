@@ -1,9 +1,10 @@
 import { Link } from 'lucide-react';
 import EditLink from './EditLink';
+
 export default function Links({ links }: any) {
   return (
     <div className="min-h-[90vh] w-full overflow-y-scroll p-5 px-5 text-white md:px-20">
-      <div className="flex w-full flex-col items-start justify-between p-10">
+      <div className="flex w-full flex-col items-start justify-between px-5 md:p-10">
         <p className="font-bold text-pink-500"> Links</p>
         <div>
           {links?.length !== 0 &&
@@ -14,7 +15,7 @@ export default function Links({ links }: any) {
                   <EditLink link={link} />
                 </p>
                 {link.value ? (
-                  <p className="flex items-center text-sm underline">
+                  <p className="flex items-center text-wrap text-xs underline md:text-sm">
                     <Link className="mr-1 h-3 w-3" /> {link.value}
                   </p>
                 ) : (

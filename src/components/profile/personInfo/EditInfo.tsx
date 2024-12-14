@@ -3,6 +3,7 @@ import { debounce } from 'lodash';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { toast } from 'sonner';
 
 import {
   Sheet,
@@ -21,13 +22,11 @@ import {
 import LocationSearchInput from '../../ui/locationSearchInput';
 import { Suggestion } from '@/app/signup/page';
 import {
-  
   PersonalInfoSchema,
   PersonalInfoSchemaType,
 } from '@/lib/validators/profile.validator';
 import { updateJobseekerInfo } from '@/app/actions/jobseeker/actions';
 import Loader from '@/components/ui/loader';
-import { toast } from 'sonner';
 
 export default function EditInfo({ personalDetails, refetch }: any) {
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);

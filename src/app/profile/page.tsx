@@ -1,5 +1,5 @@
 'use client';
-import Experience from '@/components/profile/Experience';
+import Experience from '@/components/profile/experience/Experience';
 import Links from '@/components/profile/links/Links';
 import PersonalInfo from '@/components/profile/personInfo/PersonalInfo';
 import Projects from '@/components/profile/projects/Projects';

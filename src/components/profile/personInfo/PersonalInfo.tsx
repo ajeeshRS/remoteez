@@ -1,5 +1,6 @@
 'use client';
 import { MapPin, User } from 'lucide-react';
+
 import EditInfo from './EditInfo';
 import { ProfileDetailProps } from '@/types/common';
 
@@ -9,10 +10,9 @@ interface Props {
 }
 export default function PersonalInfo({ personalDetails, refetch }: Props) {
   return (
-    <div className="h-[90vh] overflow-y-scroll w-full md:px-20 px-5 p-5 text-white">
-
-      <div className="flex w-full flex-col items-start justify-between p-10">
-      <p className="font-bold text-pink-500 pb-10"> Personal info</p>
+    <div className="h-[90vh] w-full overflow-y-scroll p-5 px-5 text-white md:px-20">
+      <div className="flex w-full flex-col items-start justify-between md:p-10 px-5">
+        <p className="pb-10 font-bold text-pink-500"> Personal info</p>
 
         <p className="flex h-24 w-24 items-center justify-center rounded-full bg-pink-600 text-white">
           <User className="h-8 w-8" />

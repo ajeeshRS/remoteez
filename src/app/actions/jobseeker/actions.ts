@@ -1,6 +1,14 @@
 'use server';
+import { PrismaClient } from '@prisma/client';
+import { getServerSession } from 'next-auth';
 
 import { authOptions, CustomSession } from '@/lib/auth';
+import {
+  CreateExperienceSchema,
+  CreateExperienceSchemaType,
+  UpdateExperienceSchema,
+  UpdateExperienceSchemaType,
+} from '@/lib/validators/experience.validator';
 import {
   LinkUpdateSchema,
   LinkUpdateSchemaType,
@@ -13,9 +21,6 @@ import {
   ProjectSchema,
   ProjectSchemaType,
 } from '@/lib/validators/project.validator';
-import { PrismaClient } from '@prisma/client';
-import { getServerSession } from 'next-auth';
-import { toast } from 'sonner';
 
 const prisma = new PrismaClient();
 
@@ -520,6 +525,110 @@ export const addOrEditLinks = async (data: LinkUpdateSchemaType) => {
   }
 };
 
+export const addExperience = async (data: CreateExperienceSchemaType) => {
+  try {
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user) {
+      return {
+        success: false,
+        error: 'Unauthorized',
+      };
+    }
+    const customSession = session as CustomSession;
+    const id = customSession.user.id;
+
+    const parsed = CreateExperienceSchema.safeParse(data);
+
+    if (!parsed.success) {
+      return {
+        success: false,
+        error: 'Bad request',
+      };
+    }
+
+    const { role, companyName, companyWebsite, jobType, duration } =
+      parsed.data;
+
+    await prisma.previousCompany.create({
+      data: {
+        jobSeekerId: id,
+        role,
+        companyName,
+        companyWebsite,
+        duration,
+        jobType,
+      },
+    });
+
+    return {
+      success: true,
+      message: 'Experience added',
+    };
+  } catch (err) {
+    console.error(err);
+    return {
+      success: false,
+      error: 'Internal server error',
+    };
+  }
+};
+
+export const updateExperience = async (
+  data: UpdateExperienceSchemaType,
+  expId: string,
+) => {
+  try {
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user) {
+      return {
+        success: false,
+        error: 'Unauthorized',
+      };
+    }
+    const customSession = session as CustomSession;
+    const id = customSession.user.id;
+
+    const parsed = UpdateExperienceSchema.safeParse(data);
+
+    if (!parsed.success) {
+      return {
+        success: false,
+        error: 'Bad request',
+      };
+    }
+
+    const { role, companyName, companyWebsite, jobType, duration } =
+      parsed.data;
+
+    await prisma.previousCompany.update({
+      where: {
+        id: expId,
+      },
+      data: {
+        jobSeekerId: id,
+        role,
+        companyName,
+        companyWebsite,
+        duration,
+        jobType,
+      },
+    });
+
+    return {
+      success: true,
+      message: 'Experience updated',
+    };
+  } catch (err) {
+    console.error(err);
+    return {
+      success: false,
+      error: 'Internal server error',
+    };
+  }
+};
+
 const isAnyFieldChanged = (
   existingData: ProjectEditSchemaType,
   newData: ProjectEditSchemaType,
@@ -543,8 +652,3 @@ const isAnyFieldChanged = (
     isSkillsChanged
   );
 };
-
-const GITHUB = 'Github';
-const TWITTER = 'Twitter';
-const LINKEDIN = 'Linkedin';
-const PORTFOLIO = 'Portfolio';

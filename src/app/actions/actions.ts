@@ -1,9 +1,10 @@
 'use server';
-import { generateToken } from '@/lib/utils';
 import nodemailer from 'nodemailer';
 import bcrypt from 'bcrypt';
 import { PrismaClient } from '@prisma/client';
 import jwt from 'jsonwebtoken';
+
+import { generateToken } from '@/lib/utils';
 
 const prisma = new PrismaClient();
 
@@ -13,7 +14,6 @@ interface JwtPayloadWithEmail extends jwt.JwtPayload {
 
 export const sendResetPasswordMail = async (email: string) => {
   try {
-    console.log(email)
     const jobseeker = await prisma.jobSeeker.findUnique({
       where: {
         email,
@@ -110,7 +110,7 @@ export const sendResetPasswordMail = async (email: string) => {
       message: 'Reset password mail sent',
     };
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return {
       success: false,
       error: 'Failed to send mail',
