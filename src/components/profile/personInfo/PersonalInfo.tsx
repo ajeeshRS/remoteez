@@ -2,16 +2,20 @@
 import { MapPin, User } from 'lucide-react';
 
 import EditInfo from './EditInfo';
-import { ProfileDetailProps } from '@/types/common';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/state/store';
 
 interface Props {
-  personalDetails?: ProfileDetailProps;
   refetch: () => void;
 }
-export default function PersonalInfo({ personalDetails, refetch }: Props) {
+
+export default function PersonalInfo({ refetch }: Props) {
+  const personalDetails = useSelector(
+    (state: RootState) => state.jobseekerReducer.jobseeker,
+  );
   return (
     <div className="h-[90vh] w-full overflow-y-scroll p-5 px-5 text-white md:px-20">
-      <div className="flex w-full flex-col items-start justify-between md:p-10 px-5">
+      <div className="flex w-full flex-col items-start justify-between px-5 md:p-10">
         <p className="pb-10 font-bold text-pink-500"> Personal info</p>
 
         <p className="flex h-24 w-24 items-center justify-center rounded-full bg-pink-600 text-white">

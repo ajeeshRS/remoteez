@@ -1,4 +1,8 @@
 'use client';
+import { useSession } from 'next-auth/react';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+
 import Experience from '@/components/profile/experience/Experience';
 import Links from '@/components/profile/links/Links';
 import PersonalInfo from '@/components/profile/personInfo/PersonalInfo';
@@ -13,25 +17,25 @@ import {
   SKILLS,
 } from '@/lib/constants/app.constants';
 import { getJobseekerInfo } from '../actions/jobseeker/actions';
-import { useSession } from 'next-auth/react';
-import { useEffect, useState } from 'react';
 import MobileNavProfile from '@/components/profile/MobileNavProfile';
 import Loader from '@/components/ui/loader';
+import { setJobseekerProfile } from '@/state/profile/jobseekerSlice';
+import { AppDispatch } from '@/state/store';
 
 export default function Page() {
   const [activeTab, setActiveTab] = useState<string>('PersonalInfo');
-  const [profileDetails, setProfileDetails] = useState<any>();
-  const [links, setLinks] = useState<any[]>([]);
-  const [exp, setExp] = useState<any>();
   const [loading, setLoading] = useState(false);
   const { data: session } = useSession();
+
+  const dispatch = useDispatch<AppDispatch>();
 
   const fetchProfileDetails = async () => {
     try {
       setLoading(true);
-      const response = await getJobseekerInfo();
-      setProfileDetails(response.jobSeekerProfile);
-      console.log(response);
+      const { jobSeekerProfile } = await getJobseekerInfo();
+      if (jobSeekerProfile) {
+        dispatch(setJobseekerProfile(jobSeekerProfile));
+      }
     } catch (err) {
       console.log(err);
     } finally {
@@ -40,39 +44,25 @@ export default function Page() {
   };
 
   useEffect(() => {
-    const linkData = [
-      {
-        key: 'Github',
-        value: profileDetails?.githubLink ? profileDetails.githubLink : '',
-      },
-      {
-        key: 'Twitter',
-        value: profileDetails?.twitterLink ? profileDetails.twitterLink : '',
-      },
-      {
-        key: 'Portfolio',
-        value: profileDetails?.portfolioLink
-          ? profileDetails.portfolioLink
-          : '',
-      },
-      {
-        key: 'Linkedin',
-        value: profileDetails?.linkedinLink ? profileDetails.linkedinLink : '',
-      },
-    ];
-    setLinks(linkData);
-
-    const expData = {
-      previousCompanies: profileDetails?.previousCompanies,
-      experienceRange: profileDetails?.experienceRange,
-    };
-
-    setExp(expData);
-  }, [profileDetails]);
-
-  useEffect(() => {
     fetchProfileDetails();
   }, [session]);
+
+  const renderActiveTab = () => {
+    switch (activeTab) {
+      case PERSONAL_INFO:
+        return <PersonalInfo refetch={fetchProfileDetails} />;
+      case SKILLS:
+        return <Skills />;
+      case PROJECTS:
+        return <Projects />;
+      case EXPERIENCE:
+        return <Experience />;
+      case LINKS:
+        return <Links />;
+      default:
+        return <PersonalInfo refetch={fetchProfileDetails} />;
+    }
+  };
 
   if (loading) {
     return (
@@ -86,20 +76,7 @@ export default function Page() {
     <div className="flex min-h-[90vh] w-full flex-col items-center justify-center md:flex-row">
       <Sidebar active={activeTab} setActive={setActiveTab} />
       <MobileNavProfile active={activeTab} setActive={setActiveTab} />
-      {activeTab === PERSONAL_INFO ? (
-        <PersonalInfo
-          personalDetails={profileDetails}
-          refetch={fetchProfileDetails}
-        />
-      ) : activeTab === SKILLS ? (
-        <Skills skills={profileDetails?.skills} />
-      ) : activeTab === PROJECTS ? (
-        <Projects projects={profileDetails?.projects} />
-      ) : activeTab === EXPERIENCE ? (
-        <Experience experiences={exp} />
-      ) : (
-        activeTab === LINKS && <Links links={links} />
-      )}
+      {renderActiveTab()}
     </div>
   );
 }

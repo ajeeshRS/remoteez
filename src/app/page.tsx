@@ -1,3 +1,4 @@
+'use client';
 import Faq from '@/components/Faq';
 import { Plus, Search } from 'lucide-react';
 

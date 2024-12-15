@@ -1,5 +1,5 @@
 import { Clock, Link } from 'lucide-react';
-import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
 import {
   ONE_TO_THREE,
@@ -10,11 +10,35 @@ import {
 import AddExperience from './AddExperience';
 import { getDurationInYM } from '@/lib/utils';
 import EditExperience from './EditExperience';
+import { RootState } from '@/state/store';
 
-export default function Experience({ experiences }: any) {
-  useEffect(() => {
-    console.log(experiences);
-  }, [experiences]);
+export default function Experience() {
+  const experience = useSelector(
+    (state: RootState) => state.jobseekerReducer.jobseeker?.experienceRange,
+  );
+
+  const previousCompanies = useSelector(
+    (state: RootState) => state.jobseekerReducer.jobseeker?.previousCompanies,
+  );
+
+  const renderExperience = () => {
+    switch (experience) {
+      case 'ZERO_TO_ONE':
+        return ZERO_TO_ONE;
+
+      case 'ONE_TO_THREE':
+        return ONE_TO_THREE;
+
+      case 'THREE_TO_SIX':
+        return THREE_TO_SIX;
+
+      case 'SIX_PLUS':
+        return SIX_PLUS;
+
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className="min-h-[90vh] w-full overflow-y-scroll p-5 px-5 text-white md:px-20">
@@ -23,19 +47,11 @@ export default function Experience({ experiences }: any) {
 
         <div className="my-10 flex flex-col items-start">
           <p>Current experience in years</p>
-          <p className="py-2 text-neutral-300">
-            {experiences?.experienceRange === 'ZERO_TO_ONE'
-              ? ZERO_TO_ONE
-              : experiences?.experienceRange === 'ONE_TO_THREE'
-                ? ONE_TO_THREE
-                : experiences?.experienceRange === 'THREE_TO_SIX'
-                  ? THREE_TO_SIX
-                  : experiences?.experienceRange === 'SIX_PLUS' && SIX_PLUS}
-          </p>
+          <p className="py-2 text-neutral-300">{renderExperience()}</p>
         </div>
         <div className="my-10 grid grid-cols-1 gap-6 md:grid-cols-2">
-          {experiences?.previousCompanies?.length !== 0 ? (
-            experiences?.previousCompanies?.map((exp: any, i: number) => (
+          {previousCompanies?.length !== 0 ? (
+            previousCompanies?.map((exp: any, i: number) => (
               <div key={i} className="border border-pink-400/20 p-5">
                 <div className="flex w-full items-center justify-between">
                   <p className="py-2 font-bold text-neutral-300">{exp.role}</p>

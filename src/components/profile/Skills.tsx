@@ -3,11 +3,16 @@ import {
   addJobseekerSkill,
   deleteJobseekerSkill,
 } from '@/app/actions/jobseeker/actions';
+import { RootState } from '@/state/store';
 import { X } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { toast } from 'sonner';
 
-export default function Skills({ skills }: any) {
+export default function Skills() {
+  const skills = useSelector(
+    (state: RootState) => state.jobseekerReducer.jobseeker?.skills,
+  );
   const [input, setInput] = useState('');
   const [skillSet, setSkillSet] = useState<string[]>([]);
 
@@ -60,13 +65,15 @@ export default function Skills({ skills }: any) {
   };
 
   useEffect(() => {
-    setSkillSet(skills);
+    if (skills) {
+      setSkillSet(skills);
+    }
   }, []);
   return (
     <div className="h-[90vh] w-full overflow-y-scroll p-5 px-5 text-white md:px-20">
-      <div className="flex w-full flex-col items-start justify-between md:p-10 px-5">
+      <div className="flex w-full flex-col items-start justify-between px-5 md:p-10">
         <p className="font-bold text-pink-500"> Skills</p>
-        <div className="grid md:grid-cols-3 grid-cols-2 py-5">
+        <div className="grid grid-cols-2 py-5 md:grid-cols-3">
           {skillSet?.length === 0 && <p>No skills added yet.</p>}
           {skillSet?.map((skill, _) => (
             <p
