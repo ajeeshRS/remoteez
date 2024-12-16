@@ -13,10 +13,14 @@ import EditExperience from './EditExperience';
 import { RootState } from '@/state/store';
 import { PreviousCompany } from '@/types/common';
 import DeleteExperienceDialog from './DeleteExperienceDialog';
+import EditExperienceRange from './EditExperienceRange';
+import { ExperienceRange } from '@prisma/client';
+
 
 export default function Experience() {
   const experience = useSelector(
-    (state: RootState) => state.jobseekerReducer.jobseeker?.experienceRange,
+    (state: RootState) =>
+      state.jobseekerReducer.jobseeker?.experienceRange as ExperienceRange,
   );
 
   const previousCompanies = useSelector(
@@ -49,7 +53,10 @@ export default function Experience() {
 
         <div className="my-10 flex flex-col items-start">
           <p>Current experience in years</p>
-          <p className="py-2 text-neutral-300">{renderExperience()}</p>
+          <div className="flex items-center">
+            <p className="py-2 text-neutral-300">{renderExperience()}</p>
+            <EditExperienceRange currentExp={experience} />
+          </div>
         </div>
         <div className="my-10 grid grid-cols-1 gap-6 md:grid-cols-2">
           {previousCompanies?.length !== 0 ? (

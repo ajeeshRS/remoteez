@@ -19,3 +19,18 @@ export const UpdateExperienceSchema = z.object({
 });
 
 export type UpdateExperienceSchemaType = z.infer<typeof UpdateExperienceSchema>;
+
+export const UpdateExperienceRangeSchema = z.object({
+  experienceRange: z.enum([
+    'ZERO_TO_ONE',
+    'ONE_TO_THREE',
+    'THREE_TO_SIX',
+    'SIX_PLUS',
+  ]),
+});
+
+export type UpdateExperienceRangeSchemaType = z.infer<
+  typeof UpdateExperienceRangeSchema
+>;
+
+

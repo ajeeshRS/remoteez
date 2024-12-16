@@ -1,5 +1,5 @@
 'use server';
-import { PrismaClient } from '@prisma/client';
+import { ExperienceRange, PrismaClient } from '@prisma/client';
 import { getServerSession } from 'next-auth';
 
 import { authOptions, CustomSession } from '@/lib/auth';
@@ -654,9 +654,44 @@ export const deleteExperience = async (expId: string) => {
       success: true,
       message: 'Experience deleted successfully',
     };
-    
   } catch (err) {
     console.error('error in deleting experience');
+    return {
+      success: false,
+      error: 'Internal server error',
+    };
+  }
+};
+
+export const UpdateExperienceRange = async (expRange: ExperienceRange) => {
+  try {
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user) {
+      return {
+        success: false,
+        error: 'Unauthorised',
+      };
+    }
+
+    const customSession = session as CustomSession;
+    const id = customSession.user.id;
+
+    await prisma.jobSeeker.update({
+      where: {
+        id,
+      },
+      data: {
+        experienceRange: expRange,
+      },
+    });
+
+    return {
+      success: true,
+      message: 'Experience range updated Successfully',
+    };
+  } catch (err) {
+    console.error('Error updating experience range :', err);
     return {
       success: false,
       error: 'Internal server error',
