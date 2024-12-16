@@ -1,5 +1,5 @@
 'use client';
-import { editProject } from '@/app/actions/jobseeker/actions';
+import { editProject, getJobseekerInfo } from '@/app/actions/jobseeker/actions';
 import Loader from '@/components/ui/loader';
 import {
   Sheet,
@@ -12,16 +12,20 @@ import {
   ProjectEditSchema,
   ProjectEditSchemaType,
 } from '@/lib/validators/project.validator';
+import { setJobseekerProfile } from '@/state/profile/jobseekerSlice';
+import { AppDispatch } from '@/state/store';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Pen, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
 import { toast } from 'sonner';
 export default function EditProject({ project }: any) {
   const [input, setInput] = useState('');
   const [skillSet, setSkillSet] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const dispatch = useDispatch<AppDispatch>();
 
   const { register, handleSubmit, setValue, watch, reset } =
     useForm<ProjectEditSchemaType>({
@@ -70,6 +74,7 @@ export default function EditProject({ project }: any) {
 
       if (response.success) {
         toast.success(response.message);
+        fetchProfileDetails();
       } else {
         toast.error(response.error);
       }
@@ -93,6 +98,16 @@ export default function EditProject({ project }: any) {
     }
   }, [project]);
 
+  const fetchProfileDetails = async () => {
+    try {
+      const { jobSeekerProfile } = await getJobseekerInfo();
+      if (jobSeekerProfile) {
+        dispatch(setJobseekerProfile(jobSeekerProfile));
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <Sheet>
       <SheetTrigger className="mx-1 bg-pink-400 p-1 hover:bg-pink-500">

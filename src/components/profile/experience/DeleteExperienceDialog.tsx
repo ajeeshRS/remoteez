@@ -1,5 +1,9 @@
 'use client';
-import { deleteProject } from '@/app/actions/jobseeker/actions';
+import {
+  deleteExperience,
+  deleteProject,
+  getJobseekerInfo,
+} from '@/app/actions/jobseeker/actions';
 import {
   Dialog,
   DialogContent,
@@ -10,20 +14,25 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import Loader from '@/components/ui/loader';
+import { setJobseekerProfile } from '@/state/profile/jobseekerSlice';
+import { AppDispatch } from '@/state/store';
 import { Trash } from 'lucide-react';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { toast } from 'sonner';
-export default function DeleteDialog({ projectId }: { projectId: string }) {
+export default function DeleteExperienceDialog({ expId }: { expId: string }) {
   const [loading, setLoading] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const dispatch = useDispatch<AppDispatch>();
 
-  const handleProjectDelete = async () => {
+  const handleDelete = async () => {
     try {
       setLoading(true);
-      const response = await deleteProject(projectId);
+      const response = await deleteExperience(expId);
       console.log(response);
       if (response.success) {
         toast.success(response.message);
+        fetchProfileDetails();
       } else {
         toast.error(response.error);
       }
@@ -32,6 +41,17 @@ export default function DeleteDialog({ projectId }: { projectId: string }) {
     } finally {
       setLoading(false);
       setIsDialogOpen(false);
+    }
+  };
+
+  const fetchProfileDetails = async () => {
+    try {
+      const { jobSeekerProfile } = await getJobseekerInfo();
+      if (jobSeekerProfile) {
+        dispatch(setJobseekerProfile(jobSeekerProfile));
+      }
+    } catch (err) {
+      console.log(err);
     }
   };
   return (
@@ -49,7 +69,7 @@ export default function DeleteDialog({ projectId }: { projectId: string }) {
         </DialogHeader>
         <DialogFooter>
           <button
-            onClick={handleProjectDelete}
+            onClick={handleDelete}
             className="bg-red-500 px-3 py-2 hover:bg-red-600"
           >
             {loading ? <Loader /> : 'Confirm'}

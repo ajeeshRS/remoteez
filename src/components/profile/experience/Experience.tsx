@@ -11,6 +11,8 @@ import AddExperience from './AddExperience';
 import { getDurationInYM } from '@/lib/utils';
 import EditExperience from './EditExperience';
 import { RootState } from '@/state/store';
+import { PreviousCompany } from '@/types/common';
+import DeleteExperienceDialog from './DeleteExperienceDialog';
 
 export default function Experience() {
   const experience = useSelector(
@@ -51,11 +53,14 @@ export default function Experience() {
         </div>
         <div className="my-10 grid grid-cols-1 gap-6 md:grid-cols-2">
           {previousCompanies?.length !== 0 ? (
-            previousCompanies?.map((exp: any, i: number) => (
+            previousCompanies?.map((exp: PreviousCompany, i: number) => (
               <div key={i} className="border border-pink-400/20 p-5">
                 <div className="flex w-full items-center justify-between">
                   <p className="py-2 font-bold text-neutral-300">{exp.role}</p>
-                  <EditExperience experience={exp} />
+                  <div>
+                    <EditExperience experience={exp} />
+                    <DeleteExperienceDialog expId={exp.id as string} />
+                  </div>
                 </div>
                 <p className="py-1 text-sm text-neutral-400">{exp.jobType}</p>
                 <p className="py-1 text-sm">{exp.companyName}</p>
@@ -68,7 +73,7 @@ export default function Experience() {
                   {exp.duration}
                 </p>
                 <p className="flex items-center py-2 text-sm text-pink-600">
-                  {getDurationInYM(exp.duration)}
+                  {getDurationInYM(exp.duration as string)}
                 </p>
               </div>
             ))

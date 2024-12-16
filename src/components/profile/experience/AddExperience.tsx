@@ -22,13 +22,20 @@ import {
   CreateExperienceSchema,
   CreateExperienceSchemaType,
 } from '@/lib/validators/experience.validator';
-import { addExperience } from '@/app/actions/jobseeker/actions';
+import {
+  addExperience,
+  getJobseekerInfo,
+} from '@/app/actions/jobseeker/actions';
 import Loader from '@/components/ui/loader';
+import { setJobseekerProfile } from '@/state/profile/jobseekerSlice';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/state/store';
 
 export default function AddExperience() {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch<AppDispatch>();
 
   const { register, handleSubmit, setValue, watch, reset } =
     useForm<CreateExperienceSchemaType>({
@@ -50,6 +57,7 @@ export default function AddExperience() {
       const response = await addExperience(data);
       if (response.success) {
         toast.success(response.message);
+        fetchProfileDetails();
       } else {
         toast.error(response.error);
       }
@@ -67,6 +75,16 @@ export default function AddExperience() {
     }
   }, [startDate, endDate]);
 
+  const fetchProfileDetails = async () => {
+    try {
+      const { jobSeekerProfile } = await getJobseekerInfo();
+      if (jobSeekerProfile) {
+        dispatch(setJobseekerProfile(jobSeekerProfile));
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <Sheet>
       <SheetTrigger className="border border-pink-600 p-3 hover:border-transparent hover:bg-pink-600">

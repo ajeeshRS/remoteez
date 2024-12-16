@@ -25,12 +25,19 @@ import {
 } from '@/lib/validators/experience.validator';
 import Loader from '@/components/ui/loader';
 import { extractDates } from '@/lib/utils';
-import { updateExperience } from '@/app/actions/jobseeker/actions';
+import {
+  getJobseekerInfo,
+  updateExperience,
+} from '@/app/actions/jobseeker/actions';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/state/store';
+import { setJobseekerProfile } from '@/state/profile/jobseekerSlice';
 
 export default function EditExperience({ experience }: any) {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch<AppDispatch>();
 
   const { register, handleSubmit, setValue, watch, reset } =
     useForm<UpdateExperienceSchemaType>({
@@ -55,6 +62,7 @@ export default function EditExperience({ experience }: any) {
       const response = await updateExperience(data, expId);
       if (response.success) {
         toast.success(response.message);
+        fetchProfileDetails();
       } else {
         toast.error(response.error);
       }
@@ -89,6 +97,16 @@ export default function EditExperience({ experience }: any) {
     }
   }, [startDate, endDate]);
 
+  const fetchProfileDetails = async () => {
+    try {
+      const { jobSeekerProfile } = await getJobseekerInfo();
+      if (jobSeekerProfile) {
+        dispatch(setJobseekerProfile(jobSeekerProfile));
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <Sheet>
       <SheetTrigger className="mx-4 bg-pink-400 p-1 hover:bg-pink-500">

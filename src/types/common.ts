@@ -57,11 +57,12 @@ interface Project {
   skills: string[];
 }
 
-interface PreviousCompany {
+export interface PreviousCompany {
   companyName: string | null;
   companyWebsite: string | null;
   duration: string | null;
   jobSeekerId: string | null;
   id: string | null;
   role: string | null;
+  jobType: 'FULL_TIME' | 'PART_TIME' | 'INTERNSHIP' | 'FREELANCE' | null;
 }

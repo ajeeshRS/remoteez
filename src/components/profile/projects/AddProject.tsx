@@ -1,4 +1,4 @@
-import { addProject } from '@/app/actions/jobseeker/actions';
+import { addProject, getJobseekerInfo } from '@/app/actions/jobseeker/actions';
 import Loader from '@/components/ui/loader';
 import {
   Sheet,
@@ -8,16 +8,20 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import { ProjectSchema, ProjectSchemaType } from '@/lib/validators/project.validator';
+import { setJobseekerProfile } from '@/state/profile/jobseekerSlice';
+import { AppDispatch } from '@/state/store';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { X } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
 import { toast } from 'sonner';
 export default function AddProject() {
   const [input, setInput] = useState('');
   const [skillSet, setSkillSet] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const dispatch = useDispatch<AppDispatch>();
 
   const { register, handleSubmit, setValue, watch, reset } =
     useForm<ProjectSchemaType>({
@@ -65,6 +69,7 @@ export default function AddProject() {
       const response = await addProject(data);
       if (response.success) {
         toast.success(response.message);
+        fetchProfileDetails()
       } else {
         toast.error(response.error);
       }
@@ -74,6 +79,18 @@ export default function AddProject() {
       setLoading(false);
     }
   };
+
+  const fetchProfileDetails = async () => {
+    try {
+      const { jobSeekerProfile } = await getJobseekerInfo();
+      if (jobSeekerProfile) {
+        dispatch(setJobseekerProfile(jobSeekerProfile));
+      }
+    } catch (err) {
+      console.log(err);
+    } 
+  };
+
   return (
     <Sheet>
       <SheetTrigger asChild>

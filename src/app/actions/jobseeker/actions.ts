@@ -629,6 +629,41 @@ export const updateExperience = async (
   }
 };
 
+export const deleteExperience = async (expId: string) => {
+  try {
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user) {
+      return {
+        success: false,
+        error: 'Unauthorised',
+      };
+    }
+
+    const customSession = session as CustomSession;
+    const id = customSession.user.id;
+
+    await prisma.previousCompany.delete({
+      where: {
+        id: expId,
+        jobSeekerId: id,
+      },
+    });
+
+    return {
+      success: true,
+      message: 'Experience deleted successfully',
+    };
+    
+  } catch (err) {
+    console.error('error in deleting experience');
+    return {
+      success: false,
+      error: 'Internal server error',
+    };
+  }
+};
+
 const isAnyFieldChanged = (
   existingData: ProjectEditSchemaType,
   newData: ProjectEditSchemaType,

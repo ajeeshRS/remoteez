@@ -1,10 +1,10 @@
 import { Link } from 'lucide-react';
 
 import AddProject from './AddProject';
-import DeleteDialog from './DeleteDialog';
 import EditProject from './EditProject';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/state/store';
+import DeleteProjectDialog from './DeleteProjectDialog';
 
 export default function Projects() {
   const projects = useSelector(
@@ -27,7 +27,7 @@ export default function Projects() {
                   </p>
                   <div className="flex items-center">
                     <EditProject project={project} />
-                    <DeleteDialog projectId={project.id} />
+                    <DeleteProjectDialog projectId={project.id} />
                   </div>
                 </div>
                 <p className="py-1 text-sm">{project.description}</p>
