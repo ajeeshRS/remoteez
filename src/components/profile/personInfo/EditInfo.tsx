@@ -27,24 +27,31 @@ import {
 } from '@/lib/validators/profile.validator';
 import { updateJobseekerInfo } from '@/app/actions/jobseeker/actions';
 import Loader from '@/components/ui/loader';
+import ErrorMessage from '@/components/ui/error-msg';
 
 export default function EditInfo({ personalDetails, refetch }: any) {
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [updating, setUpdating] = useState<boolean>(false);
 
-  const { register, handleSubmit, setValue, watch, reset } =
-    useForm<PersonalInfoSchemaType>({
-      resolver: zodResolver(PersonalInfoSchema),
-      defaultValues: {
-        email: '',
-        fullName: '',
-        location: '',
-        desiredJobTitle: '',
-        bio: '',
-        preferredJobType: 'FULL_TIME',
-      },
-    });
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm<PersonalInfoSchemaType>({
+    resolver: zodResolver(PersonalInfoSchema),
+    defaultValues: {
+      email: '',
+      fullName: '',
+      location: '',
+      desiredJobTitle: '',
+      bio: '',
+      preferredJobType: 'FULL_TIME',
+    },
+  });
 
   const location = watch('location');
   const preferredJobType = watch('preferredJobType');
@@ -161,6 +168,7 @@ export default function EditInfo({ personalDetails, refetch }: any) {
               className="w-full border border-pink-400/60 bg-transparent px-3 py-2 text-sm text-white outline-none"
               {...register('email')}
             />
+            <ErrorMessage err={errors.email} />
           </div>
           <div className="flex w-full flex-col">
             <label className="my-1 py-2 text-sm text-neutral-200">
@@ -171,6 +179,7 @@ export default function EditInfo({ personalDetails, refetch }: any) {
               className="border border-pink-400/60 bg-transparent px-3 py-2 text-sm text-white outline-none"
               {...register('fullName')}
             />
+            <ErrorMessage err={errors.fullName} />
           </div>
           <div className="flex w-full flex-col">
             <label className="my-1 py-2 text-sm text-neutral-200">Bio</label>
@@ -178,6 +187,7 @@ export default function EditInfo({ personalDetails, refetch }: any) {
               className="border border-pink-400/60 bg-transparent px-3 py-2 text-sm text-white outline-none"
               {...register('bio')}
             />
+            <ErrorMessage err={errors.bio} />
           </div>
           <div className="flex w-full flex-col">
             <label className="my-1 py-2 text-sm text-neutral-200">Role</label>
@@ -186,8 +196,8 @@ export default function EditInfo({ personalDetails, refetch }: any) {
               className="border border-pink-400/60 bg-transparent px-3 py-2 text-sm text-white outline-none"
               {...register('desiredJobTitle')}
             />
+            <ErrorMessage err={errors.desiredJobTitle} />
           </div>
-
           <div className="flex w-full flex-col">
             <label className="my-1 py-2 text-sm text-neutral-200">
               Preferred job type
@@ -208,8 +218,8 @@ export default function EditInfo({ personalDetails, refetch }: any) {
                 <SelectItem value="INTERNSHIP">Internship</SelectItem>
               </SelectContent>
             </Select>
+            <ErrorMessage err={errors.preferredJobType} />
           </div>
-
           <div className="flex w-full flex-col">
             <label className="my-1 py-2 text-sm text-neutral-200">
               Location
@@ -223,6 +233,7 @@ export default function EditInfo({ personalDetails, refetch }: any) {
               isLoading={isLoading}
             />
           </div>
+          <ErrorMessage err={errors.location} />
           <button
             type="submit"
             className="my-5 flex items-center justify-center bg-white py-2 hover:bg-neutral-300"

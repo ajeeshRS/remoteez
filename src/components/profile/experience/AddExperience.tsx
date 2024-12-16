@@ -30,6 +30,7 @@ import Loader from '@/components/ui/loader';
 import { setJobseekerProfile } from '@/state/profile/jobseekerSlice';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/state/store';
+import ErrorMessage from '@/components/ui/error-msg';
 
 export default function AddExperience() {
   const [startDate, setStartDate] = useState('');
@@ -37,17 +38,22 @@ export default function AddExperience() {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
 
-  const { register, handleSubmit, setValue, watch, reset } =
-    useForm<CreateExperienceSchemaType>({
-      resolver: zodResolver(CreateExperienceSchema),
-      defaultValues: {
-        role: '',
-        duration: '',
-        companyName: '',
-        companyWebsite: '',
-        jobType: 'FULL_TIME',
-      },
-    });
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<CreateExperienceSchemaType>({
+    resolver: zodResolver(CreateExperienceSchema),
+    defaultValues: {
+      role: '',
+      duration: '',
+      companyName: '',
+      companyWebsite: '',
+      jobType: 'FULL_TIME',
+    },
+  });
 
   const jobType = watch('jobType');
 
@@ -108,6 +114,7 @@ export default function AddExperience() {
               type="text"
               className="w-full border border-pink-400/60 bg-transparent px-3 py-2 text-sm text-white outline-none"
             />
+            <ErrorMessage err={errors.role} />
           </div>
           <div className="flex w-full flex-col">
             <label className="my-1 py-2 text-sm text-neutral-200">
@@ -118,6 +125,7 @@ export default function AddExperience() {
               type="text"
               className="border border-pink-400/60 bg-transparent px-3 py-2 text-sm text-white outline-none"
             />
+            <ErrorMessage err={errors.companyName} />
           </div>
           <div className="flex w-full flex-col">
             <label className="my-1 py-2 text-sm text-neutral-200">
@@ -128,6 +136,7 @@ export default function AddExperience() {
               type="text"
               className="border border-pink-400/60 bg-transparent px-3 py-2 text-sm text-white outline-none"
             />
+            <ErrorMessage err={errors.companyWebsite} />
           </div>
           <div className="flex w-full flex-col">
             <label className="my-1 py-2 text-sm text-neutral-200">
@@ -149,6 +158,7 @@ export default function AddExperience() {
                 className="w-1/2 border border-pink-400/60 bg-transparent px-3 py-2 text-sm text-white outline-none"
               />
             </div>
+            <ErrorMessage err={errors.duration} />
           </div>
           <Select
             onValueChange={(value: any) => setValue('jobType', value)}
@@ -167,6 +177,8 @@ export default function AddExperience() {
               <SelectItem value="INTERNSHIP">Internship</SelectItem>
             </SelectContent>
           </Select>
+          <ErrorMessage err={errors.jobType} />
+
           <button
             type="submit"
             className="my-10 flex items-center justify-center bg-white py-2 hover:bg-neutral-300"

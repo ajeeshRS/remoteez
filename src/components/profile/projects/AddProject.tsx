@@ -1,4 +1,5 @@
 import { addProject, getJobseekerInfo } from '@/app/actions/jobseeker/actions';
+import ErrorMessage from '@/components/ui/error-msg';
 import Loader from '@/components/ui/loader';
 import {
   Sheet,
@@ -7,7 +8,10 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
-import { ProjectSchema, ProjectSchemaType } from '@/lib/validators/project.validator';
+import {
+  ProjectSchema,
+  ProjectSchemaType,
+} from '@/lib/validators/project.validator';
 import { setJobseekerProfile } from '@/state/profile/jobseekerSlice';
 import { AppDispatch } from '@/state/store';
 
@@ -23,17 +27,22 @@ export default function AddProject() {
   const [loading, setLoading] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
 
-  const { register, handleSubmit, setValue, watch, reset } =
-    useForm<ProjectSchemaType>({
-      resolver: zodResolver(ProjectSchema),
-      defaultValues: {
-        title: '',
-        description: '',
-        githubURL: '',
-        deployedLink: '',
-        skills: [],
-      },
-    });
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<ProjectSchemaType>({
+    resolver: zodResolver(ProjectSchema),
+    defaultValues: {
+      title: '',
+      description: '',
+      githubURL: '',
+      deployedLink: '',
+      skills: [],
+    },
+  });
   const lowerCaseInput = input.toLowerCase();
   const currentSkills = watch('skills');
 
@@ -69,7 +78,7 @@ export default function AddProject() {
       const response = await addProject(data);
       if (response.success) {
         toast.success(response.message);
-        fetchProfileDetails()
+        fetchProfileDetails();
       } else {
         toast.error(response.error);
       }
@@ -88,7 +97,7 @@ export default function AddProject() {
       }
     } catch (err) {
       console.log(err);
-    } 
+    }
   };
 
   return (
@@ -123,6 +132,7 @@ export default function AddProject() {
               type="text"
               className="w-full border border-pink-400/60 bg-transparent px-3 py-2 text-sm text-white outline-none"
             />
+            <ErrorMessage err={errors.title} />
           </div>
           <div className="flex w-full flex-col">
             <label className="my-1 py-2 text-sm text-neutral-200">
@@ -132,6 +142,7 @@ export default function AddProject() {
               {...register('description')}
               className="border border-pink-400/60 bg-transparent px-3 py-2 text-sm text-white outline-none"
             />
+            <ErrorMessage err={errors.description} />
           </div>
           <div className="flex w-full flex-col">
             <label className="my-1 py-2 text-sm text-neutral-200">
@@ -142,6 +153,7 @@ export default function AddProject() {
               type="text"
               className="border border-pink-400/60 bg-transparent px-3 py-2 text-sm text-white outline-none"
             />
+            <ErrorMessage err={errors.githubURL} />
           </div>
           <div className="flex w-full flex-col">
             <label className="my-1 py-2 text-sm text-neutral-200">
@@ -152,6 +164,7 @@ export default function AddProject() {
               type="text"
               className="border border-pink-400/60 bg-transparent px-3 py-2 text-sm text-white outline-none"
             />
+            <ErrorMessage err={errors.deployedLink} />
           </div>
           <div className="my-5 flex flex-col items-start">
             <div className="flex flex-col">
@@ -166,6 +179,7 @@ export default function AddProject() {
                 className="border border-pink-400/60 bg-transparent px-3 py-2 text-sm text-white outline-none"
                 placeholder="Add skills"
               />
+              <ErrorMessage err={errors.skills} />
             </div>
             <div className="grid grid-cols-2 py-5">
               {skillSet.map((skill, i) => (

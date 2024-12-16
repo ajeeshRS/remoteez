@@ -4,11 +4,11 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/state/store';
 import { useEffect, useState } from 'react';
 
+export interface Link {
+  key: string;
+  value: string;
+}
 export default function Links() {
-  interface Link {
-    key: string;
-    value: string;
-  }
 
   const [links, setLinks] = useState<Link[]>([]);
 

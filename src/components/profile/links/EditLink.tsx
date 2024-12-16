@@ -19,7 +19,14 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
-export default function EditLink({ link }: any) {
+interface Props {
+  link: {
+    key: string;
+    value: string;
+  };
+}
+
+export default function EditLink({ link }: Props) {
   const [loading, setLoading] = useState(false);
 
   const {

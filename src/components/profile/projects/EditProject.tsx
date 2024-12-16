@@ -1,5 +1,6 @@
 'use client';
 import { editProject, getJobseekerInfo } from '@/app/actions/jobseeker/actions';
+import ErrorMessage from '@/components/ui/error-msg';
 import Loader from '@/components/ui/loader';
 import {
   Sheet,
@@ -27,17 +28,23 @@ export default function EditProject({ project }: any) {
   const [loading, setLoading] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
 
-  const { register, handleSubmit, setValue, watch, reset } =
-    useForm<ProjectEditSchemaType>({
-      resolver: zodResolver(ProjectEditSchema),
-      defaultValues: {
-        title: '',
-        description: '',
-        githubURL: '',
-        deployedLink: '',
-        skills: [],
-      },
-    });
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm<ProjectEditSchemaType>({
+    resolver: zodResolver(ProjectEditSchema),
+    defaultValues: {
+      title: '',
+      description: '',
+      githubURL: '',
+      deployedLink: '',
+      skills: [],
+    },
+  });
   const lowerCaseInput = input.toLowerCase();
   const currentSkills = watch('skills');
 
@@ -138,6 +145,7 @@ export default function EditProject({ project }: any) {
               type="text"
               className="w-full border border-pink-400/60 bg-transparent px-3 py-2 text-sm text-white outline-none"
             />
+            <ErrorMessage err={errors.title} />
           </div>
           <div className="flex w-full flex-col">
             <label className="my-1 py-2 text-sm text-neutral-200">
@@ -147,6 +155,7 @@ export default function EditProject({ project }: any) {
               {...register('description')}
               className="border border-pink-400/60 bg-transparent px-3 py-2 text-sm text-white outline-none"
             />
+            <ErrorMessage err={errors.description} />
           </div>
           <div className="flex w-full flex-col">
             <label className="my-1 py-2 text-sm text-neutral-200">
@@ -157,6 +166,7 @@ export default function EditProject({ project }: any) {
               type="text"
               className="border border-pink-400/60 bg-transparent px-3 py-2 text-sm text-white outline-none"
             />
+            <ErrorMessage err={errors.githubURL} />
           </div>
           <div className="flex w-full flex-col">
             <label className="my-1 py-2 text-sm text-neutral-200">
@@ -167,6 +177,7 @@ export default function EditProject({ project }: any) {
               type="text"
               className="border border-pink-400/60 bg-transparent px-3 py-2 text-sm text-white outline-none"
             />
+            <ErrorMessage err={errors.deployedLink} />
           </div>
           <div className="my-5 flex flex-col items-start">
             <div className="flex flex-col">
@@ -181,6 +192,7 @@ export default function EditProject({ project }: any) {
                 className="border border-pink-400/60 bg-transparent px-3 py-2 text-sm text-white outline-none"
                 placeholder="Add skills"
               />
+              <ErrorMessage err={errors.skills} />
             </div>
             <div className="grid grid-cols-2 py-5">
               {skillSet.map((skill, i) => (
