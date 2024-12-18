@@ -28,8 +28,14 @@ import {
 import { updateJobseekerInfo } from '@/app/actions/jobseeker/actions';
 import Loader from '@/components/ui/loader';
 import ErrorMessage from '@/components/ui/error-msg';
+import { JobSeekerProfile } from '@/types/common';
 
-export default function EditInfo({ personalDetails, refetch }: any) {
+interface Props {
+  personalDetails: JobSeekerProfile | null;
+  refetch: () => void;
+}
+
+export default function EditInfo({ personalDetails, refetch }: Props) {
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [updating, setUpdating] = useState<boolean>(false);
@@ -44,6 +50,7 @@ export default function EditInfo({ personalDetails, refetch }: any) {
   } = useForm<PersonalInfoSchemaType>({
     resolver: zodResolver(PersonalInfoSchema),
     defaultValues: {
+      avatar: undefined,
       email: '',
       fullName: '',
       location: '',
@@ -70,7 +77,17 @@ export default function EditInfo({ personalDetails, refetch }: any) {
   const handleProfileUpdation = async (data: PersonalInfoSchemaType) => {
     try {
       setUpdating(true);
-      const response = await updateJobseekerInfo(data);
+      const avatarFile =
+        data.avatar instanceof FileList ? data.avatar[0] : data.avatar;
+
+      const { avatar, ...profileData } = data;
+      const submitData = {
+        ...profileData,
+        ...(avatarFile ? { avatar: avatarFile } : {}),
+      };
+
+      console.log(submitData);
+      const response = await updateJobseekerInfo(submitData);
       if (response.success) {
         toast.success(response.message);
         refetch();
@@ -130,7 +147,7 @@ export default function EditInfo({ personalDetails, refetch }: any) {
         location: personalDetails?.location || '',
         desiredJobTitle: personalDetails?.desiredJobTitle || '',
         bio: personalDetails?.bio || '',
-        preferredJobType: personalDetails?.prefferedJobType || 'FULL_TIME',
+        preferredJobType: personalDetails?.preferredJobType || 'FULL_TIME',
       });
     }
   }, [personalDetails]);
@@ -161,6 +178,16 @@ export default function EditInfo({ personalDetails, refetch }: any) {
           onSubmit={handleSubmit((data) => handleProfileUpdation(data))}
           className="flex h-fit w-full flex-col overflow-y-scroll py-10"
         >
+          <div className="flex w-full flex-col">
+            <label className="my-1 py-2 text-sm text-neutral-200">Avatar</label>
+            <input
+              type="file"
+              accept="image/png,image/jpeg,image/jpg,image/svg+xml"
+              className="w-full border border-pink-400/60 bg-transparent px-3 py-2 text-sm text-white outline-none"
+              {...register('avatar')}
+            />
+            <ErrorMessage err={errors.avatar} />
+          </div>
           <div className="flex w-full flex-col">
             <label className="my-1 py-2 text-sm text-neutral-200">Email</label>
             <input

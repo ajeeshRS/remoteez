@@ -1,6 +1,21 @@
 import { z } from 'zod';
 
 export const PersonalInfoSchema = z.object({
+  avatar: z
+    .any()
+    .transform((files: FileList | null) => {
+      return files && files.length > 0 ? files[0] : null;
+    })
+    .refine(
+      (file: File | null) => {
+        if (!file) return true;
+        return ['image/png', 'image/jpeg', 'image/jpg', 'image/gif'].includes(
+          file.type,
+        );
+      },
+      { message: 'Invalid file type' },
+    )
+    .optional(),
   email: z.string().email(),
   fullName: z.string(),
   location: z.string(),

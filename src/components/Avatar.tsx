@@ -1,3 +1,4 @@
+'use client';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,11 +10,12 @@ import {
 import { LogOut, User } from 'lucide-react';
 import { CustomSession } from '@/lib/auth';
 import { signOut, useSession } from 'next-auth/react';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function Avatar() {
   const { data: session } = useSession();
   const customSession = session as CustomSession;
+  const router = useRouter();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -26,9 +28,12 @@ export default function Avatar() {
           Hi, {customSession?.user.name}
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="flex cursor-pointer items-center border-none py-2 pl-2 text-sm text-white outline-none hover:text-pink-500">
+        <DropdownMenuItem
+          onClick={() => router.push('/profile')}
+          className="flex cursor-pointer items-center border-none py-2 pl-2 text-sm text-white outline-none hover:text-pink-500"
+        >
           <User className="mr-2 h-4 w-4" />
-          <Link href={'/profile'}>Profile</Link>
+          Profile
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => signOut()}

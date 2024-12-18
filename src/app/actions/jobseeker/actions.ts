@@ -21,6 +21,7 @@ import {
   ProjectSchema,
   ProjectSchemaType,
 } from '@/lib/validators/project.validator';
+import { uploadToCloudinary } from '../actions';
 
 const prisma = new PrismaClient();
 
@@ -92,7 +93,11 @@ export const updateJobseekerInfo = async (data: PersonalInfoSchemaType) => {
       };
     }
 
-    console.log(parsed.data);
+    let avatarUrl;
+    if (data.avatar instanceof File) {
+      avatarUrl = await uploadToCloudinary(data.avatar);
+      console.log('updated avatar url : ', avatarUrl);
+    }
 
     const user = await prisma.jobSeeker.findUnique({
       where: {
@@ -118,7 +123,7 @@ export const updateJobseekerInfo = async (data: PersonalInfoSchemaType) => {
 
     console.log(changedData);
 
-    if (Object.keys(changedData).length === 0) {
+    if (Object.keys(changedData).length === 0 && avatarUrl === user.avatar) {
       console.log('No changes detected');
       return {
         success: false,
@@ -130,7 +135,7 @@ export const updateJobseekerInfo = async (data: PersonalInfoSchemaType) => {
       where: {
         id,
       },
-      data: changedData,
+      data: { ...changedData, avatar: avatarUrl },
     });
 
     return {
