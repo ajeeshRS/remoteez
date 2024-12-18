@@ -1,5 +1,6 @@
 import { Clock, Link } from 'lucide-react';
 import { useSelector } from 'react-redux';
+import { useRouter } from 'next/navigation';
 
 import {
   ONE_TO_THREE,
@@ -7,6 +8,7 @@ import {
   THREE_TO_SIX,
   ZERO_TO_ONE,
 } from '@/lib/constants/app.constants';
+import { ExperienceRange } from '@prisma/client';
 import AddExperience from './AddExperience';
 import { getDurationInYM } from '@/lib/utils';
 import EditExperience from './EditExperience';
@@ -14,10 +16,11 @@ import { RootState } from '@/state/store';
 import { PreviousCompany } from '@/types/common';
 import DeleteExperienceDialog from './DeleteExperienceDialog';
 import EditExperienceRange from './EditExperienceRange';
-import { ExperienceRange } from '@prisma/client';
-
+import SaveResumeLink from './SaveResumeLink';
 
 export default function Experience() {
+  const router = useRouter();
+
   const experience = useSelector(
     (state: RootState) =>
       state.jobseekerReducer.jobseeker?.experienceRange as ExperienceRange,
@@ -25,6 +28,10 @@ export default function Experience() {
 
   const previousCompanies = useSelector(
     (state: RootState) => state.jobseekerReducer.jobseeker?.previousCompanies,
+  );
+
+  const resumeLink = useSelector(
+    (state: RootState) => state.jobseekerReducer.jobseeker?.resume,
   );
 
   const renderExperience = () => {
@@ -56,6 +63,18 @@ export default function Experience() {
           <div className="flex items-center">
             <p className="py-2 text-neutral-300">{renderExperience()}</p>
             <EditExperienceRange currentExp={experience} />
+          </div>
+        </div>
+        <div className="my-10 flex flex-col items-start">
+          <p>Resume link</p>
+          <div className="flex items-center">
+            <p
+              className="cursor-pointer py-2 text-neutral-300 hover:underline"
+              onClick={() => router.push(resumeLink as string)}
+            >
+              {resumeLink !== null ? resumeLink : 'not added yet'}
+            </p>
+            <SaveResumeLink resumeLink={resumeLink as string} />
           </div>
         </div>
         <div className="my-10 grid grid-cols-1 gap-6 md:grid-cols-2">

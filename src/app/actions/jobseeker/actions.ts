@@ -6,6 +6,8 @@ import { authOptions, CustomSession } from '@/lib/auth';
 import {
   CreateExperienceSchema,
   CreateExperienceSchemaType,
+  SaveResumeLinkSchema,
+  SaveResumeLinkSchemaType,
   UpdateExperienceSchema,
   UpdateExperienceSchemaType,
 } from '@/lib/validators/experience.validator';
@@ -697,6 +699,51 @@ export const UpdateExperienceRange = async (expRange: ExperienceRange) => {
     };
   } catch (err) {
     console.error('Error updating experience range :', err);
+    return {
+      success: false,
+      error: 'Internal server error',
+    };
+  }
+};
+
+export const saveResume = async (data: SaveResumeLinkSchemaType) => {
+  try {
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user) {
+      return {
+        success: false,
+        error: 'Unauthorised',
+      };
+    }
+
+    const customSession = session as CustomSession;
+    const id = customSession.user.id;
+
+    const parsed = SaveResumeLinkSchema.safeParse(data);
+
+    if (!parsed.success) {
+      return {
+        success: false,
+        error: 'Bad request',
+      };
+    }
+
+    await prisma.jobSeeker.update({
+      where: {
+        id,
+      },
+      data: {
+        resume: data.resume,
+      },
+    });
+
+    return {
+      success: true,
+      message: 'Resume link saved successfully',
+    };
+  } catch (err) {
+    console.error('error saving resume link :', err);
     return {
       success: false,
       error: 'Internal server error',

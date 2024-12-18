@@ -33,4 +33,8 @@ export type UpdateExperienceRangeSchemaType = z.infer<
   typeof UpdateExperienceRangeSchema
 >;
 
+export const SaveResumeLinkSchema = z.object({
+  resume: z.string().url().min(1, 'Resume url is required'),
+});
 
+export type SaveResumeLinkSchemaType = z.infer<typeof SaveResumeLinkSchema>;
