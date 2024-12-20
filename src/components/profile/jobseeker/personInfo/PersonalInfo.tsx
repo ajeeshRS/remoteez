@@ -1,11 +1,11 @@
 'use client';
 import { MapPin, User } from 'lucide-react';
-
-import EditInfo from './EditInfo';
 import { useSelector } from 'react-redux';
-import { RootState } from '@/state/store';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
+
+import EditInfo from './EditInfo';
+import { RootState } from '@/state/store';
 import Loader from '@/components/ui/loader';
 
 interface Props {
@@ -30,11 +30,11 @@ export default function PersonalInfo({ refetch }: Props) {
       <div className="flex w-full flex-col items-start justify-between px-5 md:p-10">
         <p className="pb-10 font-bold text-pink-500"> Personal info</p>
 
-        {personalDetails?.avatar !== null ? (
+        {personalDetails?.avatar !== null && personalDetails?.avatar ? (
           <Image
             width={96}
             height={96}
-            src={personalDetails?.avatar as string}
+            src={personalDetails?.avatar}
             alt="avatar-img"
             className="h-24 w-24 object-cover"
           />
