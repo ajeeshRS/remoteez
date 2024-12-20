@@ -43,6 +43,7 @@ export default function AddExperience() {
     handleSubmit,
     setValue,
     watch,
+    reset,
     formState: { errors },
   } = useForm<CreateExperienceSchemaType>({
     resolver: zodResolver(CreateExperienceSchema),
@@ -64,6 +65,7 @@ export default function AddExperience() {
       if (response.success) {
         toast.success(response.message);
         fetchProfileDetails();
+        reset();
       } else {
         toast.error(response.error);
       }

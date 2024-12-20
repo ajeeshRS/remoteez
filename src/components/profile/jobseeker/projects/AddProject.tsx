@@ -32,6 +32,7 @@ export default function AddProject() {
     handleSubmit,
     setValue,
     watch,
+    reset,
     formState: { errors },
   } = useForm<ProjectSchemaType>({
     resolver: zodResolver(ProjectSchema),
@@ -79,6 +80,7 @@ export default function AddProject() {
       if (response.success) {
         toast.success(response.message);
         fetchProfileDetails();
+        reset();
       } else {
         toast.error(response.error);
       }
