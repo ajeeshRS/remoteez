@@ -18,13 +18,13 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '../../ui/select';
-import LocationSearchInput from '../../ui/locationSearchInput';
+} from '../../../ui/select';
+import LocationSearchInput from '../../../ui/locationSearchInput';
 import { Suggestion } from '@/app/signup/page';
 import {
   PersonalInfoSchema,
   PersonalInfoSchemaType,
-} from '@/lib/validators/profile.validator';
+} from '@/lib/validators/jobseeker/profile.validator';
 import { updateJobseekerInfo } from '@/app/actions/jobseeker/actions';
 import Loader from '@/components/ui/loader';
 import ErrorMessage from '@/components/ui/error-msg';
@@ -162,10 +162,11 @@ export default function EditInfo({ personalDetails, refetch }: Props) {
         }
       }}
     >
-      <SheetTrigger key={'9898'} className="my-4" asChild>
-        <button className="border border-pink-600 p-3 hover:border-transparent hover:bg-pink-600">
-          Edit profile
-        </button>
+      <SheetTrigger
+        className="my-4 border border-pink-600 p-3 hover:border-transparent hover:bg-pink-600"
+
+      >
+        Edit profile
       </SheetTrigger>
       <SheetContent
         side={'right'}

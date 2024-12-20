@@ -1,17 +1,7 @@
 'use client';
-
-import {
-  getJobseekerInfo,
-  UpdateExperienceRange,
-} from '@/app/actions/jobseeker/actions';
+import { getJobseekerInfo, saveResume } from '@/app/actions/jobseeker/actions';
+import ErrorMessage from '@/components/ui/error-msg';
 import Loader from '@/components/ui/loader';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import {
   Sheet,
   SheetContent,
@@ -20,41 +10,39 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import {
-  UpdateExperienceRangeSchema,
-  UpdateExperienceRangeSchemaType,
-} from '@/lib/validators/experience.validator';
+  SaveResumeLinkSchema,
+  SaveResumeLinkSchemaType,
+} from '@/lib/validators/jobseeker/experience.validator';
 import { setJobseekerProfile } from '@/state/profile/jobseekerSlice';
-import { AppDispatch } from '@/state/store';
-
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ExperienceRange } from '@prisma/client';
 import { Pen } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
 import { toast } from 'sonner';
-
+import { useDispatch, UseDispatch } from 'react-redux';
+import { AppDispatch } from '@/state/store';
 interface Props {
-  currentExp: ExperienceRange;
+  resumeLink: string;
 }
-
-export default function EditExperienceRange({ currentExp }: Props) {
+export default function SaveResumeLink({ resumeLink }: Props) {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
-
-  const { setValue, handleSubmit } = useForm<UpdateExperienceRangeSchemaType>({
-    resolver: zodResolver(UpdateExperienceRangeSchema),
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm<SaveResumeLinkSchemaType>({
+    resolver: zodResolver(SaveResumeLinkSchema),
     defaultValues: {
-      experienceRange: currentExp,
+      resume: '',
     },
   });
 
-  const handleEditExperienceRange = async (
-    data: UpdateExperienceRangeSchemaType,
-  ) => {
+  const handleEditExperience = async (data: SaveResumeLinkSchemaType) => {
     try {
       setLoading(true);
-      const response = await UpdateExperienceRange(data.experienceRange);
+      const response = await saveResume(data);
       if (response.success) {
         toast.success(response.message);
         fetchProfileDetails();
@@ -81,8 +69,8 @@ export default function EditExperienceRange({ currentExp }: Props) {
   };
 
   useEffect(() => {
-    setValue('experienceRange', currentExp);
-  }, [currentExp]);
+    setValue('resume', resumeLink);
+  }, [resumeLink]);
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -95,28 +83,22 @@ export default function EditExperienceRange({ currentExp }: Props) {
         className="h-full overflow-y-scroll border-l-pink-400/40 bg-black py-10"
       >
         <SheetHeader>
-          <SheetTitle className="text-white">Edit experience range</SheetTitle>
+          <SheetTitle className="text-white">Edit Resume doc link</SheetTitle>
         </SheetHeader>
         <form
-          onSubmit={handleSubmit((data) => handleEditExperienceRange(data))}
+          onSubmit={handleSubmit(handleEditExperience)}
           className="flex h-fit w-full flex-col overflow-y-scroll py-10"
         >
-          <Select
-            defaultValue={currentExp}
-            onValueChange={(value: ExperienceRange) =>
-              setValue('experienceRange', value, { shouldValidate: true })
-            }
-          >
-            <SelectTrigger className="my-2 h-10 w-full">
-              <SelectValue placeholder="Select experience range" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="ZERO_TO_ONE">0-1 yrs</SelectItem>
-              <SelectItem value="ONE_TO_THREE">1-3 yrs</SelectItem>
-              <SelectItem value="THREE_TO_SIX">3-6 yrs</SelectItem>
-              <SelectItem value="SIX_PLUS">6+ yrs</SelectItem>
-            </SelectContent>
-          </Select>
+          <div className="flex w-full flex-col">
+            <label className="my-1 py-2 text-sm text-neutral-200">URL</label>
+            <input
+              type="text"
+              {...register('resume')}
+              className="border border-pink-400/60 bg-transparent px-3 py-2 text-sm text-white outline-none"
+              placeholder={'Please enter you resume url'}
+            />
+            <ErrorMessage err={errors.resume} />
+          </div>
           <button
             type="submit"
             className="my-10 flex items-center justify-center bg-white py-2 hover:bg-neutral-300"

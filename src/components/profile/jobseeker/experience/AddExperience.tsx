@@ -17,11 +17,11 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '../../ui/select';
+} from '../../../ui/select';
 import {
   CreateExperienceSchema,
   CreateExperienceSchemaType,
-} from '@/lib/validators/experience.validator';
+} from '@/lib/validators/jobseeker/experience.validator';
 import {
   addExperience,
   getJobseekerInfo,

@@ -1,5 +1,4 @@
-'use client';
-import { editProject, getJobseekerInfo } from '@/app/actions/jobseeker/actions';
+import { addProject, getJobseekerInfo } from '@/app/actions/jobseeker/actions';
 import ErrorMessage from '@/components/ui/error-msg';
 import Loader from '@/components/ui/loader';
 import {
@@ -10,19 +9,19 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import {
-  ProjectEditSchema,
-  ProjectEditSchemaType,
-} from '@/lib/validators/project.validator';
+  ProjectSchema,
+  ProjectSchemaType,
+} from '@/lib/validators/jobseeker/project.validator';
 import { setJobseekerProfile } from '@/state/profile/jobseekerSlice';
 import { AppDispatch } from '@/state/store';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Pen, X } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { X } from 'lucide-react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { toast } from 'sonner';
-export default function EditProject({ project }: any) {
+export default function AddProject() {
   const [input, setInput] = useState('');
   const [skillSet, setSkillSet] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -33,10 +32,9 @@ export default function EditProject({ project }: any) {
     handleSubmit,
     setValue,
     watch,
-    reset,
     formState: { errors },
-  } = useForm<ProjectEditSchemaType>({
-    resolver: zodResolver(ProjectEditSchema),
+  } = useForm<ProjectSchemaType>({
+    resolver: zodResolver(ProjectSchema),
     defaultValues: {
       title: '',
       description: '',
@@ -74,11 +72,10 @@ export default function EditProject({ project }: any) {
     setSkillSet((prev) => prev.filter((sk) => sk !== skill));
   };
 
-  const handleEditProject = async (data: ProjectEditSchemaType) => {
+  const handleAddProject = async (data: ProjectSchemaType) => {
     try {
       setLoading(true);
-      const response = await editProject(data, project.id);
-
+      const response = await addProject(data);
       if (response.success) {
         toast.success(response.message);
         fetchProfileDetails();
@@ -87,23 +84,10 @@ export default function EditProject({ project }: any) {
       }
     } catch (error) {
       console.error(error);
-      toast.error('Some error occured!');
     } finally {
       setLoading(false);
     }
   };
-  useEffect(() => {
-    if (project) {
-      reset({
-        title: project?.title || '',
-        description: project?.description || '',
-        githubURL: project?.githubURL || '',
-        deployedLink: project?.deployedLink || '',
-        skills: project?.skills || [],
-      });
-      setSkillSet(project?.skills);
-    }
-  }, [project]);
 
   const fetchProfileDetails = async () => {
     try {
@@ -115,17 +99,20 @@ export default function EditProject({ project }: any) {
       console.log(err);
     }
   };
+
   return (
     <Sheet>
-      <SheetTrigger className="mx-1 bg-pink-400 p-1 hover:bg-pink-500">
-        <Pen className="h-4 w-4" />
+      <SheetTrigger asChild>
+        <button className="border border-pink-600 p-3 hover:border-transparent hover:bg-pink-600">
+          Add new project
+        </button>
       </SheetTrigger>
       <SheetContent
         side={'right'}
         className="h-full overflow-y-scroll border-l-pink-400/40 bg-black py-10"
       >
         <SheetHeader>
-          <SheetTitle className="text-white">Edit project</SheetTitle>
+          <SheetTitle className="text-white">Add project</SheetTitle>
         </SheetHeader>
         <form
           onKeyDown={(e) => {
@@ -133,7 +120,7 @@ export default function EditProject({ project }: any) {
               e.preventDefault();
             }
           }}
-          onSubmit={handleSubmit((data) => handleEditProject(data))}
+          onSubmit={handleSubmit((data) => handleAddProject(data))}
           className="flex h-fit w-full flex-col overflow-y-scroll py-10"
         >
           <div className="flex w-full flex-col">
@@ -213,7 +200,7 @@ export default function EditProject({ project }: any) {
             type="submit"
             className="my-10 flex items-center justify-center bg-white py-2 hover:bg-neutral-300"
           >
-            {loading ? <Loader /> : 'Update'}
+            {loading ? <Loader /> : 'Add'}
           </button>
         </form>
       </SheetContent>

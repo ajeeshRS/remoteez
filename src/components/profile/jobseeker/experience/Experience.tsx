@@ -65,11 +65,11 @@ export default function Experience() {
             <EditExperienceRange currentExp={experience} />
           </div>
         </div>
-        <div className="my-10 flex flex-col items-start">
+        <div className="my-10 flex w-full flex-col items-start">
           <p>Resume link</p>
-          <div className="flex items-center">
+          <div className="flex w-full items-center">
             <p
-              className="cursor-pointer py-2 text-neutral-300 hover:underline"
+              className="mr-2 h-fit w-5/6 cursor-pointer overflow-scroll text-nowrap px-1 py-2 text-neutral-300 hover:underline"
               onClick={() => router.push(resumeLink as string)}
             >
               {resumeLink !== null ? resumeLink : 'not added yet'}

@@ -1,5 +1,5 @@
 'use client';
-import { getJobseekerInfo, saveResume } from '@/app/actions/jobseeker/actions';
+import { addOrEditLinks } from '@/app/actions/jobseeker/actions';
 import ErrorMessage from '@/components/ui/error-msg';
 import Loader from '@/components/ui/loader';
 import {
@@ -10,69 +10,62 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import {
-  SaveResumeLinkSchema,
-  SaveResumeLinkSchemaType,
-} from '@/lib/validators/experience.validator';
-import { setJobseekerProfile } from '@/state/profile/jobseekerSlice';
+  LinkUpdateSchema,
+  LinkUpdateSchemaType,
+} from '@/lib/validators/jobseeker/profile.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Pen } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import { useDispatch, UseDispatch } from 'react-redux';
-import { AppDispatch } from '@/state/store';
+
 interface Props {
-  resumeLink: string;
+  link: {
+    key: string;
+    value: string;
+  };
 }
-export default function SaveResumeLink({ resumeLink }: Props) {
+
+export default function EditLink({ link }: Props) {
   const [loading, setLoading] = useState(false);
-  const dispatch = useDispatch<AppDispatch>();
+
   const {
     register,
-    handleSubmit,
     setValue,
+    handleSubmit,
     formState: { errors },
-  } = useForm<SaveResumeLinkSchemaType>({
-    resolver: zodResolver(SaveResumeLinkSchema),
+  } = useForm<LinkUpdateSchemaType>({
+    resolver: zodResolver(LinkUpdateSchema),
     defaultValues: {
-      resume: '',
+      title: '',
+      link: '',
     },
   });
 
-  const handleEditExperience = async (data: SaveResumeLinkSchemaType) => {
+  const handleSavingLink = async (data: LinkUpdateSchemaType) => {
     try {
       setLoading(true);
-      const response = await saveResume(data);
+      const response = await addOrEditLinks(data);
       if (response.success) {
         toast.success(response.message);
-        fetchProfileDetails();
       } else {
         toast.error(response.error);
       }
     } catch (error) {
-      toast.error('Some error occured');
       console.log(error);
+      toast.error('Some error occured');
     } finally {
       setLoading(false);
     }
   };
 
-  const fetchProfileDetails = async () => {
-    try {
-      const { jobSeekerProfile } = await getJobseekerInfo();
-      if (jobSeekerProfile) {
-        dispatch(setJobseekerProfile(jobSeekerProfile));
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   useEffect(() => {
-    setValue('resume', resumeLink);
-  }, [resumeLink]);
+    setValue('title', link.key);
+    setValue('link', link.value);
+  }, [link]);
+
   return (
-    <Sheet>
+    <Sheet key={link.key}>
       <SheetTrigger asChild>
         <span className="mx-2 cursor-pointer bg-pink-400 p-1 hover:bg-pink-500">
           <Pen className="h-4 w-4" />
@@ -83,21 +76,22 @@ export default function SaveResumeLink({ resumeLink }: Props) {
         className="h-full overflow-y-scroll border-l-pink-400/40 bg-black py-10"
       >
         <SheetHeader>
-          <SheetTitle className="text-white">Edit Resume doc link</SheetTitle>
+          <SheetTitle className="text-white">Edit {link.key}</SheetTitle>
         </SheetHeader>
         <form
-          onSubmit={handleSubmit(handleEditExperience)}
+          onSubmit={handleSubmit((data) => handleSavingLink(data))}
           className="flex h-fit w-full flex-col overflow-y-scroll py-10"
         >
           <div className="flex w-full flex-col">
             <label className="my-1 py-2 text-sm text-neutral-200">URL</label>
             <input
               type="text"
-              {...register('resume')}
+              {...register('link')}
               className="border border-pink-400/60 bg-transparent px-3 py-2 text-sm text-white outline-none"
-              placeholder={'Please enter you resume url'}
+              placeholder={`enter your ${link.key} url`}
+              defaultValue={link.value ? link.value : ''}
             />
-            <ErrorMessage err={errors.resume} />
+            <ErrorMessage err={errors.link} />
           </div>
           <button
             type="submit"

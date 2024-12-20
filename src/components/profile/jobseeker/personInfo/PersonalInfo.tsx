@@ -36,7 +36,7 @@ export default function PersonalInfo({ refetch }: Props) {
             height={96}
             src={personalDetails?.avatar as string}
             alt="avatar-img"
-            className="h-24 w-24 rounded-full object-cover"
+            className="h-24 w-24 object-cover"
           />
         ) : (
           <p className="flex h-24 w-24 items-center justify-center rounded-full bg-pink-600 text-white">

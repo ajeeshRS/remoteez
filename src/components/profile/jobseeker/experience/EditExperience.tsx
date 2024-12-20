@@ -18,11 +18,11 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '../../ui/select';
+} from '../../../ui/select';
 import {
   UpdateExperienceSchema,
   UpdateExperienceSchemaType,
-} from '@/lib/validators/experience.validator';
+} from '@/lib/validators/jobseeker/experience.validator';
 import Loader from '@/components/ui/loader';
 import { extractDates } from '@/lib/utils';
 import {

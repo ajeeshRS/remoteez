@@ -44,6 +44,8 @@ export const SKILLS = 'Skill';
 export const PROJECTS = 'Projects';
 export const EXPERIENCE = 'Experience';
 export const LINKS = 'Links';
+export const SECURITY = 'Security';
+export const JOBS = 'Jobs';
 
 export const ZERO_TO_ONE = '0-1 years';
 export const ONE_TO_THREE = '1-3 years';
