@@ -162,10 +162,7 @@ export default function EditInfo({ personalDetails, refetch }: Props) {
         }
       }}
     >
-      <SheetTrigger
-        className="my-4 border border-pink-600 p-3 hover:border-transparent hover:bg-pink-600"
-
-      >
+      <SheetTrigger className="my-4 border border-pink-600 p-3 hover:border-transparent hover:bg-pink-600">
         Edit profile
       </SheetTrigger>
       <SheetContent

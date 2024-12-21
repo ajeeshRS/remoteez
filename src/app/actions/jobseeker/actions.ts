@@ -28,7 +28,7 @@ import { uploadToCloudinary } from '../actions';
 import {
   ChangeCurrentPasswordSchema,
   ChangeCurrentPasswordSchemaType,
-} from '@/lib/validators/jobseeker/security.validator';
+} from '@/lib/validators/auth.validator';
 
 const prisma = new PrismaClient();
 

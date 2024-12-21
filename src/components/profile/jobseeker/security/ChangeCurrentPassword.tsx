@@ -1,4 +1,5 @@
 'use client';
+import { changeEmployerCurrentPassword } from '@/app/actions/employer/actions';
 import { changeCurrentPassword } from '@/app/actions/jobseeker/actions';
 import ErrorMessage from '@/components/ui/error-msg';
 import Loader from '@/components/ui/loader';
@@ -9,17 +10,21 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
+import { EMPLOYER, JOBSEEKER } from '@/lib/constants/app.constants';
 import {
   ChangeCurrentPasswordSchema,
   ChangeCurrentPasswordSchemaType,
-} from '@/lib/validators/jobseeker/security.validator';
+} from '@/lib/validators/auth.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
 export default function ChangeCurrentPassword() {
   const [loading, setLoading] = useState(false);
+  const { data: session } = useSession();
+  const role = session?.user.role;
   const {
     register,
     handleSubmit,
@@ -39,12 +44,20 @@ export default function ChangeCurrentPassword() {
   ) => {
     try {
       setLoading(true);
-      const response = await changeCurrentPassword(data);
-      if (response.success) {
+      let response;
+      if (role === JOBSEEKER) {
+        response = await changeCurrentPassword(data);
+      }
+
+      if (role === EMPLOYER) {
+        response = await changeEmployerCurrentPassword(data);
+      }
+
+      if (response?.success) {
         toast.success(response.message);
         reset();
       } else {
-        toast.error(response.error);
+        toast.error(response?.error);
       }
     } catch (error) {
       console.error('error in changing password: ', error);
@@ -53,6 +66,7 @@ export default function ChangeCurrentPassword() {
       setLoading(false);
     }
   };
+
   return (
     <Sheet>
       <SheetTrigger className="my-4 border border-pink-600 p-3 hover:border-transparent hover:bg-pink-600">

@@ -27,13 +27,21 @@ export default function EmployerInfo() {
         )}
         <div className="flex flex-col items-start">
           <h3 className="my-2 font-bold">{employerDetails?.name}</h3>
-          <h2 className="my-2 font-semibold">{employerDetails?.companyName}</h2>
         </div>
-        <p className="text-base">{employerDetails?.role}</p>
+        <div className="my-2">
+          <p className="text-sm text-neutral-400">Company</p>
+          <h4 className="my-2 font-semibold">{employerDetails?.companyName}</h4>
+        </div>
+        <div className="my-2">
+          <p className="text-sm text-neutral-400">Role</p>
+          <h4 className="my-2">{employerDetails?.role}</h4>
+        </div>
+
         <p className="my-3 flex items-center text-sm">
           <MapPin className="mr-2 h-4 w-4" />
           {employerDetails?.companyLocation}
         </p>
+
         <div className="my-2">
           <p className="text-sm text-neutral-400">Email</p>
           <p className="my-1 text-sm">{employerDetails?.email}</p>

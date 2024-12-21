@@ -13,6 +13,7 @@ import {
   EMPLOYER,
   EMPLOYER_INFO,
   EXPERIENCE,
+  JOBS,
   JOBSEEKER,
   LINKS,
   PERSONAL_INFO,
@@ -29,6 +30,7 @@ import Security from '@/components/profile/jobseeker/security/Security';
 import { getEmployerInfo } from '../actions/employer/actions';
 import { setEmployerProfile } from '@/state/profile/employerSlice';
 import EmployerInfo from '@/components/profile/employer/EmployerInfo';
+import Jobs from '@/components/profile/employer/Jobs';
 
 export default function Page() {
   const [activeTab, setActiveTab] = useState<string>('');
@@ -78,6 +80,8 @@ export default function Page() {
         return <PersonalInfo refetch={fetchProfileDetails} />;
       case EMPLOYER_INFO:
         return <EmployerInfo />;
+      case JOBS:
+        return <Jobs />;
       case SKILLS:
         return <Skills />;
       case PROJECTS:
