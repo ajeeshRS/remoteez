@@ -3,12 +3,18 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { IoArrowBack } from 'react-icons/io5';
 import {
+  EMPLOYER,
+  EMPLOYER_INFO,
   EXPERIENCE,
+  JOBS,
+  JOBSEEKER,
   LINKS,
   PERSONAL_INFO,
   PROJECTS,
+  SECURITY,
   SKILLS,
 } from '@/lib/constants/app.constants';
+import { useSession } from 'next-auth/react';
 
 interface Props {
   active: string;
@@ -16,7 +22,15 @@ interface Props {
 }
 export default function MobileNavProfile({ active, setActive }: Props) {
   const router = useRouter();
-  const tabArray = [PERSONAL_INFO, SKILLS, PROJECTS, EXPERIENCE, LINKS];
+  const { data: session } = useSession();
+  const setTabArray =
+    session?.user.role === JOBSEEKER
+      ? [PERSONAL_INFO, SKILLS, PROJECTS, EXPERIENCE, LINKS]
+      : session?.user.role === EMPLOYER
+        ? [EMPLOYER_INFO, JOBS, SECURITY]
+        : [];
+
+  const tabArray = setTabArray;
 
   const activeIndex = tabArray.indexOf(active);
   const isFirstTab = activeIndex === 0;
