@@ -1,3 +1,5 @@
+import { Job, Role, SocialLinks } from '@prisma/client';
+
 export interface Msg {
   message: string;
 }
@@ -45,4 +47,19 @@ export interface PreviousCompany {
   id: string | null;
   role: string | null;
   jobType: 'FULL_TIME' | 'PART_TIME' | 'INTERNSHIP' | 'FREELANCE' | null;
+}
+
+export interface EmployerProfile {
+  id: string;
+  name: string;
+  email: string;
+  role: Role | null;
+  logo: string | null;
+  companyName: string | null;
+  foundedYear: number | null;
+  companyLocation: string;
+  teamSize: number | null;
+  socialLinks: SocialLinks | null;
+  description: string | null;
+  jobs: Job[];
 }

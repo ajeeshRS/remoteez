@@ -1,16 +1,27 @@
 'use client';
 import {
   EMPLOYER,
+  EMPLOYER_INFO,
+  employerSidebarItems,
   EXPERIENCE,
   JOBS,
   JOBSEEKER,
+  jobseekerSidebarItems,
   LINKS,
   PERSONAL_INFO,
   PROJECTS,
   SECURITY,
   SKILLS,
 } from '@/lib/constants/app.constants';
-import { FolderGit, Link, ListCheck, Lock, StepBack, User } from 'lucide-react';
+import {
+  FolderGit,
+  Link,
+  List,
+  ListCheck,
+  Lock,
+  StepBack,
+  User,
+} from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { IoArrowBack } from 'react-icons/io5';
@@ -32,70 +43,57 @@ export default function Sidebar({ active, setActive }: Props) {
         />
         <h3 className="px-3 text-2xl">Profile</h3>
       </div>
-      <ul
-        className={`${session?.user.role === EMPLOYER && 'hidden'} items flex w-full flex-col px-5 py-10 text-white`}
-      >
-        <li
-          className={`flex cursor-pointer items-center px-2 py-3 hover:bg-pink-300/10 ${active == PERSONAL_INFO && 'border-r-2 border-r-pink-700 bg-pink-300/10'}`}
-          onClick={() => setActive(PERSONAL_INFO)}
-        >
-          <User className="mr-2 h-4 w-4" />
-          personal info
-        </li>
-        <li
-          className={`flex cursor-pointer items-center px-2 py-3 hover:bg-pink-300/10 ${active == SKILLS && 'border-r-2 border-r-pink-700 bg-pink-300/10'}`}
-          onClick={() => setActive(SKILLS)}
-        >
-          <ListCheck className="mr-2 h-4 w-4" />
-          skills
-        </li>
-        <li
-          className={`flex cursor-pointer items-center px-2 py-3 hover:bg-pink-300/10 ${active == PROJECTS && 'border-r-2 border-r-pink-700 bg-pink-300/10'}`}
-          onClick={() => setActive(PROJECTS)}
-        >
-          <FolderGit className="mr-2 h-4 w-4" />
-          projects
-        </li>
-        <li
-          className={`flex cursor-pointer items-center px-2 py-3 hover:bg-pink-300/10 ${active == EXPERIENCE && 'border-r-2 border-r-pink-700 bg-pink-300/10'}`}
-          onClick={() => setActive(EXPERIENCE)}
-        >
-          <StepBack className="mr-2 h-4 w-4" />
-          Experience
-        </li>
-        <li
-          className={`flex cursor-pointer items-center px-2 py-3 hover:bg-pink-300/10 ${active == LINKS && 'border-r-2 border-r-pink-700 bg-pink-300/10'}`}
-          onClick={() => setActive(LINKS)}
-        >
-          <Link className="mr-2 h-4 w-4" />
-          Links
-        </li>
-        <li
-          className={`flex cursor-pointer items-center px-2 py-3 hover:bg-pink-300/10 ${active == SECURITY && 'border-r-2 border-r-pink-700 bg-pink-300/10'}`}
-          onClick={() => setActive(SECURITY)}
-        >
-          <Lock className="mr-2 h-4 w-4" />
-          Security
-        </li>
-      </ul>
-      <ul
-        className={`${session?.user.role === JOBSEEKER && 'hidden'} items flex w-full flex-col px-5 py-10 text-white`}
-      >
-        <li
-          className={`flex cursor-pointer items-center px-2 py-3 hover:bg-pink-300/10 ${active == PERSONAL_INFO && 'border-r-2 border-r-pink-700 bg-pink-300/10'}`}
-          onClick={() => setActive(PERSONAL_INFO)}
-        >
-          <User className="mr-2 h-4 w-4" />
-          personal info
-        </li>
-        <li
-          className={`flex cursor-pointer items-center px-2 py-3 hover:bg-pink-300/10 ${active == LINKS && 'border-r-2 border-r-pink-700 bg-pink-300/10'}`}
-          onClick={() => setActive(JOBS)}
-        >
-          <Link className="mr-2 h-4 w-4" />
-          Jobs
-        </li>
-      </ul>
+      {session?.user.role === JOBSEEKER && (
+        <ul className={`items flex w-full flex-col px-5 py-10 text-white`}>
+          {jobseekerSidebarItems.map((item, i) => (
+            <li
+              key={i}
+              className={`flex cursor-pointer items-center px-2 py-3 hover:bg-pink-300/10 ${active == item.active && 'border-r-2 border-r-pink-700 bg-pink-300/10'}`}
+              onClick={() => setActive(item.active)}
+            >
+              {renderIcons(item.active)}
+              {item.title}
+            </li>
+          ))}
+        </ul>
+      )}
+      {session?.user.role === EMPLOYER && (
+        <ul className={`items flex w-full flex-col px-5 py-10 text-white`}>
+          {employerSidebarItems.map((item, i) => (
+            <li
+              key={i}
+              className={`flex cursor-pointer items-center px-2 py-3 hover:bg-pink-300/10 ${active == item.active && 'border-r-2 border-r-pink-700 bg-pink-300/10'}`}
+              onClick={() => setActive(item.active)}
+            >
+              {renderIcons(item.active)}
+              {item.title}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
+
+const renderIcons = (value: string) => {
+  switch (value) {
+    case PERSONAL_INFO:
+      return <User className="mr-2 h-4 w-4" />;
+    case EMPLOYER_INFO:
+      return <User className="mr-2 h-4 w-4" />;
+    case SKILLS:
+      return <ListCheck className="mr-2 h-4 w-4" />;
+    case PROJECTS:
+      return <FolderGit className="mr-2 h-4 w-4" />;
+    case EXPERIENCE:
+      return <StepBack className="mr-2 h-4 w-4" />;
+    case LINKS:
+      return <Link className="mr-2 h-4 w-4" />;
+    case SECURITY:
+      return <Lock className="mr-2 h-4 w-4" />;
+    case JOBS:
+      return <List className="mr-2 h-4 w-4" />;
+    default:
+      return null;
+  }
+};

@@ -10,7 +10,10 @@ import Projects from '@/components/profile/jobseeker/projects/Projects';
 import Sidebar from '@/components/profile/Sidebar';
 import Skills from '@/components/profile/jobseeker/Skills';
 import {
+  EMPLOYER,
+  EMPLOYER_INFO,
   EXPERIENCE,
+  JOBSEEKER,
   LINKS,
   PERSONAL_INFO,
   PROJECTS,
@@ -23,9 +26,12 @@ import Loader from '@/components/ui/loader';
 import { setJobseekerProfile } from '@/state/profile/jobseekerSlice';
 import { AppDispatch } from '@/state/store';
 import Security from '@/components/profile/jobseeker/security/Security';
+import { getEmployerInfo } from '../actions/employer/actions';
+import { setEmployerProfile } from '@/state/profile/employerSlice';
+import EmployerInfo from '@/components/profile/employer/EmployerInfo';
 
 export default function Page() {
-  const [activeTab, setActiveTab] = useState<string>('PersonalInfo');
+  const [activeTab, setActiveTab] = useState<string>('');
   const [loading, setLoading] = useState(false);
   const { data: session } = useSession();
 
@@ -34,9 +40,18 @@ export default function Page() {
   const fetchProfileDetails = async () => {
     try {
       setLoading(true);
-      const { jobSeekerProfile } = await getJobseekerInfo();
-      if (jobSeekerProfile) {
-        dispatch(setJobseekerProfile(jobSeekerProfile));
+
+      if (session?.user.role === JOBSEEKER) {
+        const { jobSeekerProfile } = await getJobseekerInfo();
+        if (jobSeekerProfile) {
+          dispatch(setJobseekerProfile(jobSeekerProfile));
+        }
+        
+      } else if (session?.user.role === EMPLOYER) {
+        const { employerProfile } = await getEmployerInfo();
+        if (employerProfile) {
+          dispatch(setEmployerProfile(employerProfile));
+        }
       }
     } catch (err) {
       console.log(err);
@@ -49,10 +64,20 @@ export default function Page() {
     fetchProfileDetails();
   }, [session]);
 
+  useEffect(() => {
+    if (session?.user.role === JOBSEEKER) {
+      setActiveTab('PersonalInfo');
+    } else if (session?.user.role === EMPLOYER) {
+      setActiveTab('EmployerInfo');
+    }
+  }, [session]);
+
   const renderActiveTab = () => {
     switch (activeTab) {
       case PERSONAL_INFO:
         return <PersonalInfo refetch={fetchProfileDetails} />;
+      case EMPLOYER_INFO:
+        return <EmployerInfo />;
       case SKILLS:
         return <Skills />;
       case PROJECTS:
@@ -64,7 +89,7 @@ export default function Page() {
       case SECURITY:
         return <Security />;
       default:
-        return <PersonalInfo refetch={fetchProfileDetails} />;
+        return null;
     }
   };
 

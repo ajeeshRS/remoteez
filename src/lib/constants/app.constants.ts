@@ -40,6 +40,7 @@ export const faqs = [
 ];
 
 export const PERSONAL_INFO = 'PersonalInfo';
+export const EMPLOYER_INFO = 'EmployerInfo';
 export const SKILLS = 'Skill';
 export const PROJECTS = 'Projects';
 export const EXPERIENCE = 'Experience';
@@ -51,3 +52,18 @@ export const ZERO_TO_ONE = '0-1 years';
 export const ONE_TO_THREE = '1-3 years';
 export const THREE_TO_SIX = '2-6 years';
 export const SIX_PLUS = '6+ years';
+
+export const jobseekerSidebarItems = [
+  { title: 'personal info', active: PERSONAL_INFO },
+  { title: 'skills', active: SKILLS },
+  { title: 'projects', active: PROJECTS },
+  { title: 'experience', active: EXPERIENCE },
+  { title: 'links', active: LINKS },
+  { title: 'security', active: SECURITY },
+];
+
+export const employerSidebarItems = [
+  { title: 'employer info', active: EMPLOYER_INFO },
+  { title: 'jobs', active: JOBS },
+  { title: 'security', active: SECURITY },
+];
