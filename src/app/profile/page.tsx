@@ -31,11 +31,13 @@ import { getEmployerInfo } from '../actions/employer/actions';
 import { setEmployerProfile } from '@/state/profile/employerSlice';
 import EmployerInfo from '@/components/profile/employer/EmployerInfo';
 import Jobs from '@/components/profile/employer/Jobs';
+import { useRouter } from 'next/navigation';
 
 export default function Page() {
   const [activeTab, setActiveTab] = useState<string>('');
   const [loading, setLoading] = useState(false);
-  const { data: session } = useSession();
+  const router = useRouter();
+  const { data: session, status } = useSession();
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -48,7 +50,6 @@ export default function Page() {
         if (jobSeekerProfile) {
           dispatch(setJobseekerProfile(jobSeekerProfile));
         }
-        
       } else if (session?.user.role === EMPLOYER) {
         const { employerProfile } = await getEmployerInfo();
         if (employerProfile) {
@@ -97,6 +98,10 @@ export default function Page() {
     }
   };
 
+  if (!session?.user) {
+    router.push('/');
+  }
+
   if (loading) {
     return (
       <div className="flex h-[90vh] w-full items-center justify-center bg-black">
@@ -104,7 +109,6 @@ export default function Page() {
       </div>
     );
   }
-
   return (
     <div className="flex min-h-[90vh] w-full flex-col items-center justify-center md:flex-row">
       <Sidebar active={activeTab} setActive={setActiveTab} />
