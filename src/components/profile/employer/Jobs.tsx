@@ -20,7 +20,7 @@ export default function Jobs() {
               </div>
               <div className="flex flex-col">
                 <div className="flex items-center justify-between">
-                  <div className="my-2 flex w-full items-center justify-between md:w-1/2">
+                  <div className="my-2 flex w-full items-center justify-between ">
                     <p>{`${job.currency === 'USD' ? '$' : job.currency === 'INR' && '₹'}${job.minSalary / 1000}k-${job.maxSalary / 1000}k`}</p>
                     <p className="bg-pink-600/20 px-2 py-1">
                       {job.jobType.split('_').join(' ').toLowerCase()}

@@ -7,6 +7,11 @@ import {
   ChangeCurrentPasswordSchema,
   ChangeCurrentPasswordSchemaType,
 } from '@/lib/validators/auth.validator';
+import {
+  EmployerInfoUpdateSchema,
+  EmployerInfoUpdateSchemaType,
+} from '@/lib/validators/employer/profile.validator';
+import { uploadToCloudinary } from '../actions';
 const prisma = new PrismaClient();
 
 export const getEmployerInfo = async () => {
@@ -119,6 +124,91 @@ export const changeEmployerCurrentPassword = async (
     };
   } catch (err) {
     console.error('error updating password :', err);
+    return {
+      success: false,
+      error: 'Internal server error',
+    };
+  }
+};
+
+export const updateEmployerInfo = async (
+  data: EmployerInfoUpdateSchemaType,
+) => {
+  try {
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user) {
+      return {
+        success: false,
+        error: 'Unauthorized',
+      };
+    }
+
+    const customSession = session as CustomSession;
+    const id = customSession.user.id;
+    const parsed = EmployerInfoUpdateSchema.safeParse(data);
+
+    if (!parsed.success) {
+      console.log(parsed.error);
+      return {
+        success: false,
+        error: 'failed to parse object',
+      };
+    }
+
+    let logoUrl;
+    console.log(data.logo)
+    if (data.logo instanceof File) {
+      console.log('cloudinary point')
+      logoUrl = await uploadToCloudinary(data.logo);
+      console.log('updated company logo url : ', logoUrl);
+    }
+
+    const user = await prisma.employer.findUnique({
+      where: {
+        id,
+      },
+      omit: {
+        password: true,
+      },
+    });
+
+    if (!user) {
+      return {
+        success: false,
+        error: 'user not found',
+      };
+    }
+
+    const changedData = Object.fromEntries(
+      Object.entries(parsed.data).filter(([key, value]) => {
+        return value !== user[key as keyof typeof user];
+      }),
+    );
+
+    console.log(changedData);
+
+    if (Object.keys(changedData).length === 0 && logoUrl === user.logo) {
+      console.log('No changes detected');
+      return {
+        success: false,
+        error: 'no changes applied',
+      };
+    }
+
+    await prisma.employer.update({
+      where: {
+        id,
+      },
+      data: { ...changedData, logo: logoUrl },
+    });
+
+    return {
+      success: true,
+      message: 'Profile updated',
+    };
+  } catch (err) {
+    console.error(err);
     return {
       success: false,
       error: 'Internal server error',

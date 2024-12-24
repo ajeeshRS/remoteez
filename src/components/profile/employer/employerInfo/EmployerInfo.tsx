@@ -2,11 +2,17 @@ import { RootState } from '@/state/store';
 import { MapPin, User } from 'lucide-react';
 import Image from 'next/image';
 import { useSelector } from 'react-redux';
+import EditEmployerInfo from './EditEmployerInfo';
+import { useEffect } from 'react';
 
 export default function EmployerInfo() {
   const employerDetails = useSelector(
     (state: RootState) => state.employerReducer.employer,
   );
+
+  useEffect(() => {
+    console.log(employerDetails);
+  }, [employerDetails]);
   return (
     <div className="h-[90vh] w-full overflow-y-scroll p-5 px-5 text-white md:px-20">
       <div className="flex w-full flex-col items-start justify-between px-5 md:p-10">
@@ -29,23 +35,40 @@ export default function EmployerInfo() {
           <h3 className="my-2 font-bold">{employerDetails?.name}</h3>
         </div>
         <div className="my-2">
-          <p className="text-sm text-neutral-400">Company</p>
-          <h4 className="my-2 font-semibold">{employerDetails?.companyName}</h4>
-        </div>
-        <div className="my-2">
-          <p className="text-sm text-neutral-400">Role</p>
-          <h4 className="my-2">{employerDetails?.role}</h4>
-        </div>
-
-        <p className="my-3 flex items-center text-sm">
-          <MapPin className="mr-2 h-4 w-4" />
-          {employerDetails?.companyLocation}
-        </p>
-
-        <div className="my-2">
           <p className="text-sm text-neutral-400">Email</p>
           <p className="my-1 text-sm">{employerDetails?.email}</p>
         </div>
+        <div className="my-2">
+          <p className="text-sm text-neutral-400">Role</p>
+          <p className="my-2 text-sm">{employerDetails?.role}</p>
+        </div>
+        <div className="my-2">
+          <p className="text-sm text-neutral-400">Company</p>
+          <p className="my-2 text-sm">{employerDetails?.companyName}</p>
+        </div>
+        <div className="my-2">
+          <p className="text-sm text-neutral-400">Company founded year</p>
+          <p className="my-2 text-sm">
+            {employerDetails?.foundedYear
+              ? employerDetails.foundedYear
+              : 'not added yet'}
+          </p>
+        </div>
+        <div className="my-2">
+          <p className="text-sm text-neutral-400">Team size</p>
+          <p className="my-2 text-sm">
+            {employerDetails?.teamSize
+              ? employerDetails.teamSize
+              : 'not added yet'}
+          </p>
+        </div>
+        <p className="my-3 flex items-center text-sm">
+          <MapPin className="mr-2 h-4 w-4" />
+          {employerDetails?.companyLocation
+            ? employerDetails.companyLocation
+            : 'not added yet'}
+        </p>
+
         <div className="my-2">
           <p className="text-sm text-neutral-400">Description</p>
           <p className="my-1 text-sm">
@@ -54,6 +77,7 @@ export default function EmployerInfo() {
               : 'Not added yet.'}
           </p>
         </div>
+        <EditEmployerInfo employerDetails={employerDetails} />
       </div>
     </div>
   );

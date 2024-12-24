@@ -29,7 +29,7 @@ import { AppDispatch } from '@/state/store';
 import Security from '@/components/profile/jobseeker/security/Security';
 import { getEmployerInfo } from '../actions/employer/actions';
 import { setEmployerProfile } from '@/state/profile/employerSlice';
-import EmployerInfo from '@/components/profile/employer/EmployerInfo';
+import EmployerInfo from '@/components/profile/employer/employerInfo/EmployerInfo';
 import Jobs from '@/components/profile/employer/Jobs';
 import { useRouter } from 'next/navigation';
 
@@ -98,7 +98,7 @@ export default function Page() {
     }
   };
 
-  if (!session?.user) {
+  if (status !== 'loading' && !session?.user) {
     router.push('/');
   }
 
