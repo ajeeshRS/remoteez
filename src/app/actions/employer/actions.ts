@@ -12,6 +12,10 @@ import {
   EmployerInfoUpdateSchemaType,
 } from '@/lib/validators/employer/profile.validator';
 import { uploadToCloudinary } from '../actions';
+import {
+  CreateJobSchema,
+  CreateJobSchemaType,
+} from '@/lib/validators/employer/jobs.validator';
 const prisma = new PrismaClient();
 
 export const getEmployerInfo = async () => {
@@ -157,9 +161,9 @@ export const updateEmployerInfo = async (
     }
 
     let logoUrl;
-    console.log(data.logo)
+    console.log(data.logo);
     if (data.logo instanceof File) {
-      console.log('cloudinary point')
+      console.log('cloudinary point');
       logoUrl = await uploadToCloudinary(data.logo);
       console.log('updated company logo url : ', logoUrl);
     }
@@ -209,6 +213,107 @@ export const updateEmployerInfo = async (
     };
   } catch (err) {
     console.error(err);
+    return {
+      success: false,
+      error: 'Internal server error',
+    };
+  }
+};
+
+export const createJob = async (data: CreateJobSchemaType) => {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user) {
+      return {
+        success: false,
+        error: 'Unauthorised',
+      };
+    }
+
+    const customSession = session as CustomSession;
+    const id = customSession.user.id;
+
+    const parsed = CreateJobSchema.safeParse(data);
+    if (!parsed.success) {
+      return {
+        success: false,
+        error: 'Bad request',
+      };
+    }
+
+    const user = await prisma.employer.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        companyName: true,
+        companyLocation: true,
+        logo: true,
+        email: true,
+        description: true,
+      },
+    });
+
+    const completeData = { ...parsed.data, ...user };
+
+    console.log('completeData : ', completeData);
+
+    await prisma.job.create({
+      data: {
+        employerId: id,
+        title: completeData.title,
+        minExperience: parseInt(completeData.minExp),
+        maxExperience: parseInt(completeData.maxExp),
+        minSalary: parseInt(completeData.minSalary),
+        maxSalary: parseInt(completeData.maxSalary),
+        description: completeData.jobDesc,
+        companyName: completeData.companyName as string,
+        companyLogo: completeData.logo as string,
+        companyDescription: completeData.description as string,
+        companyEmail: completeData.email as string,
+        jobType: completeData.jobType,
+        currency: completeData.currency,
+        link: completeData.link,
+      },
+    });
+
+    return {
+      success: true,
+      message: 'Job created successfully',
+    };
+  } catch (err) {
+    console.error('error in creating job : ', err);
+    return {
+      success: false,
+      error: 'Internal server error',
+    };
+  }
+};
+
+export const getJobs = async () => {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user) {
+      return {
+        success: false,
+        error: 'Unauthorised',
+      };
+    }
+
+    const customSession = session as CustomSession;
+    const id = customSession.user.id;
+
+    const jobs = await prisma.job.findMany({
+      where: {
+        employerId: id,
+      },
+    });
+
+    return {
+      jobs,
+    };
+  } catch (err) {
+    console.error('error getting jobs : ', err);
     return {
       success: false,
       error: 'Internal server error',

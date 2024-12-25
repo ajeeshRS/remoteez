@@ -64,7 +64,9 @@ export default function Page() {
   };
 
   useEffect(() => {
-    fetchProfileDetails();
+    if (status !== 'loading') {
+      fetchProfileDetails();
+    }
   }, [session]);
 
   useEffect(() => {
