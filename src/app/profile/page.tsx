@@ -30,7 +30,7 @@ import Security from '@/components/profile/jobseeker/security/Security';
 import { getEmployerInfo } from '../actions/employer/actions';
 import { setEmployerProfile } from '@/state/profile/employerSlice';
 import EmployerInfo from '@/components/profile/employer/employerInfo/EmployerInfo';
-import Jobs from '@/components/profile/employer/Jobs';
+import Jobs from '@/components/profile/employer/jobs/Jobs';
 import { useRouter } from 'next/navigation';
 
 export default function Page() {

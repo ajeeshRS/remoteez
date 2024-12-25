@@ -17,17 +17,18 @@ import { toast } from 'sonner';
 import ErrorMessage from '../ui/error-msg';
 import Loader from '../ui/loader';
 
-enum JobType {
+export enum JobType {
   FULL_TIME = 'FULL_TIME',
   PART_TIME = 'PART_TIME',
   INTERNSHIP = 'INTERNSHIP',
   FREELANCE = 'FREELANCE',
 }
 
-enum Currency {
+export enum Currency {
   INR = 'INR',
   USD = 'USD',
 }
+
 export default function CreateJobForm() {
   const [skills, setSkills] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
