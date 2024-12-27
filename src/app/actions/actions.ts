@@ -243,15 +243,25 @@ export const uploadToCloudinary = async (file: File): Promise<string> => {
   });
 };
 
-export const getJobs = async () => {
+export const getJobs = async (page: number, limit: number) => {
   try {
-    const jobs = await prisma.job.findMany({
-      orderBy: {
-        postedAt: 'desc',
-      },
-    });
+    const skipRecords = (page - 1) * limit;
 
-    return jobs;
+    const [jobs, totalCount] = await Promise.all([
+      prisma.job.findMany({
+        take: limit,
+        skip: skipRecords,
+        orderBy: {
+          postedAt: 'desc',
+        },
+      }),
+      prisma.job.count(),
+    ]);
+
+    return {
+      jobs,
+      hasMore: skipRecords + jobs.length < totalCount,
+    };
   } catch (error) {
     console.error('Error fetching jobs:', error);
     throw new Error('Failed to fetch jobs');

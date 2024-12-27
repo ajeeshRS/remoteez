@@ -12,15 +12,23 @@ import Image from 'next/image';
 import { Briefcase, DollarSign, IndianRupee, MapPin } from 'lucide-react';
 import { Job } from '@prisma/client';
 import { getJobs } from '@/app/actions/actions';
+import { useInView } from 'react-intersection-observer';
+
 export default function JobSearch() {
   const [loading, setLoading] = useState(false);
   const [jobs, setJobs] = useState<Job[]>([]);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const { ref, inView } = useInView();
+  const limit = 6;
 
   const fetchJobs = async () => {
     try {
       setLoading(true);
-      const jobs = await getJobs();
-      setJobs(jobs);
+      const { jobs, hasMore } = await getJobs(page, limit);
+      setJobs((prevJobs) => [...prevJobs, ...jobs]);
+      setPage((prevPage) => prevPage + 1);
+      setHasMore(hasMore);
     } catch (error) {
       console.error('Error fetching jobs:', error);
     } finally {
@@ -29,9 +37,10 @@ export default function JobSearch() {
   };
 
   useEffect(() => {
-    fetchJobs();
-  }, []);
-
+    if (inView) {
+      fetchJobs();
+    }
+  }, [inView]);
   return (
     <div className="flex h-[90vh] w-full px-8 py-4 text-white">
       <form
@@ -103,9 +112,9 @@ export default function JobSearch() {
           </Accordion>
         </div>
       </form>
-
       <div className="flex h-[85vh] w-full flex-col space-y-2 overflow-y-scroll px-5">
-        {jobs && jobs.length !== 0 ? (
+        {jobs &&
+          jobs.length !== 0 &&
           jobs.map((job, i) => (
             <div
               key={i}
@@ -175,12 +184,15 @@ export default function JobSearch() {
                 ))}
               </div>
             </div>
-          ))
-        ) : loading ? (
-          <p>Loading..</p>
-        ) : (
-          <p>no jobs found</p>
-        )}
+          ))}
+        <div ref={ref} className="flex justify-center py-4">
+          {loading && <p className='text-sm text-neutral-200'>Loading jobs...</p>}
+          {!hasMore && (
+            <p className="text-sm text-neutral-200">
+              Looks like you've reached the end.
+            </p>
+          )}
+        </div>
       </div>
     </div>
   );
