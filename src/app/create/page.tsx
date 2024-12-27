@@ -1,5 +1,5 @@
 'use client';
-import CreateJobForm from '@/components/jobs/CreateJobForm';
+import CreateJobForm from '@/components/profile/employer/jobs/CreateJobForm';
 import { EMPLOYER } from '@/lib/constants/app.constants';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';

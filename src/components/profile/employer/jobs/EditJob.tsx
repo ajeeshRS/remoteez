@@ -1,5 +1,5 @@
 import { getEmployerInfo, updateJob } from '@/app/actions/employer/actions';
-import { Currency, JobType } from '@/components/jobs/CreateJobForm';
+import { Currency, JobType } from '@/components/profile/employer/jobs/CreateJobForm';
 import ErrorMessage from '@/components/ui/error-msg';
 import Loader from '@/components/ui/loader';
 import {

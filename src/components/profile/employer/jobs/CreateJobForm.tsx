@@ -5,7 +5,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '../ui/select';
+} from '../../../ui/select';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   CreateJobSchema,
@@ -14,8 +14,8 @@ import {
 import { useEffect, useState } from 'react';
 import { createJob } from '@/app/actions/employer/actions';
 import { toast } from 'sonner';
-import ErrorMessage from '../ui/error-msg';
-import Loader from '../ui/loader';
+import ErrorMessage from '../../../ui/error-msg';
+import Loader from '../../../ui/loader';
 
 export enum JobType {
   FULL_TIME = 'FULL_TIME',

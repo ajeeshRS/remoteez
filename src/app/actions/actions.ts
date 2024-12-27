@@ -242,3 +242,18 @@ export const uploadToCloudinary = async (file: File): Promise<string> => {
       .end(buffer);
   });
 };
+
+export const getJobs = async () => {
+  try {
+    const jobs = await prisma.job.findMany({
+      orderBy: {
+        postedAt: 'desc',
+      },
+    });
+
+    return jobs;
+  } catch (error) {
+    console.error('Error fetching jobs:', error);
+    throw new Error('Failed to fetch jobs');
+  }
+};
