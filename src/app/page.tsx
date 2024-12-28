@@ -1,8 +1,10 @@
 'use client';
 import Faq from '@/components/Faq';
 import { Plus, Search } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
+  const router = useRouter();
   return (
     <>
       <div className="flex h-[90vh] w-full flex-col items-center justify-center">
@@ -13,7 +15,10 @@ export default function Home() {
           Your Remote Job Hunt Starts Here.
         </p>
         <div className="my-4 flex w-full items-center justify-center">
-          <button className="mx-3 flex items-center bg-pink-600 px-3 py-1 text-white outline-none hover:bg-pink-700">
+          <button
+            onClick={() => router.push('/jobs')}
+            className="mx-3 flex items-center bg-pink-600 px-3 py-1 text-white outline-none hover:bg-pink-700"
+          >
             <Search className="mr-1 h-4 w-4" />
             Browse Jobs
           </button>

@@ -1,4 +1,4 @@
-import { Job, Role, SocialLinks } from '@prisma/client';
+import { Bookmark, Job, Role, SocialLinks } from '@prisma/client';
 
 export interface Msg {
   message: string;
@@ -27,6 +27,7 @@ export interface JobSeekerProfile {
   skills: string[];
   previousCompanies: PreviousCompany[];
   projects: Project[];
+  Bookmark: Bookmark[];
 }
 
 interface Project {

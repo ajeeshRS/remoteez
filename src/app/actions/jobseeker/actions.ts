@@ -54,6 +54,7 @@ export const getJobseekerInfo = async () => {
       include: {
         projects: true,
         previousCompanies: true,
+        Bookmark: true,
       },
     });
 
@@ -819,6 +820,99 @@ export const changeCurrentPassword = async (
     };
   } catch (err) {
     console.error('error updating password :', err);
+    return {
+      success: false,
+      error: 'Internal server error',
+    };
+  }
+};
+
+export const addBookmark = async (jobId: string) => {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user) {
+      return {
+        success: false,
+        error: 'Unauthorised',
+      };
+    }
+
+    const customSession = session as CustomSession;
+    const id = customSession.user.id;
+
+    if (!jobId) {
+      return {
+        success: false,
+        error: 'Bad request',
+      };
+    }
+    console.log(jobId);
+
+    const bookmarkExists = await prisma.bookmark.findFirst({
+      where: {
+        jobId: jobId,
+        jobSeekerId: id,
+      },
+    });
+
+    if (bookmarkExists) {
+      return {
+        success: false,
+        error: 'Already bookmarked',
+      };
+    }
+
+    await prisma.bookmark.create({
+      data: {
+        jobId,
+        jobSeekerId: id,
+      },
+    });
+
+    return {
+      success: true,
+      message: 'Bookmarked',
+    };
+  } catch (err) {
+    console.error('error adding bookmark : ', err);
+    return {
+      success: false,
+      error: 'Internal server error',
+    };
+  }
+};
+export const removeBookmark = async (bookmarkId: string) => {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user) {
+      return {
+        success: false,
+        error: 'Unauthorised',
+      };
+    }
+
+    const customSession = session as CustomSession;
+    const id = customSession.user.id;
+    if (!bookmarkId) {
+      return {
+        success: false,
+        error: 'Bad request',
+      };
+    }
+
+    await prisma.bookmark.delete({
+      where: {
+        id: bookmarkId,
+        jobSeekerId: id,
+      },
+    });
+
+    return {
+      success: true,
+      message: 'Bookmark deleted',
+    };
+  } catch (err) {
+    console.error('error deleting bookmark : ', err);
     return {
       success: false,
       error: 'Internal server error',

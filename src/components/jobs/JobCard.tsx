@@ -1,12 +1,88 @@
-import { Job } from '@prisma/client';
+'use client';
 import { Briefcase, DollarSign, IndianRupee, MapPin } from 'lucide-react';
+import { useSession } from 'next-auth/react';
+import { useEffect, useState } from 'react';
+import { RxBookmark, RxBookmarkFilled } from 'react-icons/rx';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'sonner';
 import Image from 'next/image';
-import { RxBookmark } from 'react-icons/rx';
+
+import {
+  addBookmark,
+  getJobseekerInfo,
+  removeBookmark,
+} from '@/app/actions/jobseeker/actions';
+import { JOBSEEKER } from '@/lib/constants/app.constants';
+import { setJobseekerProfile } from '@/state/profile/jobseekerSlice';
+import { AppDispatch, RootState } from '@/state/store';
+import { Bookmark, Job } from '@prisma/client';
 
 interface Props {
   job: Job;
 }
+
 export default function JobCard({ job }: Props) {
+  const [bookmarks, setBookmark] = useState<Bookmark[]>([]);
+  const { data: session } = useSession();
+  const dispatch = useDispatch<AppDispatch>();
+
+  const userBookmarks = useSelector(
+    (state: RootState) => state.jobseekerReducer.jobseeker?.Bookmark,
+  );
+
+  const getFiltered = (id: string) => {
+    return bookmarks.filter((b) => b.jobId === id);
+  };
+
+  const refetchProfile = async () => {
+    const { jobSeekerProfile } = await getJobseekerInfo();
+    if (jobSeekerProfile) {
+      dispatch(setJobseekerProfile(jobSeekerProfile));
+    }
+  };
+
+  const showToast = (response: {
+    success: boolean;
+    error?: string;
+    message?: string;
+  }) => {
+    if (response.success) {
+      toast.success(response.message);
+      refetchProfile();
+    } else {
+      toast.success(response.error);
+    }
+  };
+
+  const toggleBookmark = async (id: string) => {
+    try {
+      const filtedItem = getFiltered(id);
+      // removing
+      if (filtedItem.length > 0) {
+        const bmId = filtedItem[0];
+        const response = await removeBookmark(bmId.id);
+        showToast(response);
+        return;
+      }
+
+      // adding
+      const response = await addBookmark(id);
+      showToast(response);
+    } catch (error) {
+      console.error('error toggling bookmark : ', error);
+      toast.error('error toggling bookmark');
+    }
+  };
+
+  useEffect(() => {
+    if (userBookmarks) {
+      setBookmark(userBookmarks);
+    }
+  }, [userBookmarks]);
+
+  useEffect(() => {
+    refetchProfile();
+  }, []);
   return (
     <div className="flex w-full flex-col items-start border border-neutral-800 bg-black p-3 md:p-5">
       <div className="flex w-full items-center justify-between">
@@ -29,9 +105,15 @@ export default function JobCard({ job }: Props) {
           <p className="text-xs">
             Posted on {job.postedAt.toLocaleDateString()}
           </p>
-          <button>
-            <RxBookmark className="text-pink bg-pink- h-6 w-6" />
-            {/* <RxBookmarkFilled className="text-pink-600 h-6 w-6 bg-pink-" /> */}
+          <button
+            onClick={() => toggleBookmark(job.id)}
+            className={`cursor-pointer ${session?.user.role === JOBSEEKER ? 'block' : 'hidden'} `}
+          >
+            {getFiltered(job.id).length > 0 ? (
+              <RxBookmarkFilled className="bg-pink- h-6 w-6 text-pink-600" />
+            ) : (
+              <RxBookmark className="text-pink bg-pink- h-6 w-6" />
+            )}
           </button>
         </div>
       </div>
@@ -57,15 +139,6 @@ export default function JobCard({ job }: Props) {
             <span>{`${job.minExperience}-${job.maxExperience}`} YOE</span>
           </div>
         </div>
-        {/* <div className="flex items-center md:justify-end justify-center space-x-10">
-          <button className="bg-pink-600 px-4 py-2 text-sm hover:bg-pink-700">
-            Apply
-          </button>
-          <button>
-            <RxBookmark className="text-pink bg-pink- h-6 w-6" />
-            <RxBookmarkFilled className="text-pink-600 h-6 w-6 bg-pink-" />
-          </button>
-        </div> */}
       </div>
       <div className="grid w-full grid-cols-2 items-center md:flex md:flex-wrap">
         {job.skillsRequired.map((skill, i) => (
