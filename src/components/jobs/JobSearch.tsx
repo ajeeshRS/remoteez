@@ -13,20 +13,29 @@ import { Briefcase, DollarSign, IndianRupee, MapPin } from 'lucide-react';
 import { Job } from '@prisma/client';
 import { getJobs } from '@/app/actions/actions';
 import { useInView } from 'react-intersection-observer';
+import debounce from 'lodash/debounce';
 
 export default function JobSearch() {
   const [loading, setLoading] = useState(false);
   const [jobs, setJobs] = useState<Job[]>([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
   const { ref, inView } = useInView();
   const limit = 6;
 
-  const fetchJobs = async () => {
+  const fetchJobs = async (query?: string) => {
+    if (loading || !hasMore) return;
+
     try {
       setLoading(true);
-      const { jobs, hasMore } = await getJobs(page, limit);
-      setJobs((prevJobs) => [...prevJobs, ...jobs]);
+      const { jobs, hasMore } = await getJobs(page, limit, query);
+      if (query) {
+        setJobs(jobs);
+        console.log(jobs);
+      } else {
+        setJobs((prevJobs) => [...prevJobs, ...jobs]);
+      }
       setPage((prevPage) => prevPage + 1);
       setHasMore(hasMore);
     } catch (error) {
@@ -35,6 +44,28 @@ export default function JobSearch() {
       setLoading(false);
     }
   };
+
+  const debouncedSearch = useCallback(
+    debounce((query: string) => {
+      setJobs([]);
+      setPage(1);
+      setHasMore(true);
+      fetchJobs(query);
+    }, 500),
+    [],
+  );
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+    debouncedSearch(query);
+  };
+
+  useEffect(() => {
+    return () => {
+      debouncedSearch.cancel();
+    };
+  }, [debouncedSearch]);
 
   useEffect(() => {
     if (inView) {
@@ -52,6 +83,8 @@ export default function JobSearch() {
           <input
             type="text"
             placeholder="Search jobs..."
+            value={searchQuery}
+            onChange={handleSearchChange}
             className="flex-grow rounded-none border border-neutral-600 bg-transparent p-2 focus:border-none focus:outline-none focus:outline-pink-500/70 focus:ring-0"
           />
           <Accordion type="single" collapsible className="w-full">
@@ -186,7 +219,9 @@ export default function JobSearch() {
             </div>
           ))}
         <div ref={ref} className="flex justify-center py-4">
-          {loading && <p className='text-sm text-neutral-200'>Loading jobs...</p>}
+          {loading && (
+            <p className="text-sm text-neutral-200">Loading jobs...</p>
+          )}
           {!hasMore && (
             <p className="text-sm text-neutral-200">
               Looks like you've reached the end.

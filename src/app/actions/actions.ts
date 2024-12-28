@@ -243,13 +243,24 @@ export const uploadToCloudinary = async (file: File): Promise<string> => {
   });
 };
 
-export const getJobs = async (page: number, limit: number) => {
+export const getJobs = async (
+  page: number,
+  limit: number,
+  searchQuery?: string,
+) => {
   try {
     const skipRecords = (page - 1) * limit;
+    console.log(searchQuery);
 
     const [jobs, totalCount] = await Promise.all([
       prisma.job.findMany({
         take: limit,
+        where: {
+          title: {
+            contains: searchQuery,
+            mode: 'insensitive',
+          },
+        },
         skip: skipRecords,
         orderBy: {
           postedAt: 'desc',
@@ -257,7 +268,7 @@ export const getJobs = async (page: number, limit: number) => {
       }),
       prisma.job.count(),
     ]);
-
+    console.log(jobs);
     return {
       jobs,
       hasMore: skipRecords + jobs.length < totalCount,
