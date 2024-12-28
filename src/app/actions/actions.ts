@@ -249,6 +249,7 @@ export const getJobs = async (
   searchQuery?: string,
   commitmentTypes?: string[],
   experienceTypes?: string[],
+  payTypes?: string[],
 ) => {
   try {
     const skipRecords = (page - 1) * limit;
@@ -262,6 +263,17 @@ export const getJobs = async (
       const [min, max] = exp
         .split('-')
         .map((num) => parseInt(num.replace('YOE', '').trim()));
+
+      return { min, max };
+    });
+
+    const payRanges = payTypes?.map((pay) => {
+      if (pay.includes('+')) {
+        const minPay = parseInt(pay.replace('+', '').trim());
+        return { min: minPay, max: 10000 };
+      }
+
+      const [min, max] = pay.split('-').map((num) => parseInt(num));
 
       return { min, max };
     });
@@ -295,6 +307,18 @@ export const getJobs = async (
                   }
                 : {}),
             },
+            {
+              ...(payTypes && payTypes.length > 0
+                ? {
+                    OR: payRanges?.map((range) => ({
+                      AND: [
+                        { minSalary: { lte: range.max * 1000 } },
+                        { maxSalary: { gte: range.min * 1000 } },
+                      ],
+                    })),
+                  }
+                : {}),
+            },
           ],
         },
         skip: skipRecords,
@@ -302,6 +326,7 @@ export const getJobs = async (
           postedAt: 'desc',
         },
       }),
+
       prisma.job.count({
         where: {
           AND: [
@@ -324,6 +349,18 @@ export const getJobs = async (
                       AND: [
                         { minExperience: { lte: range.max } },
                         { maxExperience: { gte: range.min } },
+                      ],
+                    })),
+                  }
+                : {}),
+            },
+            {
+              ...(payTypes && payTypes.length > 0
+                ? {
+                    OR: payRanges?.map((range) => ({
+                      AND: [
+                        { minSalary: { lte: range.max * 1000 } },
+                        { maxSalary: { gte: range.min * 1000 } },
                       ],
                     })),
                   }

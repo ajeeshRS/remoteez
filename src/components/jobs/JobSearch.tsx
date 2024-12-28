@@ -23,6 +23,7 @@ export default function JobSearch() {
 
   const commitmentTypes = searchParams.getAll('commitment');
   const experienceTypes = searchParams.getAll('exp');
+  const payTypes = searchParams.getAll('pay');
 
   const fetchJobs = useCallback(
     async (resetJobs = false, query?: string) => {
@@ -35,16 +36,16 @@ export default function JobSearch() {
         const currentCommitments = Array.from(
           searchParams.getAll('commitment'),
         );
-        const currentExps = Array.from(
-          searchParams.getAll('exp'),
-        );
+        const currentExps = Array.from(searchParams.getAll('exp'));
+        const currentPays = Array.from(searchParams.getAll('pay'));
 
         const { jobs, hasMore } = await getJobs(
           currentPage,
           limit,
           query,
           currentCommitments,
-          currentExps
+          currentExps,
+          currentPays,
         );
 
         if (query || resetJobs) {
@@ -138,6 +139,34 @@ export default function JobSearch() {
     }, 0);
   };
 
+  // handling changes in commitment
+  const handlePayChange = (pay: string) => {
+    const params = new URLSearchParams(searchParams);
+
+    if (payTypes.includes(pay)) {
+      const updatedPays = payTypes.filter((p) => p !== pay);
+
+      params.delete('pay');
+      updatedPays.forEach((p) => params.append('pay', p));
+    } else {
+      params.append('pay', pay);
+    }
+
+    router.replace(`?${params.toString()}`);
+
+    const pays = Array.from(params.getAll('pay'));
+    console.log('pay after update:', pays);
+
+    // adding a micro-delay
+    setTimeout(() => {
+      setJobs([]);
+      setPage(1);
+      setHasMore(true);
+
+      fetchJobs(true);
+    }, 0);
+  };
+
   // debounce clean up
   useEffect(() => {
     return () => {
@@ -164,6 +193,7 @@ export default function JobSearch() {
       <JobFilter
         handleCommitment={handleCommitmentChange}
         handleExp={handleExperienceChange}
+        handlePay={handlePayChange}
         handleSearch={handleSearchChange}
         searchQuery={searchQuery}
       />

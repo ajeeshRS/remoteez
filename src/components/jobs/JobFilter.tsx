@@ -8,17 +8,21 @@ import {
 import {
   commitmentFilterItems,
   experienceFilterItems,
+  payFilterItems,
 } from '@/lib/constants/job.constants';
+import { DollarSign } from 'lucide-react';
 
 interface Props {
   handleCommitment: (type: string) => void;
   handleExp: (exp: string) => void;
+  handlePay: (pay: string) => void;
   searchQuery: string;
   handleSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 export default function JobFilter({
   handleCommitment,
   handleExp,
+  handlePay,
   searchQuery,
   handleSearch,
 }: Props) {
@@ -26,6 +30,7 @@ export default function JobFilter({
 
   const commitmentTypes = searchParams.getAll('commitment');
   const experienceTypes = searchParams.getAll('exp');
+  const payTypes = searchParams.getAll('pay');
 
   return (
     <form
@@ -83,14 +88,17 @@ export default function JobFilter({
               Pay
             </AccordionTrigger>
             <AccordionContent className="space-y-2 text-sm font-normal text-neutral-300">
-              {['$0-10k', '$10-20k', '$20-50k', '$50-100k', '$100k+'].map(
-                (pay) => (
-                  <div key={pay} className="flex items-center space-x-2">
-                    <input type="checkbox" className="rounded-none" />
-                    <span>{pay}</span>
-                  </div>
-                ),
-              )}
+              {payFilterItems.map((pay) => (
+                <div key={pay} className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    checked={payTypes.includes(pay)}
+                    onChange={() => handlePay(pay)}
+                    className="rounded-none"
+                  />
+                  <span className='flex items-center space-x-1'><DollarSign className='w-3 h-3'/> {pay}k</span>
+                </div>
+              ))}
             </AccordionContent>
           </AccordionItem>
         </Accordion>
