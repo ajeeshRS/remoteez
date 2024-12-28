@@ -67,3 +67,4 @@ export const employerSidebarItems = [
   { title: 'jobs', active: JOBS },
   { title: 'security', active: SECURITY },
 ];
+

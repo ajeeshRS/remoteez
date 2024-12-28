@@ -248,10 +248,24 @@ export const getJobs = async (
   limit: number,
   searchQuery?: string,
   commitmentTypes?: string[],
+  experienceTypes?: string[],
 ) => {
   try {
     const skipRecords = (page - 1) * limit;
-    console.log(commitmentTypes);
+
+    const expRanges = experienceTypes?.map((exp) => {
+      if (exp.includes('+')) {
+        const minExp = parseInt(exp.replace('+', '').trim());
+        return { min: minExp, max: 100 };
+      }
+
+      const [min, max] = exp
+        .split('-')
+        .map((num) => parseInt(num.replace('YOE', '').trim()));
+
+      return { min, max };
+    });
+
     const [jobs, totalCount] = await Promise.all([
       prisma.job.findMany({
         take: limit,
@@ -269,6 +283,18 @@ export const getJobs = async (
                   }
                 : {}),
             },
+            {
+              ...(experienceTypes && experienceTypes.length > 0
+                ? {
+                    OR: expRanges?.map((range) => ({
+                      AND: [
+                        { minExperience: { lte: range.max } },
+                        { maxExperience: { gte: range.min } },
+                      ],
+                    })),
+                  }
+                : {}),
+            },
           ],
         },
         skip: skipRecords,
@@ -278,9 +304,32 @@ export const getJobs = async (
       }),
       prisma.job.count({
         where: {
-          ...(searchQuery
-            ? { title: { contains: searchQuery, mode: 'insensitive' } }
-            : {}),
+          AND: [
+            {
+              ...(searchQuery
+                ? { title: { contains: searchQuery, mode: 'insensitive' } }
+                : {}),
+            },
+            {
+              ...(commitmentTypes && commitmentTypes.length > 0
+                ? {
+                    jobType: { in: commitmentTypes as JobType[] },
+                  }
+                : {}),
+            },
+            {
+              ...(experienceTypes && experienceTypes.length > 0
+                ? {
+                    OR: expRanges?.map((range) => ({
+                      AND: [
+                        { minExperience: { lte: range.max } },
+                        { maxExperience: { gte: range.min } },
+                      ],
+                    })),
+                  }
+                : {}),
+            },
+          ],
         },
       }),
     ]);

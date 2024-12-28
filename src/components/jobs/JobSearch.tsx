@@ -22,6 +22,7 @@ export default function JobSearch() {
   const limit = 6;
 
   const commitmentTypes = searchParams.getAll('commitment');
+  const experienceTypes = searchParams.getAll('exp');
 
   const fetchJobs = useCallback(
     async (resetJobs = false, query?: string) => {
@@ -34,12 +35,16 @@ export default function JobSearch() {
         const currentCommitments = Array.from(
           searchParams.getAll('commitment'),
         );
+        const currentExps = Array.from(
+          searchParams.getAll('exp'),
+        );
 
         const { jobs, hasMore } = await getJobs(
           currentPage,
           limit,
           query,
           currentCommitments,
+          currentExps
         );
 
         if (query || resetJobs) {
@@ -105,6 +110,34 @@ export default function JobSearch() {
     }, 0);
   };
 
+  // handling changes in commitment
+  const handleExperienceChange = (exp: string) => {
+    const params = new URLSearchParams(searchParams);
+
+    if (experienceTypes.includes(exp)) {
+      const updatedExps = experienceTypes.filter((t) => t !== exp);
+
+      params.delete('exp');
+      updatedExps.forEach((t) => params.append('exp', t));
+    } else {
+      params.append('exp', exp);
+    }
+
+    router.replace(`?${params.toString()}`);
+
+    const experience = Array.from(params.getAll('exp'));
+    console.log('experience after update:', experience);
+
+    // adding a micro-delay
+    setTimeout(() => {
+      setJobs([]);
+      setPage(1);
+      setHasMore(true);
+
+      fetchJobs(true);
+    }, 0);
+  };
+
   // debounce clean up
   useEffect(() => {
     return () => {
@@ -130,6 +163,7 @@ export default function JobSearch() {
     <div className="flex h-[90vh] w-full px-8 py-4 text-white">
       <JobFilter
         handleCommitment={handleCommitmentChange}
+        handleExp={handleExperienceChange}
         handleSearch={handleSearchChange}
         searchQuery={searchQuery}
       />

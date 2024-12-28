@@ -5,20 +5,27 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '../ui/accordion';
+import {
+  commitmentFilterItems,
+  experienceFilterItems,
+} from '@/lib/constants/job.constants';
 
 interface Props {
   handleCommitment: (type: string) => void;
+  handleExp: (exp: string) => void;
   searchQuery: string;
   handleSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 export default function JobFilter({
   handleCommitment,
+  handleExp,
   searchQuery,
   handleSearch,
 }: Props) {
   const searchParams = useSearchParams();
 
   const commitmentTypes = searchParams.getAll('commitment');
+  const experienceTypes = searchParams.getAll('exp');
 
   return (
     <form
@@ -40,30 +47,17 @@ export default function JobFilter({
               Commitment
             </AccordionTrigger>
             <AccordionContent className="space-y-2 text-sm font-normal text-neutral-300">
-              {['FULL_TIME', 'PART_TIME', 'INTERNSHIP', 'FREELANCE'].map(
-                (type) => (
-                  <div key={type} className="flex items-center space-x-2">
-                    <input
-                      type="checkbox"
-                      checked={commitmentTypes.includes(type)}
-                      onChange={() => handleCommitment(type)}
-                      className="rounded-none"
-                    />
-                    <span>{type}</span>
-                  </div>
-                ),
-              )}
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem className="border-b-0" value="remote">
-            <AccordionTrigger className="text-start text-base font-medium text-neutral-50 hover:no-underline">
-              Remote
-            </AccordionTrigger>
-            <AccordionContent className="space-y-2 text-sm font-normal text-neutral-300">
-              <div className="flex items-center space-x-2">
-                <input type="checkbox" className="rounded-none" />
-                <span>Remote only</span>
-              </div>
+              {commitmentFilterItems.map((type) => (
+                <div key={type} className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    checked={commitmentTypes.includes(type)}
+                    onChange={() => handleCommitment(type)}
+                    className="rounded-none"
+                  />
+                  <span>{type}</span>
+                </div>
+              ))}
             </AccordionContent>
           </AccordionItem>
           <AccordionItem className="border-b-0" value="experience">
@@ -71,9 +65,14 @@ export default function JobFilter({
               Experience Level
             </AccordionTrigger>
             <AccordionContent className="space-y-2 text-sm font-normal text-neutral-300">
-              {['0-1 YOE', '1-3 YOE', '3-6 YOE', '6+ YOE'].map((yoe) => (
+              {experienceFilterItems.map((yoe) => (
                 <div key={yoe} className="flex items-center space-x-2">
-                  <input type="checkbox" className="rounded-none" />
+                  <input
+                    type="checkbox"
+                    checked={experienceTypes.includes(yoe)}
+                    onChange={() => handleExp(yoe)}
+                    className="rounded-none"
+                  />
                   <span>{yoe}</span>
                 </div>
               ))}
