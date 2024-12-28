@@ -24,19 +24,20 @@ export default function JobSearch() {
   const { ref, inView } = useInView();
   const limit = 6;
 
-  const fetchJobs = async (query?: string) => {
-    if (loading || !hasMore) return;
+  const fetchJobs = async (resetJobs = false, query?: string) => {
+    if (loading || (!hasMore && !resetJobs)) return;
+    const currentPage = resetJobs ? 1 : page;
 
     try {
       setLoading(true);
-      const { jobs, hasMore } = await getJobs(page, limit, query);
+      const { jobs, hasMore } = await getJobs(currentPage, limit, query);
       if (query) {
         setJobs(jobs);
         console.log(jobs);
       } else {
-        setJobs((prevJobs) => [...prevJobs, ...jobs]);
+        setJobs((prevJobs) => (resetJobs ? jobs : [...prevJobs, ...jobs]));
       }
-      setPage((prevPage) => prevPage + 1);
+      setPage((prevPage) => (resetJobs ? 2 : prevPage + 1));
       setHasMore(hasMore);
     } catch (error) {
       console.error('Error fetching jobs:', error);
@@ -50,7 +51,7 @@ export default function JobSearch() {
       setJobs([]);
       setPage(1);
       setHasMore(true);
-      fetchJobs(query);
+      fetchJobs(true, query);
     }, 500),
     [],
   );

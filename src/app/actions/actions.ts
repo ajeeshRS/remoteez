@@ -256,17 +256,22 @@ export const getJobs = async (
       prisma.job.findMany({
         take: limit,
         where: {
-          title: {
-            contains: searchQuery,
-            mode: 'insensitive',
-          },
+          ...(searchQuery
+            ? { title: { contains: searchQuery, mode: 'insensitive' } }
+            : {}),
         },
         skip: skipRecords,
         orderBy: {
           postedAt: 'desc',
         },
       }),
-      prisma.job.count(),
+      prisma.job.count({
+        where: {
+          ...(searchQuery
+            ? { title: { contains: searchQuery, mode: 'insensitive' } }
+            : {}),
+        },
+      }),
     ]);
     console.log(jobs);
     return {
