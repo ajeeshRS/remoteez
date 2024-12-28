@@ -35,7 +35,7 @@ export default function JobFilter({
   return (
     <form
       onSubmit={() => {}}
-      className="mb-8 h-full w-1/5 space-y-4 overflow-y-scroll border border-pink-500/70 px-4 py-8"
+      className="mb-8 h-full md:w-1/5 w-full space-y-4 overflow-y-scroll  md:border md:border-pink-500/70  px-4  py-8"
     >
       <h1 className="mb-8 text-xl font-bold">Filter</h1>
       <div className="flex flex-col space-y-3">

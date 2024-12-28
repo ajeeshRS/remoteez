@@ -189,7 +189,7 @@ export default function JobSearch() {
     }
   }, [inView, fetchJobs, searchQuery]);
   return (
-    <div className="flex h-[90vh] w-full px-8 py-4 text-white">
+    <div className="flex md:h-[90vh] min-h-[90vh]  w-full md:px-8 px-2 py-4 text-white md:flex-row flex-col">
       <JobFilter
         handleCommitment={handleCommitmentChange}
         handleExp={handleExperienceChange}
@@ -197,7 +197,7 @@ export default function JobSearch() {
         handleSearch={handleSearchChange}
         searchQuery={searchQuery}
       />
-      <div className="flex h-[85vh] w-full flex-col space-y-2 overflow-y-scroll px-5">
+      <div className="flex min-h-[85vh] md:h-[85vh] w-full flex-col space-y-2 md:overflow-y-scroll md:px-5">
         {jobs &&
           jobs.length !== 0 &&
           jobs.map((job, i) => <JobCard job={job} key={i} />)}
