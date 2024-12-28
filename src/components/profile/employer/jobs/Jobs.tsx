@@ -1,6 +1,6 @@
-import JobCard from './JobCard';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/state/store';
+import ProfileJobCard from './ProfileJobCard';
 
 export default function Jobs() {
   const jobs = useSelector(
@@ -13,7 +13,7 @@ export default function Jobs() {
         <p className="pb-10 font-bold text-pink-500">Jobs</p>
         <div className="my-10 grid grid-cols-1 gap-6 md:grid-cols-2">
           {jobs && jobs.length !== 0 ? (
-            jobs.map((job, i) => <JobCard key={i} job={job} />)
+            jobs.map((job, i) => <ProfileJobCard key={i} job={job} />)
           ) : (
             <p>no jobs posted yet.</p>
           )}

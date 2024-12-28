@@ -6,7 +6,7 @@ import DeleteJobDialog from './DeleteJobDialog';
 interface Props {
   job: Job;
 }
-export default function JobCard({ job }: Props) {
+export default function ProfileJobCard({ job }: Props) {
   return (
     <div className="flex flex-col border border-pink-400/20 p-4">
       <div className="flex flex-col items-start justify-between py-5 md:flex-row md:items-center">

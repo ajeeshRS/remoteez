@@ -1,7 +1,7 @@
 'use server';
 import nodemailer from 'nodemailer';
 import bcrypt from 'bcrypt';
-import { PrismaClient } from '@prisma/client';
+import { JobType, PrismaClient } from '@prisma/client';
 import jwt from 'jsonwebtoken';
 
 import { generateToken } from '@/lib/utils';
@@ -247,18 +247,29 @@ export const getJobs = async (
   page: number,
   limit: number,
   searchQuery?: string,
+  commitmentTypes?: string[],
 ) => {
   try {
     const skipRecords = (page - 1) * limit;
-    console.log(searchQuery);
-
+    console.log(commitmentTypes);
     const [jobs, totalCount] = await Promise.all([
       prisma.job.findMany({
         take: limit,
         where: {
-          ...(searchQuery
-            ? { title: { contains: searchQuery, mode: 'insensitive' } }
-            : {}),
+          AND: [
+            {
+              ...(searchQuery
+                ? { title: { contains: searchQuery, mode: 'insensitive' } }
+                : {}),
+            },
+            {
+              ...(commitmentTypes && commitmentTypes.length > 0
+                ? {
+                    jobType: { in: commitmentTypes as JobType[] },
+                  }
+                : {}),
+            },
+          ],
         },
         skip: skipRecords,
         orderBy: {
