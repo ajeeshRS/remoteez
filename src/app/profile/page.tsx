@@ -104,10 +104,10 @@ export default function Page() {
     router.push('/');
   }
 
-  if (loading) {
+  if (loading || status === 'loading') {
     return (
       <div className="flex h-[90vh] w-full items-center justify-center bg-black">
-        <Loader color={'white'} />
+        <Loader color={'pink-600'} />
       </div>
     );
   }

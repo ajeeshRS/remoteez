@@ -9,6 +9,8 @@ import { generateToken } from '@/lib/utils';
 const prisma = new PrismaClient();
 
 import { v2 as cloudinary } from 'cloudinary';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
@@ -378,5 +380,40 @@ export const getJobs = async (
   } catch (error) {
     console.error('Error fetching jobs:', error);
     throw new Error('Failed to fetch jobs');
+  }
+};
+
+export const getJobDetails = async (jobId: string) => {
+  try {
+    if (!jobId) {
+      return {
+        success: false,
+        error: 'Bad request',
+      };
+    }
+
+    const job = await prisma.job.findUnique({
+      where: {
+        id: jobId,
+      },
+    });
+
+    if (!job) {
+      return {
+        success: false,
+        error: 'Job not found',
+      };
+    }
+
+    return {
+      success: true,
+      job,
+    };
+  } catch (err) {
+    console.error('error fetching job details : ', err);
+    return {
+      success: false,
+      error: 'Internal server error',
+    };
   }
 };
