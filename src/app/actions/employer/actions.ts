@@ -400,3 +400,33 @@ export const deleteJob = async (jobId: string) => {
     };
   }
 };
+
+export const getBookmarkCount = async (jobId: string) => {
+  try {
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user) {
+      return {
+        success: false,
+        error: 'Unauthorised',
+      };
+    }
+
+    const count = await prisma.bookmark.count({
+      where: {
+        jobId: jobId,
+      },
+    });
+
+    return {
+      success: true,
+      count,
+    };
+  } catch (err) {
+    console.error('error getting bookmark count : ', err);
+    return {
+      success: false,
+      error: 'Internal server error',
+    };
+  }
+};

@@ -30,14 +30,14 @@ export default function MobileNavbar() {
             <RiMenu2Fill className="h-5 w-5 text-white" />
           </button>
         </SheetTrigger>
-        <SheetContent side={'left'} className="bg-black h-[100vh]">
+        <SheetContent side={'left'} className="h-[100vh] bg-black">
           <SheetHeader>
             <SheetTitle className="flex w-full items-center justify-start text-2xl text-white">
               Remoteez
             </SheetTitle>
           </SheetHeader>
-          <div className="justify-between flex h-full w-full flex-col py-10 text-white">
-            <ul className="w-full h-1/2">
+          <div className="flex h-full w-full flex-col justify-between py-10 text-white">
+            <ul className="h-1/2 w-full">
               {status !== 'loading' && customSession?.user.role === EMPLOYER ? (
                 <>
                   <li className="flex cursor-pointer items-center border-none py-2 pl-2 text-lg outline-none hover:bg-neutral-900/65 hover:text-pink-500">
@@ -46,7 +46,10 @@ export default function MobileNavbar() {
                 </>
               ) : customSession?.user.role === JOBSEEKER ? (
                 <>
-                  <li className="flex cursor-pointer items-center border-none py-2 pl-2 text-lg outline-none hover:bg-neutral-900/65 hover:text-pink-500">
+                  <li
+                    className="flex cursor-pointer items-center border-none py-2 pl-2 text-lg outline-none hover:bg-neutral-900/65 hover:text-pink-500"
+                    onClick={() => router.push('/jobs')}
+                  >
                     <BsStack className="mr-2 h-4 w-4" /> Explore jobs
                   </li>
                 </>
@@ -63,9 +66,9 @@ export default function MobileNavbar() {
             </ul>
 
             {status !== 'loading' && customSession?.user ? (
-              <div className='w-full h-1/2 flex items-end justify-center'>
+              <div className="flex h-1/2 w-full items-end justify-center">
                 <div className="flex h-fit w-full items-center justify-between bg-neutral-900/75 px-3 py-2">
-                  <div className="flex items-center">
+                  <div className="flex items-center" onClick={()=>router.push('/profile')}>
                     <p className="flex h-10 w-10 items-center justify-center bg-neutral-600 text-white">
                       {customSession?.user.name.charAt(0).toUpperCase()}
                     </p>

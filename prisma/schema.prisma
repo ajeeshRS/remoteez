@@ -118,6 +118,7 @@ model Job {
   skillsRequired     String[]
   minSalary          Int
   maxSalary          Int
+  appliedCount       Int?
   currency           Currency   @default(INR)
   isVerified         Boolean    @default(false)
   postedAt           DateTime   @default(now())

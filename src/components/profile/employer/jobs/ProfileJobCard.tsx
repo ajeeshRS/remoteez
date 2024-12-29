@@ -2,19 +2,51 @@ import { Job } from '@prisma/client';
 import { Bookmark } from 'lucide-react';
 import EditJob from './EditJob';
 import DeleteJobDialog from './DeleteJobDialog';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
+import { getBookmarkCount } from '@/app/actions/employer/actions';
+import { useSession } from 'next-auth/react';
 
 interface Props {
   job: Job;
 }
 export default function ProfileJobCard({ job }: Props) {
+  const [bookmarkCount, setBookmarkCount] = useState(0);
+  const [loading, setLoading] = useState(false);
+
+  const fetchBookmarkCount = async () => {
+    try {
+      setLoading(true);
+      const { count, success, error } = await getBookmarkCount(job.id);
+      setLoading(false);
+
+      if (!success) {
+        toast.error(error);
+      }
+      if (count) {
+        setBookmarkCount(count);
+      }
+    } catch (error) {
+      setLoading(false);
+      console.error('Error fetching bookmark count : ', error);
+      toast.error('Some error occured');
+    }
+  };
+
+  useEffect(() => {
+    fetchBookmarkCount();
+  }, []);
+
   return (
     <div className="flex flex-col border border-pink-400/20 p-4">
       <div className="flex flex-col items-start justify-between py-5 md:flex-row md:items-center">
-        <p className="font-bold">{job.title}</p>
-        <p className="my-1 text-xs md:my-0">
-          {job.postedAt.toLocaleDateString()}
-        </p>
-        <div className='flex items-center'>
+        <div className="flex flex-col items-start">
+          <p className="font-bold">{job.title}</p>
+          <p className="my-1 text-xs md:my-1">
+            {job.postedAt.toLocaleDateString()}
+          </p>
+        </div>
+        <div className="flex items-center">
           <EditJob job={job} />
           <DeleteJobDialog jobId={job.id} />
         </div>
@@ -30,10 +62,10 @@ export default function ProfileJobCard({ job }: Props) {
         </div>
         <div className="my-2 flex items-center justify-between">
           <p>EXP: {`${job.minExperience}-${job.maxExperience} years`}</p>
-          <p className="my-1 text-xs md:my-0">246 applied</p>
+          <p className="my-1 text-xs md:my-0"> 0 applied</p>
           <div className="flex items-center">
             <Bookmark className="mr-1 h-4 w-4 text-pink-600" />
-            <p>0</p>
+            <p className="text-xs">{bookmarkCount}</p>
           </div>
         </div>
         <div className="my-2 grid grid-cols-2 gap-3">
