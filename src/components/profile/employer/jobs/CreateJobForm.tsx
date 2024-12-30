@@ -58,6 +58,7 @@ export default function CreateJobForm() {
     } finally {
       setLoading(false);
       reset()
+      setSkills('')
     }
   };
 

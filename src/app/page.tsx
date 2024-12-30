@@ -1,5 +1,6 @@
 'use client';
 import Faq from '@/components/Faq';
+import RecentlyAddedJobs from '@/components/RecentlyAddedJobs';
 import { Plus, Search } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
@@ -23,7 +24,7 @@ export default function Home() {
             Browse Jobs
           </button>
           <button
-            onClick={() => router.push('/creates')}
+            onClick={() => router.push('/create')}
             className="mx-3 flex items-center bg-pink-600 px-3 py-1 text-white outline-none hover:bg-pink-700"
           >
             <Plus className="mr-1 h-4 w-4" />
@@ -31,6 +32,7 @@ export default function Home() {
           </button>
         </div>
       </div>
+      <RecentlyAddedJobs />
       <Faq />
     </>
   );

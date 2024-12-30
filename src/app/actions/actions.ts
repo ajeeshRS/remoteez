@@ -417,3 +417,25 @@ export const getJobDetails = async (jobId: string) => {
     };
   }
 };
+
+export const getRecentlyAddedJobs = async () => {
+  try {
+    const jobs = await prisma.job.findMany({
+      orderBy: {
+        postedAt: 'desc',
+      },
+      take: 3,
+    });
+
+    return {
+      success: true,
+      jobs,
+    };
+  } catch (err) {
+    console.error('Error getting recently added jobs : ', err);
+    return {
+      success: false,
+      error: 'Internal server error',
+    };
+  }
+};
