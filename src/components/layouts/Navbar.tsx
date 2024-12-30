@@ -27,13 +27,19 @@ export default function Navbar() {
       <ul className="hidden w-fit items-center justify-between md:flex md:w-fit">
         {status !== 'loading' && customSession?.user.role === EMPLOYER ? (
           <>
-            <li onClick={()=>router.push('/create')} className="mr-10 cursor-pointer text-white hover:text-pink-500">
+            <li
+              onClick={() => router.push('/create')}
+              className="mr-10 cursor-pointer text-white hover:text-pink-500"
+            >
               Post a job
             </li>
           </>
         ) : customSession?.user.role === JOBSEEKER ? (
           <>
-            <li className="mr-10 flex cursor-pointer items-center text-white hover:text-pink-500">
+            <li
+              onClick={() => router.push('/jobs')}
+              className="mr-10 flex cursor-pointer items-center text-white hover:text-pink-500"
+            >
               Explore Jobs
             </li>
           </>

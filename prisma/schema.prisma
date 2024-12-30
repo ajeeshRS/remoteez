@@ -118,7 +118,6 @@ model Job {
   skillsRequired     String[]
   minSalary          Int
   maxSalary          Int
-  appliedCount       Int?
   currency           Currency   @default(INR)
   isVerified         Boolean    @default(false)
   postedAt           DateTime   @default(now())
@@ -126,6 +125,14 @@ model Job {
   updatedAt          DateTime   @updatedAt
   employer           Employer   @relation(fields: [employerId], references: [id])
   bookmark           Bookmark[]
+  Applied            Applied[]
+}
+
+model Applied {
+  id          String @id @default(uuid())
+  jobSeekerId String @unique
+  jobId       String
+  job         Job    @relation(fields: [jobId], references: [id])
 }
 
 model Bookmark {

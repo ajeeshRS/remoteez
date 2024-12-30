@@ -430,3 +430,40 @@ export const getBookmarkCount = async (jobId: string) => {
     };
   }
 };
+
+export const getAppliedCount = async (jobId: string) => {
+  try {
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user) {
+      return {
+        success: false,
+        error: 'Unauthorised',
+      };
+    }
+
+    if (!jobId) {
+      return {
+        success: false,
+        error: 'Bad request',
+      };
+    }
+
+    const count = await prisma.applied.count({
+      where: {
+        jobId,
+      },
+    });
+
+    return {
+      success: true,
+      count,
+    };
+  } catch (err) {
+    console.error('error getting applied count : ', err);
+    return {
+      success: false,
+      error: 'Internal server error',
+    };
+  }
+};

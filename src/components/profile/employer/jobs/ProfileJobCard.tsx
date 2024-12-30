@@ -4,7 +4,10 @@ import EditJob from './EditJob';
 import DeleteJobDialog from './DeleteJobDialog';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
-import { getBookmarkCount } from '@/app/actions/employer/actions';
+import {
+  getAppliedCount,
+  getBookmarkCount,
+} from '@/app/actions/employer/actions';
 import { useSession } from 'next-auth/react';
 
 interface Props {
@@ -12,29 +15,44 @@ interface Props {
 }
 export default function ProfileJobCard({ job }: Props) {
   const [bookmarkCount, setBookmarkCount] = useState(0);
+  const [appliedCount, setAppliedCount] = useState(0);
   const [loading, setLoading] = useState(false);
 
   const fetchBookmarkCount = async () => {
     try {
-      setLoading(true);
       const { count, success, error } = await getBookmarkCount(job.id);
-      setLoading(false);
 
       if (!success) {
-        toast.error(error);
+        console.error('error getting bookmark count : ', error);
       }
+
       if (count) {
         setBookmarkCount(count);
       }
     } catch (error) {
-      setLoading(false);
       console.error('Error fetching bookmark count : ', error);
       toast.error('Some error occured');
     }
   };
 
+  const fetchAppliedCount = async () => {
+    try {
+      const { count, success, error } = await getAppliedCount(job.id);
+      if (!success) {
+        console.error('error getting applied count : ', error);
+      }
+
+      if (count) {
+        setAppliedCount(count);
+      }
+    } catch (error) {
+      console.error('error getting applied count : ', error);
+    }
+  };
+
   useEffect(() => {
     fetchBookmarkCount();
+    fetchAppliedCount();
   }, []);
 
   return (
@@ -62,7 +80,7 @@ export default function ProfileJobCard({ job }: Props) {
         </div>
         <div className="my-2 flex items-center justify-between">
           <p>EXP: {`${job.minExperience}-${job.maxExperience} years`}</p>
-          <p className="my-1 text-xs md:my-0"> 0 applied</p>
+          <p className="my-1 text-xs md:my-0"> {appliedCount} applied</p>
           <div className="flex items-center">
             <Bookmark className="mr-1 h-4 w-4 text-pink-600" />
             <p className="text-xs">{bookmarkCount}</p>

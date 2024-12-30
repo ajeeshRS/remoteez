@@ -17,12 +17,14 @@ import { Job } from '@prisma/client';
 import Loader from '@/components/ui/loader';
 import { useSession } from 'next-auth/react';
 import BookmarkButton from '@/components/jobs/Bookmark';
+import { EMPLOYER } from '@/lib/constants/app.constants';
+import { applyJob } from '@/app/actions/jobseeker/actions';
 
 export default function Page() {
   const [jobDetails, setJobDetails] = useState<Job | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const { status } = useSession();
+  const { status, data: session } = useSession();
   const router = useRouter();
   const params = useParams();
   const { id } = params;
@@ -42,6 +44,18 @@ export default function Page() {
       setLoading(false);
       console.error('Error fetching job details : ', error);
       toast.error('Some error occured');
+    }
+  };
+
+  const handleApply = async (jobId: string, link: string) => {
+    try {
+      const { success, error } = await applyJob(jobId);
+      if (!success) {
+        console.error(error);
+      }
+      router.push(link);
+    } catch (error) {
+      console.error('error applying : ', error);
     }
   };
 
@@ -87,10 +101,17 @@ export default function Page() {
               </div>
             </div>
           </div>
-          <div className="flex items-center space-x-3">
+          <div
+            className={`flex items-center space-x-3 ${session?.user.role === EMPLOYER ? 'hidden' : 'block'}`}
+          >
             <button
               className="bg-pink-600 px-2 py-1 hover:bg-pink-700"
-              onClick={() => router.push(jobDetails?.link as string)}
+              onClick={() =>
+                handleApply(
+                  jobDetails?.id as string,
+                  jobDetails?.link as string,
+                )
+              }
             >
               Apply
             </button>

@@ -29,6 +29,7 @@ import {
   ChangeCurrentPasswordSchema,
   ChangeCurrentPasswordSchemaType,
 } from '@/lib/validators/auth.validator';
+import { EMPLOYER, JOBSEEKER } from '@/lib/constants/app.constants';
 
 const prisma = new PrismaClient();
 
@@ -881,6 +882,7 @@ export const addBookmark = async (jobId: string) => {
     };
   }
 };
+
 export const removeBookmark = async (bookmarkId: string) => {
   try {
     const session = await getServerSession(authOptions);
@@ -913,6 +915,58 @@ export const removeBookmark = async (bookmarkId: string) => {
     };
   } catch (err) {
     console.error('error deleting bookmark : ', err);
+    return {
+      success: false,
+      error: 'Internal server error',
+    };
+  }
+};
+
+export const applyJob = async (jobId: string) => {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user || session.user.role !== JOBSEEKER) {
+      return {
+        success: false,
+        error: 'Unauthorised',
+      };
+    }
+
+    const customSession = session as CustomSession;
+    const id = customSession.user.id;
+    if (!jobId) {
+      return {
+        success: false,
+        error: 'Bad request',
+      };
+    }
+
+    const isRecordAlreadyExists = await prisma.applied.findUnique({
+      where: {
+        jobSeekerId: id,
+      },
+    });
+
+    if (isRecordAlreadyExists) {
+      return {
+        success: false,
+        error: 'Already applied',
+      };
+    }
+
+    await prisma.applied.create({
+      data: {
+        jobSeekerId: id,
+        jobId: jobId,
+      },
+    });
+
+    return {
+      success: true,
+      message: 'applied',
+    };
+  } catch (err) {
+    console.error('error adding applied data : ', err);
     return {
       success: false,
       error: 'Internal server error',
