@@ -89,25 +89,30 @@ export default function EmployerForm() {
   }, [debouncedFetch]);
 
   return (
-    <form onSubmit={handleSubmit((data) => handleEmployerSignup(data,setSigning,reset))}>
+    <form
+    // className='flex flex-col items-center'
+      onSubmit={handleSubmit((data) =>
+        handleEmployerSignup(data, setSigning, reset),
+      )}
+    >
       <input
         {...register('name')}
         type="text"
-         className="my-2 h-10 w-full border-neutral-500/35 border focus:border-neutral-400 px-5 text-sm placeholder:text-sm outline-none bg-transparent"
+        className="my-2 h-10 w-full border border-neutral-500/35 bg-transparent px-5 text-sm outline-none placeholder:text-sm focus:border-neutral-400"
         placeholder="Name"
       />
       <ErrorMessage err={errors.name} />
       <input
         {...register('email')}
         type="text"
-         className="my-2 h-10 w-full border-neutral-500/35 border focus:border-neutral-400 px-5 text-sm placeholder:text-sm outline-none bg-transparent"
+        className="my-2 h-10 w-full border border-neutral-500/35 bg-transparent px-5 text-sm outline-none placeholder:text-sm focus:border-neutral-400"
         placeholder="Email"
       />
       <ErrorMessage err={errors.email} />
       <input
         {...register('companyName')}
         type="text"
-         className="my-2 h-10 w-full border-neutral-500/35 border focus:border-neutral-400 px-5 text-sm placeholder:text-sm outline-none bg-transparent"
+        className="my-2 h-10 w-full border border-neutral-500/35 bg-transparent px-5 text-sm outline-none placeholder:text-sm focus:border-neutral-400"
         placeholder="Company Name"
       />
       <ErrorMessage err={errors.companyName} />
@@ -115,7 +120,7 @@ export default function EmployerForm() {
       <input
         {...register('password')}
         type="password"
-         className="my-2 h-10 w-full border-neutral-500/35 border focus:border-neutral-400 px-5 text-sm placeholder:text-sm outline-none bg-transparent"
+        className="my-2 h-10 w-full border border-neutral-500/35 bg-transparent px-5 text-sm outline-none placeholder:text-sm focus:border-neutral-400"
         placeholder="Password"
       />
       <ErrorMessage err={errors.password} />
@@ -151,7 +156,7 @@ export default function EmployerForm() {
         type="submit"
         className="my-4 flex h-10 w-full items-center justify-center bg-pink-600 px-3 text-white outline-none hover:bg-pink-700"
       >
-        {signing ? <Loader/> : "Signup"}
+        {signing ? <Loader /> : 'Signup'}
       </button>
     </form>
   );

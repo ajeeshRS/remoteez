@@ -93,14 +93,14 @@ export default function JobSeekerForm() {
       <input
         type="text"
         {...register('fullname')}
-        className="my-2 h-10 w-full border-neutral-500/35 border focus:border-neutral-400 px-5 text-sm placeholder:text-sm outline-none bg-transparent"
+        className="my-2 h-10 w-full border border-neutral-500/35 bg-transparent px-5 text-sm outline-none placeholder:text-sm focus:border-neutral-400"
         placeholder="Full Name"
       />
       <ErrorMessage err={errors.fullname} />
       <input
         type="text"
         {...register('email')}
-        className="my-2 h-10 w-full border-neutral-500/35 border focus:border-neutral-400 px-5 text-sm placeholder:text-sm outline-none bg-transparent"
+        className="my-2 h-10 w-full border border-neutral-500/35 bg-transparent px-5 text-sm outline-none placeholder:text-sm focus:border-neutral-400"
         placeholder="Email"
       />
       <ErrorMessage err={errors.email} />
@@ -108,7 +108,7 @@ export default function JobSeekerForm() {
       <input
         type="password"
         {...register('password')}
-        className="my-2 h-10 w-full border-neutral-500/35 border focus:border-neutral-400 px-5 text-sm placeholder:text-sm outline-none bg-transparent"
+        className="my-2 h-10 w-full border border-neutral-500/35 bg-transparent px-5 text-sm outline-none placeholder:text-sm focus:border-neutral-400"
         placeholder="Password"
       />
       <ErrorMessage err={errors.password} />
@@ -134,7 +134,7 @@ export default function JobSeekerForm() {
       <input
         type="text"
         {...register('desiredJobTitle')}
-        className="my-2 h-10 w-full border-neutral-500/35 border focus:border-neutral-400 px-5 text-sm placeholder:text-sm outline-none bg-transparent"
+        className="my-2 h-10 w-full border border-neutral-500/35 bg-transparent px-5 text-sm outline-none placeholder:text-sm focus:border-neutral-400"
         placeholder="Desired Job Title"
       />
       <ErrorMessage err={errors.desiredJobTitle} />

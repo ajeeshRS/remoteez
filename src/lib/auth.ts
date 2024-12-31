@@ -3,6 +3,8 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import { SigninSchema } from './validators/auth.validator';
 import { PrismaClient } from '@prisma/client';
 import { compare } from 'bcrypt';
+import GoogleProvider from 'next-auth/providers/google';
+
 const prisma = new PrismaClient();
 
 export interface CustomSessionUser {
@@ -39,6 +41,10 @@ declare module 'next-auth' {
 
 export const authOptions = {
   providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+    }),
     CredentialsProvider({
       name: 'Email',
       credentials: {
@@ -72,7 +78,10 @@ export const authOptions = {
           throw new Error('User not found');
         }
 
-        const isValidPassword = await compare(password, user.password);
+        const isValidPassword = await compare(
+          password,
+          user.password as string,
+        );
 
         if (!isValidPassword) throw new Error('Invalid credentials');
 
@@ -99,8 +108,36 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
+    async jwt({ token, user, account, profile }) {
+      if (account?.provider === 'google') {
+        console.log('google provider');
+
+        const jobSeeker = await prisma.jobSeeker.findUnique({
+          where: {
+            email: profile?.email,
+          },
+        });
+
+        const employer = await prisma.employer.findUnique({
+          where: {
+            email: profile?.email,
+          },
+        });
+
+        const user = jobSeeker || employer;
+
+        if (!user) {
+          throw new Error('User not found');
+        }
+
+        if (employer) {
+          (token.id = employer.id), (token.role = 'EMPLOYER');
+        }
+
+        if (jobSeeker) {
+          (token.id = jobSeeker.id), (token.role = 'JOBSEEKER');
+        }
+      } else if (user) {
         token.id = user.id;
         token.role = user.role;
       }

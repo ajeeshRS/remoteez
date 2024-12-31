@@ -1,4 +1,5 @@
 'use client';
+import GoogleLogin from '@/components/GoogleLogin';
 import ErrorMessage from '@/components/ui/error-msg';
 import Loader from '@/components/ui/loader';
 import {
@@ -11,7 +12,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { FaGoogle } from 'react-icons/fa';
 import { toast } from 'sonner';
 
 export default function Page() {
@@ -69,8 +69,8 @@ export default function Page() {
   };
   return (
     <div className="flex h-[90vh] w-full items-center justify-center">
-      <div className="login-form-container flex h-fit w-5/6 flex-col items-center justify-center p-5 bg-neutral-700/10 shadow-md md:w-2/6 text-white">
-        <h3 className="w-full text-center text-xl font-bold md:text-2xl text-white">
+      <div className="login-form-container flex h-fit w-full flex-col items-center justify-center bg-neutral-700/10 p-5 text-white shadow-md md:w-2/6">
+        <h3 className="w-full text-center text-xl font-bold text-white md:text-2xl">
           Login to your account
         </h3>
         <form
@@ -80,20 +80,20 @@ export default function Page() {
           <input
             {...register('email')}
             type="text"
-            className="my-2 h-10 w-full  border border-neutral-500/35 focus:border-neutral-400 px-5 placeholder:text-sm outline-none bg-transparent text-white md:w-5/6"
+            className="my-2 h-10 w-full border border-neutral-500/35 bg-transparent px-5 text-white outline-none placeholder:text-sm focus:border-neutral-400"
             placeholder="Email"
           />
           <ErrorMessage err={errors.email} />
           <input
             {...register('password')}
             type="password"
-            className="my-2 h-10 w-full border border-neutral-500/35 focus:border-neutral-400 outline-none px-5 placeholder:text-sm bg-transparent text-white md:w-5/6"
+            className="my-2 h-10 w-full border border-neutral-500/35 bg-transparent px-5 text-white outline-none placeholder:text-sm focus:border-neutral-400"
             placeholder="Password"
           />
           <ErrorMessage err={errors.password} />
           <p
             onClick={() => router.push('/forgot-password')}
-            className="flex w-full cursor-pointer items-center justify-start text-xs hover:underline md:w-5/6"
+            className="flex w-full cursor-pointer items-center justify-start text-xs hover:underline"
           >
             Forgot Password ?
           </p>
@@ -105,13 +105,11 @@ export default function Page() {
           </p>
           <button
             type="submit"
-            className="my-4 flex w-full items-center justify-center bg-pink-600 px-3 py-1 text-white outline-none hover:bg-pink-700 md:w-5/6"
+            className="my-4 flex w-full items-center justify-center bg-pink-600 px-3 py-1 text-white outline-none hover:bg-pink-700"
           >
             {loading ? <Loader /> : 'Login'}
           </button>
-          <button className="flex w-full items-center justify-center bg-pink-600 px-3 py-1 text-white outline-none hover:bg-pink-700 md:w-5/6">
-            <FaGoogle className="mr-2 h-4 w-4 text-white" /> Login with Google
-          </button>
+          <GoogleLogin />
         </form>
       </div>
     </div>

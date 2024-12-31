@@ -18,7 +18,7 @@ model JobSeeker {
   id                String            @id @unique @default(uuid())
   email             String            @unique
   fullName          String
-  password          String
+  password          String?
   avatar            String?
   bio               String?
   githubLink        String?
@@ -28,10 +28,10 @@ model JobSeeker {
   skills            String[]
   projects          Project[]
   resume            String?
-  desiredJobTitle   String
-  experienceRange   ExperienceRange
+  desiredJobTitle   String?
+  experienceRange   ExperienceRange?
   previousCompanies PreviousCompany[]
-  location          String
+  location          String?
   preferredJobType  JobType?
   Bookmark          Bookmark[]
 }
@@ -75,10 +75,10 @@ enum JobType {
 model Employer {
   id              String       @id @unique @default(uuid())
   name            String
-  companyName     String
-  companyLocation String
-  role            Role
-  password        String
+  companyName     String?
+  companyLocation String?
+  role            Role?
+  password        String?
   email           String       @unique
   logo            String?
   foundedYear     Int?
