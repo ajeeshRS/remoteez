@@ -31,6 +31,7 @@ import { setJobseekerProfile } from '@/state/profile/jobseekerSlice';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/state/store';
 import ErrorMessage from '@/components/ui/error-msg';
+import { JobType } from '@prisma/client';
 
 export default function AddExperience() {
   const [startDate, setStartDate] = useState('');
@@ -163,7 +164,7 @@ export default function AddExperience() {
             <ErrorMessage err={errors.duration} />
           </div>
           <Select
-            onValueChange={(value: any) => setValue('jobType', value)}
+            onValueChange={(value: JobType) => setValue('jobType', value)}
             value={jobType}
           >
             <label className="my-1 py-2 text-sm text-neutral-200">

@@ -9,7 +9,6 @@ export interface Link {
   value: string;
 }
 export default function Links() {
-
   const [links, setLinks] = useState<Link[]>([]);
 
   const profileDetails = useSelector(
@@ -45,7 +44,7 @@ export default function Links() {
         <p className="font-bold text-pink-500"> Links</p>
         <div>
           {links?.length !== 0 &&
-            links?.map((link: any, i: number) => (
+            links?.map((link: { key: string; value: string }, i: number) => (
               <div key={i} className="flex flex-col items-start">
                 <p className="flex items-start py-5">
                   <span className="pr-2">{link.key}</span>

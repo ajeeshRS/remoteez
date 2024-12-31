@@ -33,8 +33,16 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/state/store';
 import { setJobseekerProfile } from '@/state/profile/jobseekerSlice';
 import ErrorMessage from '@/components/ui/error-msg';
+import { JobType } from '@prisma/client';
+import { PreviousCompany } from '@/types/common';
 
-export default function EditExperience({ experience }: any) {
+export default function EditExperience({
+  experience,
+  expId,
+}: {
+  experience: PreviousCompany;
+  expId: string;
+}) {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [loading, setLoading] = useState(false);
@@ -88,10 +96,10 @@ export default function EditExperience({ experience }: any) {
         duration: experience.duration || '',
         companyName: experience.companyName || '',
         companyWebsite: experience.companyWebsite || '',
-        jobType: experience.jobType || '',
+        jobType: experience.jobType || 'FULL_TIME',
       });
 
-      const { start, end } = extractDates(experience.duration);
+      const { start, end } = extractDates(experience.duration as string);
 
       setStartDate(start);
       setEndDate(end);
@@ -127,9 +135,7 @@ export default function EditExperience({ experience }: any) {
           <SheetTitle className="text-white">Edit Experience</SheetTitle>
         </SheetHeader>
         <form
-          onSubmit={handleSubmit((data) =>
-            handleEditExperience(data, experience.id),
-          )}
+          onSubmit={handleSubmit((data) => handleEditExperience(data, expId))}
           className="flex h-fit w-full flex-col overflow-y-scroll py-10"
         >
           <div className="flex w-full flex-col">
@@ -186,7 +192,7 @@ export default function EditExperience({ experience }: any) {
             <ErrorMessage err={errors.duration} />
           </div>
           <Select
-            onValueChange={(value: any) => setValue('jobType', value)}
+            onValueChange={(value: JobType) => setValue('jobType', value)}
             value={jobType}
           >
             <label className="my-1 py-2 text-sm text-neutral-200">

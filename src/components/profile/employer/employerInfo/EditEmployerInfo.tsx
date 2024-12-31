@@ -35,6 +35,7 @@ import { toast } from 'sonner';
 import { setEmployerProfile } from '@/state/profile/employerSlice';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/state/store';
+import { Role } from '@prisma/client';
 interface Props {
   employerDetails: EmployerProfile | null;
 }
@@ -73,7 +74,7 @@ export default function EditEmployerInfo({ employerDetails }: Props) {
       setUpdating(true);
       const logoFile = data.logo instanceof FileList ? data.logo[0] : data.logo;
 
-      const { logo, ...profileData } = data;
+      const { ...profileData } = data;
       const submitData = {
         ...profileData,
         ...(logoFile ? { logo: logoFile } : {}),
@@ -254,7 +255,7 @@ export default function EditEmployerInfo({ employerDetails }: Props) {
           <div className="flex w-full flex-col">
             <label className="my-1 py-2 text-sm text-neutral-200">Role</label>
             <Select
-              onValueChange={(value: any) => setValue('role', value)}
+              onValueChange={(value: Role) => setValue('role', value)}
               value={role}
             >
               <SelectTrigger className="h-10 w-full">

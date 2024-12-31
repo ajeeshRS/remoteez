@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import EmployerForm from '@/components/signup/EmployerForm';
 import JobSeekerForm from '@/components/signup/JobSeekerForm';
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 export interface Suggestion {
@@ -16,6 +16,14 @@ export interface Suggestion {
 }
 
 export default function Page() {
+  return (
+    <Suspense fallback={<p>Loading...</p>}>
+      <SignupContent />
+    </Suspense>
+  );
+}
+
+function SignupContent() {
   const searchParams = useSearchParams();
   const value = searchParams.get('type');
   const router = useRouter();
@@ -34,7 +42,7 @@ export default function Page() {
 
   return (
     <div className="flex min-h-[90vh] w-full items-center justify-center">
-      <div className="login-form-container my-10 flex h-fit w-5/6 flex-col items-center justify-center bg-neutral-700/10 p-5 shadow-md md:w-2/6 text-white">
+      <div className="login-form-container my-10 flex h-fit w-5/6 flex-col items-center justify-center bg-neutral-700/10 p-5 text-white shadow-md md:w-2/6">
         <h3 className="w-full text-center text-xl font-bold md:text-2xl">
           Create your account
         </h3>

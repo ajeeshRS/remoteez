@@ -84,7 +84,7 @@ export default function Experience() {
                 <div className="flex w-full items-center justify-between">
                   <p className="py-2 font-bold text-neutral-300">{exp.role}</p>
                   <div>
-                    <EditExperience experience={exp} />
+                    <EditExperience experience={exp} expId={exp.id as string} />
                     <DeleteExperienceDialog expId={exp.id as string} />
                   </div>
                 </div>

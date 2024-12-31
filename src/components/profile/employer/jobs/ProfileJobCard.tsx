@@ -8,7 +8,6 @@ import {
   getAppliedCount,
   getBookmarkCount,
 } from '@/app/actions/employer/actions';
-import { useSession } from 'next-auth/react';
 
 interface Props {
   job: Job;
@@ -16,7 +15,6 @@ interface Props {
 export default function ProfileJobCard({ job }: Props) {
   const [bookmarkCount, setBookmarkCount] = useState(0);
   const [appliedCount, setAppliedCount] = useState(0);
-  const [loading, setLoading] = useState(false);
 
   const fetchBookmarkCount = async () => {
     try {

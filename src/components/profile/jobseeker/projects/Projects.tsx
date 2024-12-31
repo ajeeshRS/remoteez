@@ -6,6 +6,16 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/state/store';
 import DeleteProjectDialog from './DeleteProjectDialog';
 
+export type Project = {
+  id: string | null;
+  skills: string[];
+  description: string | null;
+  title: string | null;
+  githubURL: string | null;
+  deployedLink: string | null;
+  jobSeekerId: string | null;
+};
+
 export default function Projects() {
   const projects = useSelector(
     (state: RootState) => state.jobseekerReducer.jobseeker?.projects,
@@ -16,7 +26,7 @@ export default function Projects() {
         <p className="font-bold text-pink-500">Projects</p>
         <div className="my-10 grid grid-cols-1 gap-6 md:grid-cols-2">
           {projects?.length !== 0 ? (
-            projects?.map((project: any) => (
+            projects?.map((project: Project) => (
               <div
                 key={project.title}
                 className="border border-pink-400/20 p-4"
@@ -27,7 +37,7 @@ export default function Projects() {
                   </p>
                   <div className="flex items-center">
                     <EditProject project={project} />
-                    <DeleteProjectDialog projectId={project.id} />
+                    <DeleteProjectDialog projectId={project.id as string} />
                   </div>
                 </div>
                 <p className="py-1 text-sm">{project.description}</p>
@@ -40,7 +50,7 @@ export default function Projects() {
                   {project.deployedLink}
                 </p>
                 <div className="grid grid-cols-2 md:grid-cols-3">
-                  {project.skills.map((skill: any) => (
+                  {project.skills.map((skill: string) => (
                     <p
                       className="my-2 mr-2 flex items-center justify-between text-nowrap bg-pink-400/20 px-2 py-1"
                       key={skill}

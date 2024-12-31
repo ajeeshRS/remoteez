@@ -1,5 +1,5 @@
 'use client';
-import { useCallback, useEffect, useState } from 'react';
+import { Suspense, useCallback, useEffect, useState } from 'react';
 import { Job } from '@prisma/client';
 import { getJobs } from '@/app/actions/actions';
 import { useInView } from 'react-intersection-observer';
@@ -9,6 +9,14 @@ import JobCard from './JobCard';
 import JobFilter from './JobFilter';
 
 export default function JobSearch() {
+  return (
+    <Suspense fallback={<p>Loading...</p>}>
+      <JobSearchContent />
+    </Suspense>
+  );
+}
+
+function JobSearchContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { ref, inView } = useInView();
@@ -189,7 +197,7 @@ export default function JobSearch() {
     }
   }, [inView, fetchJobs, searchQuery]);
   return (
-    <div className="flex md:h-[90vh] min-h-[90vh]  w-full md:px-8 px-2 py-4 text-white md:flex-row flex-col">
+    <div className="flex min-h-[90vh] w-full flex-col px-2 py-4 text-white md:h-[90vh] md:flex-row md:px-8">
       <JobFilter
         handleCommitment={handleCommitmentChange}
         handleExp={handleExperienceChange}
@@ -197,7 +205,7 @@ export default function JobSearch() {
         handleSearch={handleSearchChange}
         searchQuery={searchQuery}
       />
-      <div className="flex min-h-[85vh] md:h-[85vh] w-full flex-col space-y-2 md:overflow-y-scroll md:px-5">
+      <div className="flex min-h-[85vh] w-full flex-col space-y-2 md:h-[85vh] md:overflow-y-scroll md:px-5">
         {jobs &&
           jobs.length !== 0 &&
           jobs.map((job, i) => <JobCard job={job} key={i} />)}
@@ -209,7 +217,7 @@ export default function JobSearch() {
             <p className="text-sm text-neutral-200">No jobs found.</p>
           ) : !hasMore ? (
             <p className="text-sm text-neutral-200">
-              Looks like you've reached the end.
+              Looks like you&apos;ve reached the end.
             </p>
           ) : null}
         </div>

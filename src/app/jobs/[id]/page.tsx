@@ -59,15 +59,15 @@ export default function Page() {
     }
   };
 
-  if (!id) {
-    router.back();
-    return;
-  }
-
   useEffect(() => {
     fetchJobInfo();
   }, [id]);
 
+  if (!id) {
+    router.back();
+    return;
+  }
+  
   if (loading || status === 'loading') {
     return (
       <div className="flex h-[90vh] w-full flex-col items-center justify-center p-10 text-white">

@@ -19,7 +19,7 @@ import { Pen } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import { useDispatch, UseDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/state/store';
 interface Props {
   resumeLink: string;

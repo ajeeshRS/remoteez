@@ -181,7 +181,6 @@ export default function AddProject() {
                 className="border border-pink-400/60 bg-transparent px-3 py-2 text-sm text-white outline-none"
                 placeholder="Add skills"
               />
-              <ErrorMessage err={errors.skills} />
             </div>
             <div className="grid grid-cols-2 py-5">
               {skillSet.map((skill, i) => (

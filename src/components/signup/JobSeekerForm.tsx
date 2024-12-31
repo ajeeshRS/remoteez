@@ -20,6 +20,7 @@ import axios from 'axios';
 import ErrorMessage from '../ui/error-msg';
 import { handleJobSeekerSignup } from '@/lib/auth.axios';
 import Loader from '../ui/loader';
+import { ExperienceRange } from '@prisma/client';
 
 export default function JobSeekerForm() {
   const [location, setLocation] = useState<string>('');
@@ -115,7 +116,7 @@ export default function JobSeekerForm() {
 
       <>
         <Select
-          onValueChange={(value: any) =>
+          onValueChange={(value: ExperienceRange) =>
             setValue('experience', value, { shouldValidate: true })
           }
         >

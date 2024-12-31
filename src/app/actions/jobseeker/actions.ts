@@ -29,7 +29,7 @@ import {
   ChangeCurrentPasswordSchema,
   ChangeCurrentPasswordSchemaType,
 } from '@/lib/validators/auth.validator';
-import { EMPLOYER, JOBSEEKER } from '@/lib/constants/app.constants';
+import { JOBSEEKER } from '@/lib/constants/app.constants';
 
 const prisma = new PrismaClient();
 
@@ -669,7 +669,7 @@ export const deleteExperience = async (expId: string) => {
       message: 'Experience deleted successfully',
     };
   } catch (err) {
-    console.error('error in deleting experience');
+    console.error('error in deleting experience : ', err);
     return {
       success: false,
       error: 'Internal server error',
@@ -795,7 +795,7 @@ export const changeCurrentPassword = async (
 
     const isPasswordMatches = await bcrypt.compare(
       data.currentPassword,
-      user?.password,
+      user?.password as string,
     );
 
     if (!isPasswordMatches) {

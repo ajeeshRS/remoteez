@@ -1,9 +1,13 @@
 import { Msg } from '@/types/common';
 import axios, { AxiosError } from 'axios';
 import { toast } from 'sonner';
+import {
+  EmployerSignupSchemaType,
+  JobSeekerSignupSchemaType,
+} from './validators/auth.validator';
 
 export const handleJobSeekerSignup = async (
-  formData: any,
+  formData: JobSeekerSignupSchemaType,
   setSigning: (value: boolean) => void,
 ) => {
   try {
@@ -19,7 +23,7 @@ export const handleJobSeekerSignup = async (
 };
 
 export const handleEmployerSignup = async (
-  formData: any,
+  formData: EmployerSignupSchemaType,
   setSigning: (value: boolean) => void,
   reset: () => void,
 ) => {
@@ -32,7 +36,7 @@ export const handleEmployerSignup = async (
     console.log(err);
     toast.error(err.response?.statusText);
   } finally {
-    reset()
+    reset();
     setSigning(false);
   }
 };

@@ -20,6 +20,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import ErrorMessage from '../ui/error-msg';
 import { handleEmployerSignup } from '@/lib/auth.axios';
 import Loader from '../ui/loader';
+import { Role } from '@prisma/client';
 
 export default function EmployerForm() {
   const [companyLocation, setCompanyLocation] = useState<string>('');
@@ -127,7 +128,7 @@ export default function EmployerForm() {
 
       <>
         <Select
-          onValueChange={(value: any) =>
+          onValueChange={(value: Role) =>
             setValue('role', value, { shouldValidate: true })
           }
         >

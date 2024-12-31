@@ -39,6 +39,13 @@ declare module 'next-auth' {
   }
 }
 
+type AuthorizeResult = {
+  id: string;
+  email: string;
+  name?: string | null;
+  role: 'EMPLOYER' | 'JOBSEEKER';
+} | null;
+
 export const authOptions = {
   providers: [
     GoogleProvider({
@@ -55,7 +62,7 @@ export const authOptions = {
           placeholder: '',
         },
       },
-      async authorize(credentials): Promise<any> {
+      async authorize(credentials): Promise<AuthorizeResult> {
         const result = SigninSchema.safeParse(credentials);
 
         if (!result.success) {
@@ -131,11 +138,13 @@ export const authOptions = {
         }
 
         if (employer) {
-          (token.id = employer.id), (token.role = 'EMPLOYER');
+          token.id = employer.id;
+          token.role = 'EMPLOYER';
         }
 
         if (jobSeeker) {
-          (token.id = jobSeeker.id), (token.role = 'JOBSEEKER');
+          token.id = jobSeeker.id;
+          token.role = 'JOBSEEKER';
         }
       } else if (user) {
         token.id = user.id;

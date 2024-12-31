@@ -1,7 +1,6 @@
 'use client';
 import {
   deleteExperience,
-  deleteProject,
   getJobseekerInfo,
 } from '@/app/actions/jobseeker/actions';
 import {

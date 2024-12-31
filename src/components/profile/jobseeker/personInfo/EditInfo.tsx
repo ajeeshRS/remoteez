@@ -29,6 +29,7 @@ import { updateJobseekerInfo } from '@/app/actions/jobseeker/actions';
 import Loader from '@/components/ui/loader';
 import ErrorMessage from '@/components/ui/error-msg';
 import { JobSeekerProfile } from '@/types/common';
+import { JobType } from '@prisma/client';
 
 interface Props {
   personalDetails: JobSeekerProfile | null;
@@ -80,7 +81,7 @@ export default function EditInfo({ personalDetails, refetch }: Props) {
       const avatarFile =
         data.avatar instanceof FileList ? data.avatar[0] : data.avatar;
 
-      const { avatar, ...profileData } = data;
+      const { ...profileData } = data;
       const submitData = {
         ...profileData,
         ...(avatarFile ? { avatar: avatarFile } : {}),
@@ -228,7 +229,7 @@ export default function EditInfo({ personalDetails, refetch }: Props) {
               Preferred job type
             </label>
             <Select
-              onValueChange={(value: any) =>
+              onValueChange={(value: JobType) =>
                 setValue('preferredJobType', value)
               }
               value={preferredJobType}

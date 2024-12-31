@@ -9,8 +9,6 @@ import { generateToken } from '@/lib/utils';
 const prisma = new PrismaClient();
 
 import { v2 as cloudinary } from 'cloudinary';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,

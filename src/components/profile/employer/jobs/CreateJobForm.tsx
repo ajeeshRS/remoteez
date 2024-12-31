@@ -95,7 +95,7 @@ export default function CreateJobForm() {
           >
             Job Type
           </label>
-          <Select onValueChange={(value: any) => setValue('jobType', value)}>
+          <Select onValueChange={(value: JobType) => setValue('jobType', value)}>
             <SelectTrigger className="my-2 h-10 w-full !border-white focus:!ring-pink-500">
               <SelectValue placeholder="Select job type" />
             </SelectTrigger>

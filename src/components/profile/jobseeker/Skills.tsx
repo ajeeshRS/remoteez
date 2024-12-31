@@ -75,7 +75,7 @@ export default function Skills() {
         <p className="font-bold text-pink-500"> Skills</p>
         <div className="grid grid-cols-2 py-5 md:grid-cols-3">
           {skillSet?.length === 0 && <p>No skills added yet.</p>}
-          {skillSet?.map((skill, _) => (
+          {skillSet?.map((skill) => (
             <p
               className="my-2 mr-2 flex items-center justify-between text-nowrap bg-pink-400/30 px-2 py-1"
               key={skill}

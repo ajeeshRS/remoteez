@@ -17,12 +17,14 @@ import { setJobseekerProfile } from '@/state/profile/jobseekerSlice';
 import { AppDispatch } from '@/state/store';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+// import { Project } from '@prisma/client';
 import { Pen, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { toast } from 'sonner';
-export default function EditProject({ project }: any) {
+import { Project } from './Projects';
+export default function EditProject({ project }: { project: Project  }) {
   const [input, setInput] = useState('');
   const [skillSet, setSkillSet] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -77,7 +79,7 @@ export default function EditProject({ project }: any) {
   const handleEditProject = async (data: ProjectEditSchemaType) => {
     try {
       setLoading(true);
-      const response = await editProject(data, project.id);
+      const response = await editProject(data, project.id as string);
 
       if (response.success) {
         toast.success(response.message);
@@ -192,7 +194,6 @@ export default function EditProject({ project }: any) {
                 className="border border-pink-400/60 bg-transparent px-3 py-2 text-sm text-white outline-none"
                 placeholder="Add skills"
               />
-              <ErrorMessage err={errors.skills} />
             </div>
             <div className="grid grid-cols-2 py-5">
               {skillSet.map((skill, i) => (
