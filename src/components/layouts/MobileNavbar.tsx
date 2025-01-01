@@ -40,7 +40,10 @@ export default function MobileNavbar() {
             <ul className="h-1/2 w-full">
               {status !== 'loading' && customSession?.user.role === EMPLOYER ? (
                 <>
-                  <li className="flex cursor-pointer items-center border-none py-2 pl-2 text-lg outline-none hover:bg-neutral-900/65 hover:text-pink-500">
+                  <li
+                    className="flex cursor-pointer items-center border-none py-2 pl-2 text-lg outline-none hover:bg-neutral-900/65 hover:text-pink-500"
+                    onClick={() => router.push('/create')}
+                  >
                     <Plus className="mr-2 h-4 w-4" /> Post a job
                   </li>
                 </>
@@ -55,10 +58,16 @@ export default function MobileNavbar() {
                 </>
               ) : (
                 <>
-                  <li className="flex cursor-pointer items-center border-none py-2 pl-2 text-lg outline-none hover:bg-neutral-900/65 hover:text-pink-500">
+                  <li
+                    onClick={() => router.push('/signup?type=jobseeker')}
+                    className="flex cursor-pointer items-center border-none py-2 pl-2 text-lg outline-none hover:bg-neutral-900/65 hover:text-pink-500"
+                  >
                     <TbWorldSearch className="mr-2 h-4 w-4" /> For Jobs
                   </li>
-                  <li className="flex cursor-pointer items-center border-none py-2 pl-2 text-lg outline-none hover:bg-neutral-900/65 hover:text-pink-500">
+                  <li
+                    onClick={() => router.push('/signup?type=employer')}
+                    className="flex cursor-pointer items-center border-none py-2 pl-2 text-lg outline-none hover:bg-neutral-900/65 hover:text-pink-500"
+                  >
                     <FaHireAHelper className="mr-2 h-4 w-4" /> For Hire
                   </li>
                 </>
@@ -68,7 +77,10 @@ export default function MobileNavbar() {
             {status !== 'loading' && customSession?.user ? (
               <div className="flex h-1/2 w-full items-end justify-center">
                 <div className="flex h-fit w-full items-center justify-between bg-neutral-900/75 px-3 py-2">
-                  <div className="flex items-center" onClick={()=>router.push('/profile')}>
+                  <div
+                    className="flex items-center"
+                    onClick={() => router.push('/profile')}
+                  >
                     <p className="flex h-10 w-10 items-center justify-center bg-neutral-600 text-white">
                       {customSession?.user.name.charAt(0).toUpperCase()}
                     </p>
