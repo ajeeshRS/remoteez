@@ -12,6 +12,10 @@ export default function Navbar() {
   const { data: session, status } = useSession();
   const customSession = session as CustomSession;
 
+  if (status === 'loading') {
+    return <NavbarSkeleton />;
+  }
+
   return (
     <nav className="z-100 relative flex w-full items-center justify-between bg-transparent px-6 py-5 text-black backdrop-blur-lg md:px-10 md:py-4">
       <div className="flex items-center justify-center">
@@ -25,7 +29,7 @@ export default function Navbar() {
       </div>
 
       <ul className="hidden w-fit items-center justify-between md:flex md:w-fit">
-        {status !== 'loading' && customSession?.user.role === EMPLOYER ? (
+        {customSession?.user.role === EMPLOYER ? (
           <>
             <li
               onClick={() => router.push('/create')}
@@ -55,7 +59,7 @@ export default function Navbar() {
         )}
 
         <li className="ml-5 md:mx-0">
-          {status !== 'loading' && customSession?.user ? (
+          {customSession?.user ? (
             <Avatar />
           ) : (
             <button
@@ -70,3 +74,34 @@ export default function Navbar() {
     </nav>
   );
 }
+
+const NavbarSkeleton = () => {
+  const router = useRouter();
+  return (
+    <nav className="z-100 relative flex w-full items-center justify-between bg-transparent px-6 py-5 backdrop-blur-lg md:px-10 md:py-4">
+      <div className="flex items-center justify-center">
+        <MobileNavbar />
+        <h2
+          onClick={() => router.push('/')}
+          className={`ml-3 flex items-start text-2xl font-bold md:ml-0 ${mulish.className} cursor-pointer text-neutral-50`}
+        >
+          Remoteez
+        </h2>
+      </div>
+
+      <ul className="hidden w-fit items-center justify-between md:flex md:w-fit">
+        {/* Menu items */}
+        <li className="mr-10">
+          <div className="h-4 w-24 animate-pulse rounded bg-gray-800" />
+        </li>
+        <li className="mr-10">
+          <div className="h-4 w-24 animate-pulse rounded bg-gray-800" />
+        </li>
+
+        <li className="ml-5 md:mx-0">
+          <div className="h-8 w-20 animate-pulse rounded bg-gray-800" />
+        </li>
+      </ul>
+    </nav>
+  );
+};
