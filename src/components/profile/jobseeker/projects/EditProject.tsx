@@ -105,7 +105,7 @@ export default function EditProject({ project }: { project: Project  }) {
       });
       setSkillSet(project?.skills);
     }
-  }, [project]);
+  }, [reset,project]);
 
   const fetchProfileDetails = async () => {
     try {

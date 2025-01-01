@@ -82,7 +82,7 @@ export default function EditExperienceRange({ currentExp }: Props) {
 
   useEffect(() => {
     setValue('experienceRange', currentExp);
-  }, [currentExp]);
+  }, [setValue,currentExp]);
   return (
     <Sheet>
       <SheetTrigger asChild>

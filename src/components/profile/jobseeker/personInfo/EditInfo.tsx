@@ -151,7 +151,7 @@ export default function EditInfo({ personalDetails, refetch }: Props) {
         preferredJobType: personalDetails?.preferredJobType || 'FULL_TIME',
       });
     }
-  }, [personalDetails]);
+  }, [reset,personalDetails]);
 
   return (
     <Sheet

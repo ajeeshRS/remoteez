@@ -70,7 +70,7 @@ export default function EditJob({ job }: Props) {
 
   useEffect(() => {
     setValue('skills', skills.split(','));
-  }, [skills]);
+  }, [setValue,skills]);
 
   useEffect(() => {
     if (job) {
@@ -89,7 +89,7 @@ export default function EditJob({ job }: Props) {
 
       setSkills(job.skillsRequired.join(',').toString());
     }
-  }, [job]);
+  }, [reset,job]);
 
   return (
     <Sheet>

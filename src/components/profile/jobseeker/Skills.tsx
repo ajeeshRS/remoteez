@@ -68,7 +68,7 @@ export default function Skills() {
     if (skills) {
       setSkillSet(skills);
     }
-  }, []);
+  }, [skills]);
   return (
     <div className="h-[90vh] w-full overflow-y-scroll p-5 px-5 text-white md:px-20">
       <div className="flex w-full flex-col items-start justify-between px-5 md:p-10">

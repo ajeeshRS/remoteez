@@ -82,7 +82,7 @@ export default function AddExperience() {
     if (startDate && endDate) {
       setValue('duration', `${startDate} ~ ${endDate}`);
     }
-  }, [startDate, endDate]);
+  }, [setValue,startDate, endDate]);
 
   const fetchProfileDetails = async () => {
     try {

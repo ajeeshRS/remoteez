@@ -1,5 +1,8 @@
 'use client';
-import { addOrEditLinks } from '@/app/actions/jobseeker/actions';
+import {
+  addOrEditLinks,
+  getJobseekerInfo,
+} from '@/app/actions/jobseeker/actions';
 import ErrorMessage from '@/components/ui/error-msg';
 import Loader from '@/components/ui/loader';
 import {
@@ -13,10 +16,13 @@ import {
   LinkUpdateSchema,
   LinkUpdateSchemaType,
 } from '@/lib/validators/jobseeker/profile.validator';
+import { setJobseekerProfile } from '@/state/profile/jobseekerSlice';
+import { AppDispatch } from '@/state/store';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Pen } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
 import { toast } from 'sonner';
 
 interface Props {
@@ -28,7 +34,7 @@ interface Props {
 
 export default function EditLink({ link }: Props) {
   const [loading, setLoading] = useState(false);
-
+  const dispatch = useDispatch<AppDispatch>();
   const {
     register,
     setValue,
@@ -48,6 +54,7 @@ export default function EditLink({ link }: Props) {
       const response = await addOrEditLinks(data);
       if (response.success) {
         toast.success(response.message);
+        fetchProfileDetails();
       } else {
         toast.error(response.error);
       }
@@ -62,8 +69,18 @@ export default function EditLink({ link }: Props) {
   useEffect(() => {
     setValue('title', link.key);
     setValue('link', link.value);
-  }, [link]);
+  }, [setValue, link]);
 
+  const fetchProfileDetails = async () => {
+    try {
+      const { jobSeekerProfile } = await getJobseekerInfo();
+      if (jobSeekerProfile) {
+        dispatch(setJobseekerProfile(jobSeekerProfile));
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <Sheet key={link.key}>
       <SheetTrigger asChild>

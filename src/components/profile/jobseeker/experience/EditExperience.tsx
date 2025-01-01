@@ -104,13 +104,13 @@ export default function EditExperience({
       setStartDate(start);
       setEndDate(end);
     }
-  }, [experience]);
+  }, [reset, experience]);
 
   useEffect(() => {
     if (startDate && endDate) {
       setValue('duration', `${startDate} ~ ${endDate}`);
     }
-  }, [startDate, endDate]);
+  }, [setValue, startDate, endDate]);
 
   const fetchProfileDetails = async () => {
     try {

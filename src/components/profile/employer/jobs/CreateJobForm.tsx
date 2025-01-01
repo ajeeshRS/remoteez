@@ -64,7 +64,7 @@ export default function CreateJobForm() {
 
   useEffect(() => {
     setValue('skills', skills.split(','));
-  }, [skills]);
+  },[setValue,skills]);
   return (
     <div className="flex h-full w-full flex-col items-start text-white">
       <form

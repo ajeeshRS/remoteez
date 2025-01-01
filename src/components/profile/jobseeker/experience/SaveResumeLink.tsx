@@ -70,7 +70,7 @@ export default function SaveResumeLink({ resumeLink }: Props) {
 
   useEffect(() => {
     setValue('resume', resumeLink);
-  }, [resumeLink]);
+  }, [setValue,resumeLink]);
   return (
     <Sheet>
       <SheetTrigger asChild>

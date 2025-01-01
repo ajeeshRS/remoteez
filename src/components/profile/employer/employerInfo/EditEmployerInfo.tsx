@@ -154,7 +154,7 @@ export default function EditEmployerInfo({ employerDetails }: Props) {
         teamSize: employerDetails?.teamSize || undefined,
       });
     }
-  }, [employerDetails]);
+  }, [reset,employerDetails]);
   return (
     <Sheet
       onOpenChange={(open) => {

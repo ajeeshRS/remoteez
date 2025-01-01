@@ -67,7 +67,7 @@ export default function Page() {
     if (status !== 'loading') {
       fetchProfileDetails();
     }
-  }, [session]);
+  }, [session, status]);
 
   useEffect(() => {
     if (session?.user.role === JOBSEEKER) {
