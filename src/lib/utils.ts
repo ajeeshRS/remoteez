@@ -17,14 +17,29 @@ export const generateToken = (email: string) => {
 export const getDurationInYM = (dateString: string) => {
   const splitted = dateString.split('~');
 
-  const startDate = new Date(splitted[0]);
-  const endDate = new Date(splitted[1]);
+  const startDate = new Date(splitted[0].trim());
+  const endDate = new Date(splitted[1].trim());
 
-  const years = endDate.getFullYear() - startDate.getFullYear();
-  const months = endDate.getMonth() - startDate.getMonth();
-  console.log(years);
-  console.log(months);
-  return `${years} Years & ${months} Months`;
+  let years = endDate.getFullYear() - startDate.getFullYear();
+  let months = endDate.getMonth() - startDate.getMonth();
+
+  if (months < 0) {
+    years--;
+    months += 12;
+  }
+
+  const yearText = years == 1 ? 'Year' : 'Years';
+  const monthText = years == 1 ? 'Month' : 'Months';
+
+  if (years === 0) {
+    return `${months} ${monthText}`;
+  }
+
+  if (months === 0) {
+    return `${years} ${yearText}`;
+  }
+
+  return `${years} ${yearText} & ${months} ${monthText}`;
 };
 
 export const extractDates = (duration: string) => {

@@ -17,8 +17,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning={true}>
+    <html lang="en">
       <body
+        suppressHydrationWarning={true}
         className={`${mulish.className} ${spaceMono.className} h-full w-full bg-dark-bg bg-cover antialiased backdrop-blur-3xl`}
       >
         <ReduxProvider>
