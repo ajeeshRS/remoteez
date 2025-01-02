@@ -106,7 +106,7 @@ export default function Page() {
 
   if (loading || status === 'loading') {
     return (
-      <div className="flex h-[90vh] w-full items-center justify-center bg-black">
+      <div className="flex h-[90vh] w-full items-center justify-center bg-transparent">
         <Loader color={'pink-600'} />
       </div>
     );

@@ -54,6 +54,7 @@ export async function POST(req: NextRequest) {
         experienceRange: experience,
         desiredJobTitle,
         location: currentLocation,
+        preferredJobType: 'FULL_TIME',
       },
     });
     console.log(user);

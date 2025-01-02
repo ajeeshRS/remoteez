@@ -41,6 +41,11 @@ export default function Page() {
         redirect: false,
       });
 
+      if (response?.ok) {
+        router.push('/');
+        router.refresh();
+      }
+
       if (response?.error === 'User not found') {
         throw new Error('User not found');
       }
@@ -49,10 +54,6 @@ export default function Page() {
         throw new Error('Invalid credentials');
       }
 
-      if (!response?.error) {
-        router.push('/');
-        router.refresh();
-      }
 
       if (!response?.ok) {
         throw new Error('Login failed');

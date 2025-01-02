@@ -17,12 +17,12 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="z-100 relative flex w-full items-center justify-between bg-transparent px-6 py-5 text-black backdrop-blur-lg md:px-10 md:py-4">
+    <nav className="z-100 sticky top-0 flex w-full items-center justify-between px-6 py-5 text-black backdrop-blur-lg md:px-10 md:py-6">
       <div className="flex items-center justify-center">
         <MobileNavbar />
         <h2
           onClick={() => router.push('/')}
-          className={`ml-3 flex items-start text-2xl font-bold md:ml-0 ${mulish.className} cursor-pointer text-neutral-50`}
+          className={`ml-3 flex items-start text-2xl font-bold md:ml-0 cursor-pointer text-neutral-50`}
         >
           Remoteez
         </h2>

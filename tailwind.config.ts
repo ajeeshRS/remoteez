@@ -14,7 +14,7 @@ const config: Config = {
   theme: {
   	extend: {
 		backgroundImage: {
-			'dark-bg': "url('/bgimg.jpeg')",
+			'dark-bg': "url('/bg.jpeg')",
 			'light-bg': "url('/lightbg.jpeg')",
 		  },
   		keyframes: {

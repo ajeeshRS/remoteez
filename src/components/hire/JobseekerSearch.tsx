@@ -102,18 +102,6 @@ function JobseekerSearchContent() {
     }
 
     router.replace(`?${params.toString()}`);
-
-    const commitment = Array.from(params.getAll('commitment'));
-    console.log('Commitments after update:', commitment);
-
-    // adding a micro-delay
-    setTimeout(() => {
-      setJobseekers([]);
-      setPage(1);
-      setHasMore(true);
-
-      fetchJobseekers(true);
-    }, 0);
   };
 
   // handling changes in experience
@@ -130,25 +118,7 @@ function JobseekerSearchContent() {
     }
 
     router.replace(`?${params.toString()}`);
-
-    const experience = Array.from(params.getAll('exp'));
-    console.log('experience after update:', experience);
-
-    // adding a micro-delay
-    setTimeout(() => {
-      setJobseekers([]);
-      setPage(1);
-      setHasMore(true);
-      fetchJobseekers(true);
-    }, 0);
   };
-
-  // debounce clean up
-  useEffect(() => {
-    return () => {
-      debouncedSearch.cancel();
-    };
-  }, [debouncedSearch]);
 
   // fetch job when searchParams changes
   useEffect(() => {
@@ -157,6 +127,14 @@ function JobseekerSearchContent() {
     setHasMore(true);
     fetchJobseekers(true, searchQuery);
   }, [searchParams]);
+  
+  // debounce clean up
+  useEffect(() => {
+    return () => {
+      debouncedSearch.cancel();
+    };
+  }, [debouncedSearch]);
+
 
   // infinite scrolling
   useEffect(() => {

@@ -1,5 +1,5 @@
 'use client';
-import { Suspense, useCallback, useEffect, useState } from 'react';
+import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { Job } from '@prisma/client';
 import { getJobs } from '@/app/actions/actions';
 import { useInView } from 'react-intersection-observer';
@@ -7,6 +7,12 @@ import debounce from 'lodash/debounce';
 import { useRouter, useSearchParams } from 'next/navigation';
 import JobCard from './JobCard';
 import JobFilter from './JobFilter';
+
+interface FilterState {
+  commitment: string[];
+  exp: string[];
+  pay: string[];
+}
 
 export default function JobSearch() {
   return (
@@ -106,17 +112,6 @@ function JobSearchContent() {
 
     router.replace(`?${params.toString()}`);
 
-    const commitment = Array.from(params.getAll('commitment'));
-    console.log('Commitments after update:', commitment);
-
-    // adding a micro-delay
-    setTimeout(() => {
-      setJobs([]);
-      setPage(1);
-      setHasMore(true);
-
-      fetchJobs(true);
-    }, 0);
   };
 
   // handling changes in commitment
@@ -134,17 +129,6 @@ function JobSearchContent() {
 
     router.replace(`?${params.toString()}`);
 
-    const experience = Array.from(params.getAll('exp'));
-    console.log('experience after update:', experience);
-
-    // adding a micro-delay
-    setTimeout(() => {
-      setJobs([]);
-      setPage(1);
-      setHasMore(true);
-
-      fetchJobs(true);
-    }, 0);
   };
 
   // handling changes in commitment
@@ -162,18 +146,15 @@ function JobSearchContent() {
 
     router.replace(`?${params.toString()}`);
 
-    const pays = Array.from(params.getAll('pay'));
-    console.log('pay after update:', pays);
-
-    // adding a micro-delay
-    setTimeout(() => {
-      setJobs([]);
-      setPage(1);
-      setHasMore(true);
-
-      fetchJobs(true);
-    }, 0);
   };
+  
+  // fetch job when searchParams changes
+  useEffect(() => {
+    setJobs([]);
+    setPage(1);
+    setHasMore(true);
+    fetchJobs(true, searchQuery);
+  }, [searchParams]);
 
   // debounce clean up
   useEffect(() => {
@@ -182,13 +163,7 @@ function JobSearchContent() {
     };
   }, [debouncedSearch]);
 
-  // fetch job when searchParams changes
-  useEffect(() => {
-    setJobs([]);
-    setPage(1);
-    setHasMore(true);
-    fetchJobs(true, searchQuery);
-  }, [searchParams]);
+  
 
   // infinite scrolling
   useEffect(() => {
