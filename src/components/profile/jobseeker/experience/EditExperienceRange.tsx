@@ -92,14 +92,14 @@ export default function EditExperienceRange({ currentExp }: Props) {
       </SheetTrigger>
       <SheetContent
         side={'right'}
-        className="h-full overflow-y-scroll border-l-pink-400/40 bg-black py-10"
+        className="md:h-full h-[100svh] overflow-y-scroll border-l-pink-400/40 bg-black py-10"
       >
         <SheetHeader>
           <SheetTitle className="text-white">Edit experience range</SheetTitle>
         </SheetHeader>
         <form
           onSubmit={handleSubmit((data) => handleEditExperienceRange(data))}
-          className="flex h-fit w-full flex-col overflow-y-scroll py-10"
+          className="flex h-fit w-full flex-col overflow-y-scroll py-4"
         >
           <Select
             defaultValue={currentExp}

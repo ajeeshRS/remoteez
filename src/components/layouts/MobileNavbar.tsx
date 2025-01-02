@@ -30,7 +30,7 @@ export default function MobileNavbar() {
             <RiMenu2Fill className="h-5 w-5 text-white" />
           </button>
         </SheetTrigger>
-        <SheetContent side={'left'} className="h-[100vh] bg-black">
+        <SheetContent side={'left'} className="h-[100svh] bg-black">
           <SheetHeader>
             <SheetTitle className="flex w-full items-center justify-start text-2xl text-white">
               Remoteez
@@ -81,7 +81,7 @@ export default function MobileNavbar() {
             </ul>
 
             {status !== 'loading' && customSession?.user ? (
-              <div className="flex h-1/2 w-full items-end justify-center pb-10">
+              <div className="flex h-1/2 w-full items-end justify-center md:pb-0">
                 <div className="flex h-fit w-full items-center justify-between bg-neutral-900/75 px-3 py-2">
                   <div
                     className="flex items-center"
