@@ -1,5 +1,5 @@
 'use client';
-import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
+import { Suspense, useCallback, useEffect, useState } from 'react';
 import { Job } from '@prisma/client';
 import { getJobs } from '@/app/actions/actions';
 import { useInView } from 'react-intersection-observer';
@@ -7,12 +7,6 @@ import debounce from 'lodash/debounce';
 import { useRouter, useSearchParams } from 'next/navigation';
 import JobCard from './JobCard';
 import JobFilter from './JobFilter';
-
-interface FilterState {
-  commitment: string[];
-  exp: string[];
-  pay: string[];
-}
 
 export default function JobSearch() {
   return (

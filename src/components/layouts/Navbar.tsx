@@ -1,5 +1,5 @@
 'use client';
-import { mulish } from '@/app/fonts/fonts';
+
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { CustomSession } from '@/lib/auth';
