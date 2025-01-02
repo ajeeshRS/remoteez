@@ -170,14 +170,14 @@ export default function EditEmployerInfo({ employerDetails }: Props) {
       </SheetTrigger>
       <SheetContent
         side={'right'}
-        className="h-full overflow-y-scroll border-l-pink-400/40 bg-black py-10"
+        className="md:h-full h-[100svh] overflow-y-scroll border-l-pink-400/40 bg-black py-10"
       >
         <SheetHeader>
           <SheetTitle className="text-white">Edit profile</SheetTitle>
         </SheetHeader>
         <form
           onSubmit={handleSubmit(handleProfileUpdation)}
-          className="flex h-[100vh] w-full flex-col overflow-y-scroll py-4"
+          className="flex h-fit w-full flex-col overflow-y-scroll py-4"
         >
           <div className="flex w-full flex-col">
             <label className="my-1 py-2 text-sm text-neutral-200">Email</label>
