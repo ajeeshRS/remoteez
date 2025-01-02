@@ -101,7 +101,7 @@ export default function AddExperience() {
       </SheetTrigger>
       <SheetContent
         side={'right'}
-        className="h-full overflow-y-scroll border-l-pink-400/40 bg-black py-10"
+        className="md:h-full h-[100svh] overflow-y-scroll border-l-pink-400/40 bg-black py-10"
       >
         <SheetHeader>
           <SheetTitle className="text-white">Add Experience</SheetTitle>
