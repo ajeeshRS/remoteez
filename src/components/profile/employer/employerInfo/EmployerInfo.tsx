@@ -14,7 +14,7 @@ export default function EmployerInfo() {
     console.log(employerDetails);
   }, [employerDetails]);
   return (
-    <div className="h-[90vh] w-full overflow-y-scroll p-5 px-5 text-white md:px-20">
+    <div className="md:h-[90vh] h-[90svh] w-full overflow-y-scroll p-5 px-5 text-white md:px-20">
       <div className="flex w-full flex-col items-start justify-between px-5 md:p-10">
         <p className="pb-10 font-bold text-pink-500"> Employer info</p>
 
