@@ -175,7 +175,7 @@ export default function EditInfo({ personalDetails, refetch }: Props) {
         </SheetHeader>
         <form
           onSubmit={handleSubmit((data) => handleProfileUpdation(data))}
-          className="flex h-fit w-full flex-col overflow-y-scroll py-4"
+          className="flex h-[100vh] w-full flex-col overflow-y-scroll py-4"
         >
           <div className="flex w-full flex-col">
             <label className="my-1 py-2 text-sm text-neutral-200">Avatar</label>
