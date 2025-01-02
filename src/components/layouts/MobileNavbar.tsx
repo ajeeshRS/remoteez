@@ -81,7 +81,7 @@ export default function MobileNavbar() {
             </ul>
 
             {status !== 'loading' && customSession?.user ? (
-              <div className="flex h-1/2 w-full items-end justify-center">
+              <div className="flex h-1/2 w-full items-end justify-center pb-10">
                 <div className="flex h-fit w-full items-center justify-between bg-neutral-900/75 px-3 py-2">
                   <div
                     className="flex items-center"
@@ -98,7 +98,7 @@ export default function MobileNavbar() {
                 </div>
               </div>
             ) : (
-              <div className="flex h-1/2 w-full items-end justify-center">
+              <div className="flex h-1/2 w-full items-end justify-center pb-10">
                 <SheetClose
                   className="my-4 flex w-full items-center justify-center bg-pink-600 px-3 py-1 text-white outline-none hover:bg-pink-700 md:w-5/6"
                   onClick={() => router.push('/login')}

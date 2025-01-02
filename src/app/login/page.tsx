@@ -70,7 +70,7 @@ export default function Page() {
   };
   return (
     <div className="flex h-[90vh] w-full items-center justify-center">
-      <div className="login-form-container flex h-fit w-full flex-col items-center justify-center bg-neutral-700/10 p-5 text-white shadow-md md:w-2/6">
+      <div className="login-form-container flex h-fit w-5/6 flex-col items-center justify-center bg-neutral-700/10 p-5 text-white shadow-md md:w-2/6">
         <h3 className="w-full text-center text-xl font-bold text-white md:text-2xl">
           Login to your account
         </h3>

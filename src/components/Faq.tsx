@@ -13,7 +13,7 @@ export default function Faq() {
       className="flex min-h-[90vh] w-full flex-col items-center justify-center py-5"
     >
       <div className="w-full py-10 text-center">
-        <p className="text-4xl font-bold text-white">FaQ</p>
+        <p className="md:text-4xl text-2xl font-bold text-white">FaQ</p>
         <p className="py-4 text-xs font-medium text-white">
           Your questions answered here.
         </p>
@@ -22,10 +22,10 @@ export default function Faq() {
         <Accordion type="single" collapsible className="w-5/6 md:w-4/6">
           {faqs.map((faq, i) => (
             <AccordionItem key={i} value={`${i}`}>
-              <AccordionTrigger className="text-start text-base font-medium text-neutral-50 hover:no-underline">
+              <AccordionTrigger className="text-start md:text-base text-sm font-medium text-neutral-50 hover:no-underline">
                 {faq.question}
               </AccordionTrigger>
-              <AccordionContent className="text-sm font-normal text-neutral-300">
+              <AccordionContent className="md:text-sm text-xs font-normal text-neutral-300">
                 {faq.answer}
               </AccordionContent>
             </AccordionItem>
