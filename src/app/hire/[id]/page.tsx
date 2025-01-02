@@ -8,6 +8,7 @@ import {
   Clock,
   Dot,
   Link,
+  Mail,
   MapPin,
   User,
 } from 'lucide-react';
@@ -107,6 +108,10 @@ export default function Page() {
           </div>
         </div>
         <div className="flex items-center space-x-5">
+          <Mail
+            onClick={() => handleRoutePush(`mailto:${jobseekerInfo?.email}`)}
+            className="h-6 w-6 cursor-pointer"
+          />
           {jobseekerInfo?.githubLink && (
             <FaGithub
               onClick={() =>
