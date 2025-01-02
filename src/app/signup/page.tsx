@@ -7,6 +7,7 @@ import JobSeekerForm from '@/components/signup/JobSeekerForm';
 import { useSearchParams } from 'next/navigation';
 import { Suspense, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 export interface Suggestion {
   properties: {
@@ -28,7 +29,7 @@ function SignupContent() {
   const value = searchParams.get('type');
   const router = useRouter();
   const [type, setType] = useState<string>('');
-
+  const { data: session, status } = useSession();
   useEffect(() => {
     if (value) {
       setType(value);
@@ -40,6 +41,9 @@ function SignupContent() {
     router.push(`?type=${value}`);
   };
 
+  if (status !== 'loading' && session?.user) {
+    router.push('/');
+  }
   return (
     <div className="flex min-h-[90vh] w-full items-center justify-center">
       <div className="login-form-container my-10 flex h-fit w-5/6 flex-col items-center justify-center bg-neutral-700/10 p-5 text-white shadow-md md:w-2/6">

@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/sheet';
 import { CustomSession } from '@/lib/auth';
 import { EMPLOYER, JOBSEEKER } from '@/lib/constants/app.constants';
-import { LogOut, Plus } from 'lucide-react';
+import { LogOut, Plus, Search } from 'lucide-react';
 import { signOut, useSession } from 'next-auth/react';
 import { RiMenu2Fill } from 'react-icons/ri';
 import { BsStack } from 'react-icons/bs';
@@ -40,6 +40,12 @@ export default function MobileNavbar() {
             <ul className="h-1/2 w-full">
               {status !== 'loading' && customSession?.user.role === EMPLOYER ? (
                 <>
+                  <li
+                    className="flex cursor-pointer items-center border-none py-2 pl-2 text-lg outline-none hover:bg-neutral-900/65 hover:text-pink-500"
+                    onClick={() => router.push('/hire')}
+                  >
+                    <Search className="mr-2 h-4 w-4" /> Hire
+                  </li>
                   <li
                     className="flex cursor-pointer items-center border-none py-2 pl-2 text-lg outline-none hover:bg-neutral-900/65 hover:text-pink-500"
                     onClick={() => router.push('/create')}

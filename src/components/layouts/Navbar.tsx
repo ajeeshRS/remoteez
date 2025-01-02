@@ -32,6 +32,12 @@ export default function Navbar() {
         {customSession?.user.role === EMPLOYER ? (
           <>
             <li
+              onClick={() => router.push('/hire')}
+              className="mr-10 cursor-pointer text-white hover:text-pink-500"
+            >
+              Hire
+            </li>
+            <li
               onClick={() => router.push('/create')}
               className="mr-10 cursor-pointer text-white hover:text-pink-500"
             >
