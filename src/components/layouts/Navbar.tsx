@@ -17,7 +17,7 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="z-100 sticky top-0 flex w-full items-center justify-between px-6 py-5 text-black backdrop-blur-lg md:px-10 md:py-6">
+    <nav className="z-100 relative top-0 flex w-full items-center justify-between bg-transparent px-6 py-5 text-black backdrop-blur-lg md:px-10 md:py-6">
       <div className="flex items-center justify-center">
         <MobileNavbar />
         <h2
