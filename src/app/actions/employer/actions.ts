@@ -1,6 +1,6 @@
 'use server';
 import { authOptions, CustomSession } from '@/lib/auth';
-import { PrismaClient } from '@prisma/client';
+import { ExperienceRange, JobType, PrismaClient } from '@prisma/client';
 import { getServerSession } from 'next-auth';
 import bcrypt from 'bcrypt';
 import {
@@ -18,6 +18,7 @@ import {
   UpdateJobSchema,
   UpdateJobSchemaType,
 } from '@/lib/validators/employer/jobs.validator';
+import { EMPLOYER } from '@/lib/constants/app.constants';
 const prisma = new PrismaClient();
 
 export const getEmployerInfo = async () => {
@@ -461,6 +462,135 @@ export const getAppliedCount = async (jobId: string) => {
     };
   } catch (err) {
     console.error('error getting applied count : ', err);
+    return {
+      success: false,
+      error: 'Internal server error',
+    };
+  }
+};
+
+export const getJobseekers = async (
+  page: number,
+  limit: number,
+  searchQuery?: string,
+  commitmentTypes?: string[],
+  experienceTypes?: string[],
+) => {
+  try {
+    const skipRecords = (page - 1) * limit;
+
+    const [jobseekers, totalCount] = await Promise.all([
+      await prisma.jobSeeker.findMany({
+        take: limit,
+        where: {
+          AND: [
+            {
+              ...(searchQuery
+                ? {
+                    desiredJobTitle: {
+                      contains: searchQuery,
+                      mode: 'insensitive',
+                    },
+                  }
+                : {}),
+            },
+            {
+              ...(commitmentTypes && commitmentTypes.length > 0
+                ? {
+                    preferredJobType: { in: commitmentTypes as JobType[] },
+                  }
+                : {}),
+            },
+            {
+              ...(experienceTypes && experienceTypes.length > 0
+                ? {
+                    experienceRange: {
+                      in: experienceTypes as ExperienceRange[],
+                    },
+                  }
+                : {}),
+            },
+          ],
+        },
+      }),
+      await prisma.jobSeeker.count({
+        where: {
+          AND: [
+            {
+              ...(searchQuery
+                ? {
+                    desiredJobTitle: {
+                      contains: searchQuery,
+                      mode: 'insensitive',
+                    },
+                  }
+                : {}),
+            },
+            {
+              ...(commitmentTypes && commitmentTypes.length > 0
+                ? {
+                    preferredJobType: { in: commitmentTypes as JobType[] },
+                  }
+                : {}),
+            },
+            {
+              ...(experienceTypes && experienceTypes.length > 0
+                ? {
+                    experienceRange: {
+                      in: experienceTypes as ExperienceRange[],
+                    },
+                  }
+                : {}),
+            },
+          ],
+        },
+      }),
+    ]);
+
+    return {
+      jobseekers,
+      hasMore: skipRecords + jobseekers.length < totalCount,
+    };
+  } catch (error) {
+    console.error('Error fetching jobseekers:', error);
+    throw new Error('Failed to fetch jobseekers');
+  }
+};
+
+export const getJobseekerById = async (jobseekerId: string) => {
+  try {
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user || session.user.role !== EMPLOYER) {
+      return {
+        success: false,
+        error: 'Unauthorised',
+      };
+    }
+
+    if (!jobseekerId) {
+      return {
+        success: false,
+        error: 'Bad request',
+      };
+    }
+
+    const jobseeker = await prisma.jobSeeker.findUnique({
+      where: {
+        id: jobseekerId,
+      },
+      include: {
+        previousCompanies: true,
+        projects: true,
+      },
+    });
+
+    return {
+      success: true,
+      jobseeker,
+    };
+  } catch (err) {
+    console.error('error getting jobseeker : ', err);
     return {
       success: false,
       error: 'Internal server error',

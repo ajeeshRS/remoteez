@@ -91,7 +91,6 @@ export default function EmployerForm() {
 
   return (
     <form
-    // className='flex flex-col items-center'
       onSubmit={handleSubmit((data) =>
         handleEmployerSignup(data, setSigning, reset),
       )}

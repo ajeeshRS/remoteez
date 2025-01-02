@@ -50,8 +50,15 @@ export const JOBS = 'Jobs';
 
 export const ZERO_TO_ONE = '0-1 years';
 export const ONE_TO_THREE = '1-3 years';
-export const THREE_TO_SIX = '2-6 years';
+export const THREE_TO_SIX = '3-6 years';
 export const SIX_PLUS = '6+ years';
+
+export const ExperienceRangeFilterItems = [
+  'ZERO_TO_ONE',
+  'ONE_TO_THREE',
+  'THREE_TO_SIX',
+  'SIX_PLUS',
+];
 
 export const jobseekerSidebarItems = [
   { title: 'personal info', active: PERSONAL_INFO },
@@ -67,4 +74,3 @@ export const employerSidebarItems = [
   { title: 'jobs', active: JOBS },
   { title: 'security', active: SECURITY },
 ];
-

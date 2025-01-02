@@ -29,8 +29,32 @@ export interface JobSeekerProfile {
   projects: Project[];
   Bookmark: Bookmark[];
 }
+export interface JobSeekerProfileCard {
+  id: string;
+  fullName: string;
+  email: string;
+  bio: string | null;
+  desiredJobTitle: string;
+  experienceRange: 'ZERO_TO_ONE' | 'ONE_TO_THREE' | 'THREE_TO_SIX' | 'SIX_PLUS';
+  location: string;
+  preferredJobType:
+    | 'FULL_TIME'
+    | 'PART_TIME'
+    | 'INTERNSHIP'
+    | 'FREELANCE'
+    | null;
+  avatar: string | null;
+  githubLink: string | null;
+  linkedinLink: string | null;
+  twitterLink: string | null;
+  portfolioLink: string | null;
+  resume: string | null;
+  skills: string[];
+  previousCompanies: PreviousCompany[];
+  projects: Project[];
+}
 
-interface Project {
+export interface Project {
   deployedLink: string | null;
   title: string | null;
   description: string | null;

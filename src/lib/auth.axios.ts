@@ -9,11 +9,13 @@ import {
 export const handleJobSeekerSignup = async (
   formData: JobSeekerSignupSchemaType,
   setSigning: (value: boolean) => void,
+  reset: () => void,
 ) => {
   try {
     setSigning(true);
     const response = await axios.post('/api/auth/signup/jobseeker', formData);
     toast.success(response.data.message);
+    reset();
   } catch (error) {
     const err = error as AxiosError<Msg>;
     toast.error(err.response?.data.message);
@@ -31,6 +33,7 @@ export const handleEmployerSignup = async (
     setSigning(true);
     const response = await axios.post('/api/auth/signup/employer', formData);
     toast.success(response.data.message);
+    reset();
   } catch (error) {
     const err = error as AxiosError<Msg>;
     console.log(err);

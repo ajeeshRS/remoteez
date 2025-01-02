@@ -49,10 +49,16 @@ export default function Navbar() {
           </>
         ) : (
           <>
-            <li className="mx-10 flex cursor-pointer items-center text-white hover:text-pink-500">
+            <li
+              onClick={() => router.push('/signup?type=jobseeker')}
+              className="mx-10 flex cursor-pointer items-center text-white hover:text-pink-500"
+            >
               For Jobs
             </li>
-            <li className="mr-10 flex cursor-pointer items-center text-white hover:text-pink-500">
+            <li
+              onClick={() => router.push('/signup?type=employer')}
+              className="mr-10 flex cursor-pointer items-center text-white hover:text-pink-500"
+            >
               For Hire
             </li>
           </>
@@ -76,21 +82,18 @@ export default function Navbar() {
 }
 
 const NavbarSkeleton = () => {
-  const router = useRouter();
   return (
     <nav className="z-100 relative flex w-full items-center justify-between bg-transparent px-6 py-5 backdrop-blur-lg md:px-10 md:py-4">
       <div className="flex items-center justify-center">
         <MobileNavbar />
         <h2
-          onClick={() => router.push('/')}
-          className={`ml-3 flex items-start text-2xl font-bold md:ml-0 ${mulish.className} cursor-pointer text-neutral-50`}
+          className={`ml-3 flex items-start text-2xl font-bold md:ml-0 cursor-pointer text-neutral-50`}
         >
           Remoteez
         </h2>
       </div>
 
       <ul className="hidden w-fit items-center justify-between md:flex md:w-fit">
-        {/* Menu items */}
         <li className="mr-10">
           <div className="h-4 w-24 animate-pulse rounded bg-gray-800" />
         </li>

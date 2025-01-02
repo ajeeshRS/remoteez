@@ -45,7 +45,7 @@ export default function Projects() {
                   <Link className="mr-1 h-3 w-3 text-gray-200" />
                   {project.githubURL}
                 </p>
-                <p className="hover:underlin flex h-fit w-full items-center text-wrap py-2 text-[11px] md:text-sm">
+                <p className="hover:underline flex h-fit w-full items-center text-wrap py-2 text-[11px] md:text-sm">
                   <Link className="mr-1 h-3 w-3 text-gray-200" />
                   {project.deployedLink}
                 </p>

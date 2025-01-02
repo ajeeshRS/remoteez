@@ -2,11 +2,11 @@
 import {
   ArrowLeft,
   Briefcase,
+  Building,
   DollarSign,
   Dot,
   IndianRupee,
   MapPin,
-  User,
 } from 'lucide-react';
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
@@ -184,7 +184,7 @@ export default function Page() {
                 className="h-10 w-10 object-cover"
               />
             ) : (
-              <User className="h-10 w-10 text-pink-600" />
+              <Building className="h-10 w-10 text-pink-600" />
             )}
           </div>
           <p className="my-2 text-sm text-neutral-100">

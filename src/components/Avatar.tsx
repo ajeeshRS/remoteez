@@ -64,7 +64,7 @@ export default function Avatar() {
           <Image
             width={32}
             height={32}
-            className="h-8 w-8 cursor-pointer object-cover"
+            className="h-8 w-8 cursor-pointer object-cover border border-neutral-500"
             src={avatar}
             alt="avatar"
           />

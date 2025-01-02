@@ -32,6 +32,7 @@ export default function JobSeekerForm() {
     formState: { errors },
     handleSubmit,
     setValue,
+    reset,
   } = useForm<JobSeekerSignupSchemaType>({
     resolver: zodResolver(JobSeekerSignupSchema),
     defaultValues: {
@@ -89,7 +90,9 @@ export default function JobSeekerForm() {
 
   return (
     <form
-      onSubmit={handleSubmit((data) => handleJobSeekerSignup(data, setSigning))}
+      onSubmit={handleSubmit((data) =>
+        handleJobSeekerSignup(data, setSigning, reset),
+      )}
     >
       <input
         type="text"
