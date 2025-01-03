@@ -57,7 +57,7 @@ export default function Page() {
         }
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
     } finally {
       setLoading(false);
     }

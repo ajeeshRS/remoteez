@@ -27,7 +27,6 @@ export default function DeleteJobDialog({ jobId }: { jobId: string }) {
     try {
       setLoading(true);
       const response = await deleteJob(jobId);
-      console.log(response);
       if (response.success) {
         toast.success(response.message);
         const { employerProfile } = await getEmployerInfo();
@@ -38,7 +37,7 @@ export default function DeleteJobDialog({ jobId }: { jobId: string }) {
         toast.error(response.error);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       setLoading(false);
       setIsDialogOpen(false);

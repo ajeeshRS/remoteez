@@ -52,7 +52,6 @@ export default function CreateJobForm() {
       } else {
         toast.error(response.error);
       }
-      console.log(response);
     } catch (error) {
       console.error('Error during creating job : ', error);
     } finally {

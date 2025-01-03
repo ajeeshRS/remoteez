@@ -51,7 +51,7 @@ export default function SaveResumeLink({ resumeLink }: Props) {
       }
     } catch (error) {
       toast.error('Some error occured');
-      console.log(error);
+      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -64,7 +64,7 @@ export default function SaveResumeLink({ resumeLink }: Props) {
         dispatch(setJobseekerProfile(jobSeekerProfile));
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 

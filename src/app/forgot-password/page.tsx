@@ -25,7 +25,6 @@ export default function Page() {
     try {
       setLoading(true);
       const response = await sendResetPasswordMail(email);
-      console.log(response);
 
       if (response?.success) {
         toast.success('Reset mail sent successfuly');
@@ -34,7 +33,7 @@ export default function Page() {
       }
       
     } catch (err) {
-      console.log(err);
+      console.error(err);
     } finally {
       setLoading(false);
     }

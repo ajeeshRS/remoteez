@@ -113,7 +113,7 @@ export default function EditProject({ project }: { project: Project  }) {
         dispatch(setJobseekerProfile(jobSeekerProfile));
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
   return (

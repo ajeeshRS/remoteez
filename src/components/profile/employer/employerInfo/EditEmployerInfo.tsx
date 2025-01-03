@@ -80,7 +80,6 @@ export default function EditEmployerInfo({ employerDetails }: Props) {
         ...(logoFile ? { logo: logoFile } : {}),
       };
 
-      console.log(submitData);
       const response = await updateEmployerInfo(submitData);
       if (response.success) {
         toast.success(response.message);
@@ -92,7 +91,7 @@ export default function EditEmployerInfo({ employerDetails }: Props) {
         toast.error(response.error);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       setUpdating(false);
     }

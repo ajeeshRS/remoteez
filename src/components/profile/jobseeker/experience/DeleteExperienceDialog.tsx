@@ -28,7 +28,6 @@ export default function DeleteExperienceDialog({ expId }: { expId: string }) {
     try {
       setLoading(true);
       const response = await deleteExperience(expId);
-      console.log(response);
       if (response.success) {
         toast.success(response.message);
         fetchProfileDetails();
@@ -36,7 +35,7 @@ export default function DeleteExperienceDialog({ expId }: { expId: string }) {
         toast.error(response.error);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       setLoading(false);
       setIsDialogOpen(false);
@@ -50,7 +49,7 @@ export default function DeleteExperienceDialog({ expId }: { expId: string }) {
         dispatch(setJobseekerProfile(jobSeekerProfile));
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
   return (

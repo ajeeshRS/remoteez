@@ -6,6 +6,7 @@ import { Toaster } from 'sonner';
 import SessionWrapper from '@/components/providers/session-provider';
 import Footer from '@/components/layouts/Footer';
 import ReduxProvider from '@/components/providers/redux-provider';
+import ClarityScript from '@/components/ClarityScript';
 export const metadata: Metadata = {
   title: 'Remoteez',
   description: 'Your Remote Job Finder.',
@@ -24,6 +25,7 @@ export default function RootLayout({
       >
         <ReduxProvider>
           <SessionWrapper>
+            <ClarityScript />
             <Navbar />
             {children}
             <Footer />

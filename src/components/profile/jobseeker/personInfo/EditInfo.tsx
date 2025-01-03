@@ -87,7 +87,6 @@ export default function EditInfo({ personalDetails, refetch }: Props) {
         ...(avatarFile ? { avatar: avatarFile } : {}),
       };
 
-      console.log(submitData);
       const response = await updateJobseekerInfo(submitData);
       if (response.success) {
         toast.success(response.message);
@@ -96,7 +95,7 @@ export default function EditInfo({ personalDetails, refetch }: Props) {
         toast.error(response.error);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       setUpdating(false);
     }

@@ -36,7 +36,7 @@ export const handleEmployerSignup = async (
     reset();
   } catch (error) {
     const err = error as AxiosError<Msg>;
-    console.log(err);
+    console.error(err);
     toast.error(err.response?.statusText);
   } finally {
     reset();

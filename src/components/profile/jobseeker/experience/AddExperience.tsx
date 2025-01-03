@@ -72,7 +72,7 @@ export default function AddExperience() {
       }
     } catch (error) {
       toast.error('Some error occured');
-      console.log(error);
+      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -91,7 +91,7 @@ export default function AddExperience() {
         dispatch(setJobseekerProfile(jobSeekerProfile));
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
   return (

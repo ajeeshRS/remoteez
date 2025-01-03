@@ -59,7 +59,6 @@ export default function Page() {
         throw new Error('Login failed');
       }
 
-      console.log('Login Successful', response);
       toast.success('Logged in');
     } catch (err) {
       const error = err as Error;
