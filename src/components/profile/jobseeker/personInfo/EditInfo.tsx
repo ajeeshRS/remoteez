@@ -157,8 +157,10 @@ export default function EditInfo({ personalDetails, refetch }: Props) {
     <Sheet
       onOpenChange={(open) => {
         if (open) {
+          document.body.style.overflow = 'hidden';
           document.body.classList.add('sheet-open');
         } else {
+          document.body.style.overflow = '';
           document.body.classList.remove('sheet-open');
         }
       }}

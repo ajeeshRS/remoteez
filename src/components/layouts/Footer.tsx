@@ -1,6 +1,12 @@
+'use client';
 import { Copyright } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 
 export default function Footer() {
+  const pathname = usePathname();
+  if (pathname === '/profile') {
+    return null;
+  }
   return (
     <footer className="flex flex-col items-center justify-between bg-transparent px-10 py-5 md:flex-row md:px-20">
       <div>

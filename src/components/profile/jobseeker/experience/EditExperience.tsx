@@ -123,7 +123,17 @@ export default function EditExperience({
     }
   };
   return (
-    <Sheet>
+    <Sheet
+      onOpenChange={(open) => {
+        if (open) {
+          document.body.style.overflow = 'hidden';
+          document.body.classList.add('sheet-open');
+        } else {
+          document.body.style.overflow = '';
+          document.body.classList.remove('sheet-open');
+        }
+      }}
+    >
       <SheetTrigger className="mx-4 bg-pink-400 p-1 hover:bg-pink-500">
         <Pen className="h-4 w-4" />
       </SheetTrigger>
