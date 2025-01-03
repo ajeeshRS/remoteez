@@ -17,7 +17,6 @@ import { setJobseekerProfile } from '@/state/profile/jobseekerSlice';
 import { AppDispatch } from '@/state/store';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-// import { Project } from '@prisma/client';
 import { Pen, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -123,8 +122,7 @@ export default function EditProject({ project }: { project: Project  }) {
         <Pen className="h-4 w-4" />
       </SheetTrigger>
       <SheetContent
-        side={'right'}
-        className="md:h-full h-[100svh] overflow-y-scroll border-l-pink-400/40 bg-black py-10"
+        className="md:h-full h-[100svh] overflow-y-scroll border-l-pink-400/40 bg-black py-10 md:px-56"
       >
         <SheetHeader>
           <SheetTitle className="text-white">Edit project</SheetTitle>

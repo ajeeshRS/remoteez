@@ -79,8 +79,7 @@ export default function SaveResumeLink({ resumeLink }: Props) {
         </span>
       </SheetTrigger>
       <SheetContent
-        side={'right'}
-        className="md:h-full h-[100svh] overflow-y-scroll border-l-pink-400/40 bg-black py-10"
+        className="md:h-full h-[100svh] overflow-y-scroll border-l-pink-400/40 bg-black py-10 md:px-56"
       >
         <SheetHeader>
           <SheetTitle className="text-white">Edit Resume doc link</SheetTitle>

@@ -138,8 +138,7 @@ export default function EditExperience({
         <Pen className="h-4 w-4" />
       </SheetTrigger>
       <SheetContent
-        side={'right'}
-        className="h-full overflow-y-scroll border-l-pink-400/40 bg-black py-10"
+        className="h-full overflow-y-scroll border-l-pink-400/40 bg-black py-10 md:px-56"
       >
         <SheetHeader>
           <SheetTitle className="text-white">Edit Experience</SheetTitle>

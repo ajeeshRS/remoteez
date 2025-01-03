@@ -97,8 +97,7 @@ export default function EditJob({ job }: Props) {
         <Pen className="h-4 w-4" />
       </SheetTrigger>
       <SheetContent
-        side={'right'}
-        className="md:h-full h-[100dvh] overflow-y-scroll border-l-pink-400/40 bg-black py-10"
+        className="md:h-full h-[100dvh] overflow-y-scroll border-l-pink-400/40 bg-black py-10 md:px-56"
       >
         <SheetHeader>
           <SheetTitle className="text-white">Edit Job</SheetTitle>

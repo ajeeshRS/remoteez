@@ -169,8 +169,7 @@ export default function EditEmployerInfo({ employerDetails }: Props) {
         Edit profile
       </SheetTrigger>
       <SheetContent
-        side={'right'}
-        className="md:h-full h-[100dvh] overflow-y-scroll border-l-pink-400/40 bg-black py-10"
+        className="md:h-full h-[100dvh] overflow-y-scroll border-l-pink-400/40 bg-black py-10 md:px-56"
       >
         <SheetHeader>
           <SheetTitle className="text-white">Edit profile</SheetTitle>
