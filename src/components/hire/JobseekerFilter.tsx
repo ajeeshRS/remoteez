@@ -34,7 +34,7 @@ export default function JobseekerFilter({ searchQuery, handleSearch,handleCommit
     <div className="flex flex-col space-y-3">
       <input
         type="text"
-        placeholder="Search jobs..."
+        placeholder="Search candidates..."
         value={searchQuery}
         onChange={handleSearch}
         className="flex-grow rounded-none border border-neutral-600 bg-transparent p-2 focus:border-none focus:outline-none focus:outline-pink-500/70 focus:ring-0"
