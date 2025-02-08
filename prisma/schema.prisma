@@ -29,6 +29,7 @@ model JobSeeker {
   projects          Project[]
   resume            String?
   desiredJobTitle   String
+  openToWork        Boolean           @default(false)
   experienceRange   ExperienceRange
   previousCompanies PreviousCompany[]
   location          String

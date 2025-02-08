@@ -25,6 +25,7 @@ export interface JobSeekerProfile {
   portfolioLink: string | null;
   resume: string | null;
   skills: string[];
+  openToWork: boolean | null;
   previousCompanies: PreviousCompany[];
   projects: Project[];
   Bookmark: Bookmark[];
@@ -50,6 +51,7 @@ export interface JobSeekerProfileCard {
   portfolioLink: string | null;
   resume: string | null;
   skills: string[];
+  openToWork: boolean | null;
   previousCompanies: PreviousCompany[];
   projects: Project[];
 }

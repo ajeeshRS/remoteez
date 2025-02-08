@@ -3,10 +3,12 @@ import { MapPin, User } from 'lucide-react';
 import { useSelector } from 'react-redux';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
+import { toast } from 'sonner';
 
 import EditInfo from './EditInfo';
 import { RootState } from '@/state/store';
 import Loader from '@/components/ui/loader';
+import { updateOpenToWorkStatus } from '@/app/actions/jobseeker/actions';
 
 interface Props {
   refetch: () => void;
@@ -18,6 +20,18 @@ export default function PersonalInfo({ refetch }: Props) {
   );
   const { status } = useSession();
 
+  const handleOpenToWorkStatus = async () => {
+    const response = await updateOpenToWorkStatus(
+      !personalDetails?.openToWork as boolean,
+    );
+    if (response.success) {
+      toast.success(response.message);
+      refetch();
+    } else {
+      toast.error(response.error);
+    }
+  };
+
   if (status === 'loading') {
     return (
       <div className="flex h-[90vh] w-full items-center justify-center bg-black">
@@ -26,7 +40,7 @@ export default function PersonalInfo({ refetch }: Props) {
     );
   }
   return (
-    <div className="md:h-[90vh] h-[90dvh] w-full overflow-y-scroll p-5 px-5 text-white md:px-20">
+    <div className="h-[90dvh] w-full overflow-y-scroll p-5 px-5 text-white md:h-[90vh] md:px-20">
       <div className="flex w-full flex-col items-start justify-between px-5 md:p-10">
         <p className="pb-10 font-bold text-pink-500"> Personal info</p>
 
@@ -72,7 +86,21 @@ export default function PersonalInfo({ refetch }: Props) {
             {personalDetails?.bio ? personalDetails.bio : 'Not added yet.'}
           </p>
         </div>
-        <EditInfo personalDetails={personalDetails} refetch={refetch} />
+        <div className="my-2">
+          <p className="text-sm text-neutral-400">Status</p>
+          <p className="my-1 text-sm">
+            {personalDetails?.openToWork ? 'Open to work' : 'Not open to work'}
+          </p>
+        </div>
+        <div className="flex items-center space-x-3">
+          <EditInfo personalDetails={personalDetails} refetch={refetch} />
+          <button
+            onClick={handleOpenToWorkStatus}
+            className='className="my-4 hover:bg-pink-600" border border-pink-600 p-3 hover:border-transparent hover:bg-pink-600'
+          >
+            {personalDetails?.openToWork ? 'Not open to work' : 'Open to work'}
+          </button>
+        </div>
       </div>
     </div>
   );

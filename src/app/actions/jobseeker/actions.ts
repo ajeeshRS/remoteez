@@ -974,6 +974,41 @@ export const applyJob = async (jobId: string) => {
   }
 };
 
+export const updateOpenToWorkStatus = async (status: boolean) => {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user || session.user.role !== JOBSEEKER) {
+      return {
+        success: false,
+        error: 'Unauthorised',
+      };
+    }
+
+    const customSession = session as CustomSession;
+    const id = customSession.user.id;
+
+    await prisma.jobSeeker.update({
+      where: {
+        id,
+      },
+      data: {
+        openToWork: status,
+      },
+    });
+
+    return {
+      success: true,
+      message: 'Status updated',
+    };
+  } catch (err) {
+    console.error('error updating open to work status : ', err);
+    return {
+      success: false,
+      error: 'Internal server error',
+    };
+  }
+};
+
 const isAnyFieldChanged = (
   existingData: ProjectEditSchemaType,
   newData: ProjectEditSchemaType,
