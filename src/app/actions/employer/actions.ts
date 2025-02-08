@@ -511,6 +511,11 @@ export const getJobseekers = async (
                 : {}),
             },
           ],
+          NOT: [
+            {
+              openToWork: false,
+            },
+          ],
         },
       }),
       await prisma.jobSeeker.count({
@@ -543,6 +548,7 @@ export const getJobseekers = async (
                 : {}),
             },
           ],
+          NOT: [{ openToWork: false }],
         },
       }),
     ]);
