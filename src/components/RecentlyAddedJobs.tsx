@@ -35,7 +35,9 @@ export default function RecentlyAddedJobs() {
   return (
     <div className="flex min-h-[80vh] w-full flex-col items-center justify-center py-5 text-white">
       <div className="w-full py-10 text-center">
-        <p className="md:text-4xl text-2xl font-bold text-white">Recently added jobs</p>
+        <p className="text-2xl font-bold text-white md:text-4xl">
+          Recently added jobs
+        </p>
       </div>
 
       {status !== 'loading' && !loading && recentJobs.length === 0 && (
@@ -45,7 +47,7 @@ export default function RecentlyAddedJobs() {
         <p>Loading...</p>
       ) : (
         <>
-          <div className="flex w-full flex-col items-center space-y-4 px-8 md:px-56">
+          <div className="flex w-full flex-col items-center space-y-4 px-8 md:px-44">
             {recentJobs &&
               recentJobs.map((job) => <JobCard job={job} key={job.id} />)}
           </div>
